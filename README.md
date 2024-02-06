@@ -1,3 +1,8 @@
 # Documentación
 
-Aquí debéis definir una documentación
+Al clonar, entrar en la carpeta y poner los siguiente comando:
+
+```bash
+yarn
+yarn dev
+```
