@@ -1,4 +1,5 @@
 import { TextField } from '@mui/material';
+import { useEffect, useState } from 'react';
 
 // title: Nombre que aparecera como titulo
 // placeholder: Descripcion de ayuda que aparece al pinchar en el cuadro, antes de introducidr texto
@@ -13,7 +14,7 @@ import { TextField } from '@mui/material';
 // color: cambia el color del cuadro y textos. Solo acepta clases de colores (warning, primary, secondary, info, etc...)
 // focused: preselecciona dicho input
 
-export default function AppInput(props) {
+export default function AppNumber(props) {
   const {
     title,
     placeholder,
@@ -49,7 +50,28 @@ export default function AppInput(props) {
         fullWidth={fullWidth}
         color={color}
         focused={focused}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e) =>
+          onChange(
+            (e.target.value = e.target.value
+              .split('')
+              .filter((char) =>
+                [
+                  '0',
+                  '1',
+                  '2',
+                  '3',
+                  '4',
+                  '5',
+                  '6',
+                  '7',
+                  '8',
+                  '9',
+                  ',',
+                ].includes(char)
+              )
+              .join(''))
+          )
+        }
       />
     </>
   );
