@@ -10,6 +10,7 @@ export default function RoutingScreen() {
 
       <Route path="/admin" element={<AdminSidebar />}>
         <Route path="/admin" element={<AdminHomeScreen />} />
+        <Route path="/admin/users" element={<AdminHomeScreen />} />
       </Route>
     </Routes>
   );
