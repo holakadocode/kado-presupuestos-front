@@ -49,6 +49,7 @@ export default function AppInput(props) {
         fullWidth={fullWidth}
         color={color}
         focused={focused}
+        size="small"
         onChange={(e) => onChange(e.target.value)}
       />
     </>

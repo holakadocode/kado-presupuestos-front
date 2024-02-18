@@ -50,6 +50,7 @@ export default function AppNumber(props) {
         fullWidth={fullWidth}
         color={color}
         focused={focused}
+        size="small"
         onChange={(e) =>
           onChange(
             (e.target.value = e.target.value
