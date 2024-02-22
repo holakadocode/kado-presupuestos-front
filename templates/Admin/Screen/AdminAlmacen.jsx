@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState } from 'react'
 //import { Route, Routes } from 'react-router-dom';
 import { Field, Form, Formik } from "formik";
 import Accordion from "@mui/material/Accordion";
@@ -25,7 +25,7 @@ const style = {
 };
 
 export default function AdminAlmacen() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -50,7 +50,7 @@ export default function AdminAlmacen() {
         <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title" id="crearAlumnoLabel">
+              <h5 className="modal-title" id="nuevaCarpetaLabel">
                 Nueva carpeta
               </h5>
               <button
