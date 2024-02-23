@@ -10,7 +10,7 @@ export default function AdminSidebar() {
       <div className="d-flex">
         <div
           className="bg-light d-none d-md-block flex-grow-0 vh-100 rounded-end shadow"
-          style={{ width: '200px' }}
+          style={{ width: '250px' }}
         >
           <div className="ms-3 mt-3">
             <LogoHead>
@@ -64,6 +64,19 @@ export default function AdminSidebar() {
                 >
                   <AppRemixIcons icon="ri-box-1-line" />
                   <span>Almacen</span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/admin/shitTest"
+                  className={`nav-link ms-3 ${
+                    actualRoute.pathname === '/admin/shitTest'
+                      ? 'linkInRoute'
+                      : ''
+                  }`}
+                >
+                  <AppRemixIcons icon="ri-box-1-line" />
+                  <span>Pruebas de mierda</span>
                 </Link>
               </li>
             </ul>
