@@ -1,9 +1,11 @@
+import ProjectDefaultRoute from '../../../../src/Routing/ProjectDefaultRoute';
 import AppCard from '../../Layout/Component/Form/AppCard';
 import AppDatePicker from '../../Layout/Component/Form/AppDatePicker';
 import AppModal from '../../Layout/Component/Form/AppModal';
 import AppRemixIcons from '../../Layout/Component/Icon/AppRemixIcons';
 
 export default function ShitTest() {
+  console.log('ProjectDefaultRoute', ProjectDefaultRoute());
   return (
     <>
       {/* > Botones */}
@@ -12,6 +14,8 @@ export default function ShitTest() {
         Nueva Cosa
       </button>
       {/* < Botones */}
+
+      
       {/* > Tabla */}
       <AppCard
         title="Listado de cosas"
