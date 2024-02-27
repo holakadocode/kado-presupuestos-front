@@ -1,5 +1,5 @@
 export default function AppRemixIcons(props) {
-  const { title, icon, color, size } = props;
+  const { title, icon, color, size, className } = props;
 
   return (
     <span
@@ -8,6 +8,7 @@ export default function AppRemixIcons(props) {
         fontSize: size,
         color: color,
       }}
+      className={className}
     >
       <i className={icon}></i>
     </span>

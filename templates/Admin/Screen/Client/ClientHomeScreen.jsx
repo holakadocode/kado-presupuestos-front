@@ -1,49 +1,128 @@
-import { IconButton } from '@mui/material';
+import { useCallback, useEffect, useState } from 'react';
 import ClientAdd from '../../Layout/Component/Specific/Client/ClientAdd';
-import { LibraryAddIcon } from '@mui/icons-material/LibraryAdd';
-import { DeleteIcon } from '@mui/icons-material/Delete';
+import axios from 'axios';
+import AppRemixIcons from '../../Layout/Component/Icon/AppRemixIcons';
+import AppModal from '../../Layout/Component/Form/AppModal';
+import ClientEdit from '../../Layout/Component/Specific/Client/ClientEdit';
 
 export default function ClientHomeScreen() {
+  const [clients, setClients] = useState();
+  const [selectedClientID, setSelectedClientID] = useState();
+
+  const getClients = useCallback(() => {
+    axios
+      .get('http://localhost/public/index.php/api/client/list')
+      .then((r) => setClients(r.data))
+      .catch((e) => console.log('E', e));
+  }, []);
+
+  useEffect(() => {
+    getClients();
+  }, []);
+
   return (
     <>
-      <ClientAdd />
+      <button
+        type="button"
+        className="btn btn-outline-secondary d-inline-flex align-items-center"
+        data-bs-toggle="modal"
+        data-bs-target="#targetModaClientAdd"
+      >
+        <AppRemixIcons icon="ri-sun-line" />
+        Nuevo Cliente
+      </button>
+      <AppModal
+        target="targetModaClientAdd"
+        title="Nuevo Cliente"
+        isCloseButton
+        isCloseButtonText="Cerrar"
+        isSuccessButton
+        isSuccessButtonText="Alta"
+        // onAccept={handleSubmit}
+        content={<ClientAdd />}
+      />
+      {/* > Tabla */}
       <div id="container">
-        <table
-          className="table table-striped"
-          style={{ marginTop: '20px', width: '100%' }}
-        >
-          <thead>
-            <tr>
-              <th>Nombre</th>
-              <th>Apellidos</th>
-              <th>Edad</th>
-              <th>Curso</th>
-              <th>Fecha Matrícula</th>
-              <th>Nota Media</th>
-              <th>Progreso</th>
-              <th>Editar</th>
-              <th>Eliminar</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">22/11/24</th>
-              <td>Dildos</td>
-              <td>Satisfyer</td>
-              <td>Ya tu sabe</td>
-              <td>1</td>
-              <td>800</td>
-              <td>10€</td>
-              <td>30€</td>
-              <td>4552</td>
-              <td>
-                {/* <DeleteIcon /> */}
-              </td>
-            </tr>
-            <tr>Añadir artículo/servicio</tr>
-          </tbody>
-        </table>
+        <div className="mt-5">
+          {clients ? (
+            <table className="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Nombre</th>
+                  <th scope="col">Apellidos</th>
+                  <th scope="col">Teléfono</th>
+                  <th scope="col">Email contacto</th>
+                  <th scope="col">Dirección</th>
+                  <th scope="col">C.P</th>
+                  <th scope="col">Ciudad</th>
+                  <th scope="col">NIF</th>
+                  <th scope="col">PRE</th>
+                </tr>
+              </thead>
+              <tbody>
+                {clients?.map((client) => (
+                  <tr key={client.id}>
+                    <td>{client.id}</td>
+                    <td>{client.name}</td>
+                    <td>{client.surname}</td>
+                    <td>{client.tlf}</td>
+                    <td>{client.contactEmail}</td>
+                    <td>{client.address}</td>
+                    <td>{client.cp}</td>
+                    <td>{client.city}</td>
+                    <td>{client.nif}</td>
+                    <td>
+                      <button className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center">
+                        <AppRemixIcons icon="ri-search-line" />
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        type="button"
+                        className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center"
+                        data-bs-toggle="modal"
+                        data-bs-target={`#ModalDe-${client.id}`}
+                        onClick={() => {
+                          setSelectedClientID(client.id);
+                        }}
+                      >
+                        <AppRemixIcons icon="ri-pencil-line" />
+                      </button>
+                      <AppModal
+                        target={`ModalDe-${client.id}`}
+                        title={`Editar info de:  ${client.name} ${client.surname}`}
+                        isCloseButton
+                        isCloseButtonText="Cerrar"
+                        isSuccessButton
+                        isSuccessButtonText="Alta"
+                        // onAccept={handleSubmit}
+                        content={
+                          <ClientEdit
+                            clientID={client.id}
+                            onSubmit={(e) => {
+                              setSelectedClientID(undefined);
+                              getClients();
+                            }}
+                          />
+                        }
+                      />
+                    </td>
+                    <td>
+                      <button className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center">
+                        <AppRemixIcons icon="ri-delete-bin-line" />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <div>No hay clientes dados de alta</div>
+          )}
+        </div>
       </div>
+      {/* > Tabla */}
     </>
   );
 }

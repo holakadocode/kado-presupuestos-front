@@ -1,160 +1,163 @@
-
-import { Field, Form, Formik } from 'formik';
-
+import axios from 'axios';
+import { Form, Formik } from 'formik';
+import AppRemixIcons from '../../Icon/AppRemixIcons';
+import AppModal from '../../Form/AppModal';
+import AppInput from '../../Form/AppInput';
+import AppNumber from '../../Form/AppNumber';
+import { useCallback} from 'react';
 
 export default function ClientAdd() {
+  const handleSubmit = useCallback((values) => {
+    axios
+      .post('http://localhost/public/index.php/api/client/add', values)
+      .then((r) => console.log(r.data))
+      .catch((err) => console.log(err));
+  }, []);
+
   return (
     <>
-      <button
+      {/* <button
         type="button"
-        className="btn btn-primary"
+        className="btn btn-outline-secondary d-inline-flex align-items-center"
         data-bs-toggle="modal"
-        data-bs-target="#new"
+        data-bs-target="#targetModalX"
       >
-        Crear Nuevo Cliente
+        <AppRemixIcons icon="ri-sun-line" />
+        Nuevo Cliente
       </button>
-      <div
-        className="modal fade"
-        id="new"
-        tabIndex={-1}
-        role="dialog"
-        aria-labelledby="newItem"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog" role="document">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title" id="crearClientLabel">
-                Nuevo Cliente
-              </h5>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div className="modal-body">
-              <Formik
-                initialValues={{
-                  id: 0,
-                  name: '',
-                  nif: '',
-                  telf: '',
-                  contactEmail: '',
-                  adress: '',
-                  cp: '',
-                  city: '',
-                  primaryKey: '',
-                }}
-              >
-                <Form>
-                  {/* <div className="input-group mb-3">
-                    <span className="input-group-text" id="basic-addon1">
-                      Código Cliente
-                    </span>
-                    <Field
-                      type="number"
-                      name="primaryKey"
-                      placeholder="Codigo del Cliente"
-                      className="form-control"
-                    />
-                  </div> */}
-                  <div className="input-group mb-3">
-                    <span className="input-group-text" id="basic-addon1">
-                      Nombre:
-                    </span>
-                    <Field
-                      type="text"
-                      name="name"
-                      placeholder="Nombre del Cliente"
-                      className="form-control"
-                    />
+
+      <AppModal
+        target="targetModalX"
+        title="Cliente Nuevo"
+        isCloseButton
+        isCloseButtonText="Cerrar"
+        isSuccessButton
+        isSuccessButtonText="Alta"
+        onAccept={handleSubmit}
+        content={
+          
+        }
+      /> */}
+
+      <Formik
+            initialValues={{
+              name: '',
+              surname: '',
+              nif: '',
+              tlf: '',
+              contactEmail: '',
+              address: '',
+              cp: '',
+              city: '',
+              // primaryKey: '',
+            }}
+            // validationSchema={validationSchema}
+            validateOnChange={false}
+            validateOnBlur={false}
+            enableReinitialize
+            onSubmit={handleSubmit}
+            // onSubmit={() => {
+            //   console.log();
+            // }}
+          >
+            {({ setFieldValue, values, handleSubmit, errors }) => (
+              <Form onSubmit={handleSubmit}>
+                <div className="col-5 mb-3">
+                  <AppInput
+                    title="NIF"
+                    placeholder="NIF"
+                    // value=""
+                    required="true"
+                    error=""
+                    onChange={(v) => setFieldValue('nif', v)}
+                  ></AppInput>
+                </div>
+                <div className="row mb-3">
+                  <div className="col-5">
+                    <AppInput
+                      title="Nombre"
+                      placeholder="Nombre"
+                      value={values.name}
+                      required="true"
+                      error=""
+                      onChange={(v) => setFieldValue('name', v)}
+                    ></AppInput>
                   </div>
-                  <div className="input-group mb-3">
-                    <span className="input-group-text" id="basic-addon1">
-                      NIF
-                    </span>
-                    <Field
-                      type="text"
-                      name="nif"
-                      placeholder="NIF"
-                      className="form-control"
-                    />
+                  <div className="col-7">
+                    <AppInput
+                      title="Apellidos"
+                      placeholder="Apellidos"
+                      // value=""
+                      required="true"
+                      error=""
+                      onChange={(v) => setFieldValue('surname', v)}
+                    ></AppInput>
                   </div>
-                  <div className="input-group mb-3">
-                    <span className="input-group-text" id="basic-addon1">
-                      Correo Electrónico:
-                    </span>
-                    <Field
-                      type="email"
-                      name="contactEemail"
-                      placeholder="email"
-                      className="form-control"
-                    />
+                </div>
+                <div className="row mb-3">
+                  <div className="col-5">
+                    <AppNumber
+                      title="Teléfono"
+                      placeholder="Teléfono"
+                      // value=""
+                      required="true"
+                      error=""
+                      onChange={(v) => setFieldValue('tlf', v)}
+                    ></AppNumber>
                   </div>
-                  <div className="input-group mb-3">
-                    <span className="input-group-text" id="basic-addon1">
-                      Dirección:
-                    </span>
-                    <Field
-                      type="text"
-                      name="adress"
-                      placeholder="Dirección"
-                      className="form-control"
-                    />
+                  <div className="col-7">
+                    <AppInput
+                      title="Email"
+                      placeholder="Email de contacto"
+                      // value=""
+                      required="true"
+                      error=""
+                      onChange={(v) => setFieldValue('contactEmail', v)}
+                    ></AppInput>
                   </div>
-                  <div className="input-group mb-3">
-                    <span className="input-group-text" id="basic-addon1">
-                      Código Postal:
-                    </span>
-                    <Field
-                      type="number"
-                      name="cp"
-                      placeholder="Código Postal"
-                      className="form-control"
-                    />
+                </div>
+                <div className="mb-3">
+                  <AppInput
+                    title="Dirección"
+                    placeholder="Dirección"
+                    // value=""
+                    required="true"
+                    error=""
+                    onChange={(v) => setFieldValue('address', v)}
+                  ></AppInput>
+                </div>
+                <div className="row mb-3">
+                  <div className="col-4">
+                    <AppNumber
+                      title="CP"
+                      placeholder="Código postal"
+                      // value=""
+                      required="true"
+                      error=""
+                      onChange={(v) => setFieldValue('cp', v)}
+                    ></AppNumber>
                   </div>
-                  <div className="input-group mb-3">
-                    <span className="input-group-text" id="basic-addon1">
-                      Ciudad:
-                    </span>
-                    <Field
-                      type="text"
-                      name="city"
+                  <div className="col-8">
+                    <AppInput
+                      title="Ciudad"
                       placeholder="Ciudad"
-                      className="form-control"
-                    />
+                      // value=""
+                      required="true"
+                      error=""
+                      onChange={(v) => setFieldValue('city', v)}
+                    ></AppInput>
                   </div>
-                  {/* <div className="input-group mb-3">
-                    <span className="input-group-text" id="basic-addon1">
-                      Fecha de Alta
-                    </span>
-                    <Field
-                      type="date"
-                      name="fechaAlta"
-                      placeholder="Fecha de Alta"
-                      className="form-control"
-                    />
-                  </div> */}
-                  <button type="submit" className="btn btn-primary">
-                    Crear
-                  </button>
-                </Form>
-              </Formik>
-            </div>
-            <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Cerrar
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+                </div>
+                {/* <button
+                  type="submit"
+                  className="btn btn-outline-secondary d-inline-flex align-items-center"
+                >
+                  <AppRemixIcons icon="ri-sun-line" />
+                  Alta
+                </button> */}
+              </Form>
+            )}
+          </Formik>
     </>
   );
 }

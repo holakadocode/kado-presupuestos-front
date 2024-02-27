@@ -1,37 +1,37 @@
-import { useState } from 'react'
-//import { Route, Routes } from 'react-router-dom';
-import { Field, Form, Formik } from "formik";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import Typography from "@mui/material/Typography";
-import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-import IconButton from "@mui/material/IconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
-import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
-import Box from "@mui/material/Box";
-import Modal from "@mui/material/Modal";
+// import { useState } from 'react'
+// //import { Route, Routes } from 'react-router-dom';
+// import { Field, Form, Formik } from "formik";
+// import Accordion from "@mui/material/Accordion";
+// import AccordionSummary from "@mui/material/AccordionSummary";
+// import AccordionDetails from "@mui/material/AccordionDetails";
+// import Typography from "@mui/material/Typography";
+// import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+// import IconButton from "@mui/material/IconButton";
+// import DeleteIcon from "@mui/icons-material/Delete";
+// import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
+// import Box from "@mui/material/Box";
+// import Modal from "@mui/material/Modal";
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
+// const style = {
+//   position: "absolute",
+//   top: "50%",
+//   left: "50%",
+//   transform: "translate(-50%, -50%)",
+//   width: 400,
+//   bgcolor: "background.paper",
+//   border: "2px solid #000",
+//   boxShadow: 24,
+//   p: 4,
+// };
 
 export default function AdminAlmacen() {
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  // const [open, setOpen] = useState(false);
+  // const handleOpen = () => setOpen(true);
+  // const handleClose = () => setOpen(false);
 
   return (
     <>
-      <button
+      {/* <button
         type="button"
         className="btn btn-primary"
         data-bs-toggle="modal"
@@ -289,7 +289,7 @@ export default function AdminAlmacen() {
             </Typography>
           </AccordionDetails>
         </Accordion>
-      </div>
+      </div> */}
     </>
   );
 }
