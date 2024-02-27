@@ -2,12 +2,12 @@ export default function AppModal(props) {
   const {
     target,
     title,
-    content,
     isCloseButton,
     isCloseButtonText,
     isSuccessButton,
     isSuccessButtonText,
     onAccept,
+    children
   } = props;
   return (
     <>
@@ -25,7 +25,7 @@ export default function AppModal(props) {
                 aria-label="Close"
               ></button>
             </div>
-            <div className="modal-body">{content}</div>
+            <div className="modal-body">{children}</div>
             <div className="modal-footer">
               {isCloseButton && (
                 <button

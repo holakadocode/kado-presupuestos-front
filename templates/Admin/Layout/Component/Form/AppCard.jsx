@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export default function AppCard(props) {
-  const { title, content, className } = props;
+  const { title, className, children } = props;
 
   return (
     <div className={`card ${className}`}>
@@ -12,7 +12,7 @@ export default function AppCard(props) {
         </>
       )}
       <div className="card-body">
-        <p className="card-text">{content}</p>
+        <p className="card-text">{children}</p>
       </div>
     </div>
   );
