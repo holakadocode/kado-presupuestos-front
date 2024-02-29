@@ -4,7 +4,7 @@ import AdminSidebar from '../../templates/Admin/Layout/Sidebar/AdminSidebar';
 import AdminHomeScreen from '../../templates/Admin/Screen/AdminHomeScreen';
 import AdminAlmacen from '../../templates/Admin/Screen/Store/AdminAlmacen';
 import AdminProvider from '../../templates/Admin/Screen/AdminProvider';
-import ShitTest from '../../templates/Admin/Screen/test/ShitTest';
+import ClientHomeScreen from '../../templates/Admin/Screen/Client/ClientHomeScreen';
 
 export default function RoutingScreen() {
   return (
@@ -14,9 +14,9 @@ export default function RoutingScreen() {
       <Route path="/admin" element={<AdminSidebar />}>
         <Route path="/admin" element={<AdminHomeScreen />} />
         <Route path="/admin/users" element={<AdminHomeScreen />} />
+        <Route path="/admin/clients" element={<ClientHomeScreen />} />
         <Route path="/admin/almacen" element={<AdminAlmacen />} />
         <Route path="/admin/provider" element={<AdminProvider />} />
-        <Route path="/admin/shitTest" element={<ShitTest />} />
       </Route>
     </Routes>
   );
