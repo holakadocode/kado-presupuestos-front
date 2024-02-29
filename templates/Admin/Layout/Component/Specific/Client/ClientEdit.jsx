@@ -1,90 +1,59 @@
 import axios from 'axios';
 import { Form, Formik } from 'formik';
 import AppRemixIcons from '../../Icon/AppRemixIcons';
-import AppModal from '../../Form/AppModal';
 import AppInput from '../../Form/AppInput';
 import AppNumber from '../../Form/AppNumber';
 import { useCallback, useEffect, useState } from 'react';
 
 export default function ClientEdit(props) {
-  const { clientID, onSubmit } = props;
-  const [clientToEdit, setClientToEdit] = useState();
+  const { client, onSubmit } = props;
+ 
+      const handleSubmit = useCallback(
+        (values) => {
+          axios
+            .post('http://localhost/public/index.php/api/client/edit', values)
+            .then((r) => {
+              console.log(r.data);
+              onSubmit();
+            })
+            .catch((err) => console.log(err));
+        },
+        [onSubmit]
+      );
 
-  const loadClientEdit = useCallback(() => {
-    axios
-      .get(`http://localhost/public/index.php/api/client/get/${clientID}`)
-      .then((r) => setClientToEdit(r.data))
-      .catch((e) => console.log('ERROR', e));
-  }, [clientID]);
-    
-  useEffect(() => {
-      loadClientEdit();
-    }, []);
-    
-    //   const handleSubmit = useCallback((values) => {
-    //     axios
-    //       .post('http://localhost/public/index.php/api/client/edit', values)
-    //       .then((r) => console.log(r.data))
-    //       .catch((err) => console.log(err));
-    //   }, []);
   return (
     <>
-      {/* <button
-        type="button"
-        className="btn btn-outline-secondary d-inline-flex align-items-center"
-        data-bs-toggle="modal"
-        data-bs-target="#targetModalX"
-      >
-        <AppRemixIcons icon="ri-sun-line" />
-        Editar Cliente
-      </button>
-
-      <AppModal
-        target="targetModalX"
-        title="Cliente Nuevo"
-        isCloseButton
-        isCloseButtonText="Cerrar"
-        isSuccessButton
-        isSuccessButtonText="Alta"
-        // onAccept={handleSubmit}
-        content={
-         
-        }
-      /> */}
-
-      {clientToEdit ? (
+      {client ? (
         <Formik
           initialValues={{
-            name: clientToEdit.name,
-            surname: clientToEdit.surname,
-            nif: clientToEdit.nif,
-            tlf: clientToEdit.tlf,
-            contactEmail: clientToEdit.contactEmail,
-            address: clientToEdit.address,
-            cp: clientToEdit.cp,
-            city: clientToEdit.city,
-            // primaryKey: '',
+            name: client.name || '',
+            surname: client.surname || '',
+            nif: client.nif || '',
+            tlf: client.tlf || '',
+            contactEmail: client.contactEmail || '',
+            address: client.address || '',
+            cp: client.cp || '',
+            city: client.city || '',
           }}
           // validationSchema={validationSchema}
           validateOnChange={false}
           validateOnBlur={false}
           enableReinitialize
-          // onSubmit={handleSubmit}
-          // onSubmit={() => {
-          //   console.log();
-          // }}
+          onSubmit={handleSubmit}
         >
           {({ setFieldValue, values, handleSubmit, errors }) => (
             <Form onSubmit={handleSubmit}>
-              <div className="col-5 mb-3">
-                <AppInput
-                  title="NIF"
-                  placeholder="NIF"
-                  value={values.nif}
-                  required="true"
-                  error=""
-                  onChange={(v) => setFieldValue('nif', v)}
-                ></AppInput>
+              <div className="row mb-3">
+                <div className="col-5">
+                  <AppInput
+                    title="NIF"
+                    placeholder="NIF"
+                    value={values.nif}
+                    required="true"
+                    error=""
+                    onChange={(v) => setFieldValue('nif', v)}
+                  ></AppInput>
+                </div>
               </div>
               <div className="row mb-3">
                 <div className="col-5">
@@ -162,13 +131,13 @@ export default function ClientEdit(props) {
                   ></AppInput>
                 </div>
               </div>
-              {/* <button
-                  type="submit"
-                  className="btn btn-outline-secondary d-inline-flex align-items-center"
-                >
-                  <AppRemixIcons icon="ri-sun-line" />
-                  Alta
-                </button> */}
+              <button
+                type="submit"
+                className="btn btn-outline-secondary d-inline-flex align-items-center"
+              >
+                {/* <AppRemixIcons icon="ri-sun-line" /> */}
+                Editar
+              </button>
             </Form>
           )}
         </Formik>

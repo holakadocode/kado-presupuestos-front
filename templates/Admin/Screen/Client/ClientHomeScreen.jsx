@@ -7,7 +7,7 @@ import ClientEdit from '../../Layout/Component/Specific/Client/ClientEdit';
 
 export default function ClientHomeScreen() {
   const [clients, setClients] = useState();
-  const [selectedClientID, setSelectedClientID] = useState();
+  // const [selectedClientID, setSelectedClientID] = useState();
 
   const getClients = useCallback(() => {
     axios
@@ -20,6 +20,18 @@ export default function ClientHomeScreen() {
     getClients();
   }, []);
 
+  const deleteClient = useCallback(
+    (client) => {
+      axios
+        .delete('http://localhost/public/index.php/api/client/delete', {
+          data: client
+        })
+        .then(() => getClients());
+    },
+    [getClients]
+  );
+
+
   return (
     <>
       <button
@@ -28,7 +40,7 @@ export default function ClientHomeScreen() {
         data-bs-toggle="modal"
         data-bs-target="#targetModaClientAdd"
       >
-        <AppRemixIcons icon="ri-sun-line" />
+        <AppRemixIcons icon="ri-user-add-line" />
         Nuevo Cliente
       </button>
       <AppModal
@@ -57,7 +69,7 @@ export default function ClientHomeScreen() {
                   <th scope="col">C.P</th>
                   <th scope="col">Ciudad</th>
                   <th scope="col">NIF</th>
-                  <th scope="col">PRE</th>
+                  <th colspan="3"></th>
                 </tr>
               </thead>
               <tbody>
@@ -74,7 +86,8 @@ export default function ClientHomeScreen() {
                     <td>{client.nif}</td>
                     <td>
                       <button className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center">
-                        <AppRemixIcons icon="ri-search-line" />
+                        {/* <AppRemixIcons icon="ri-search-line" /> */}
+                        <AppRemixIcons icon="ri-file-list-3-line" />
                       </button>
                     </td>
                     <td>
@@ -82,15 +95,15 @@ export default function ClientHomeScreen() {
                         type="button"
                         className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center"
                         data-bs-toggle="modal"
-                        data-bs-target={`#ModalDe-${client.id}`}
-                        onClick={() => {
-                          setSelectedClientID(client.id);
-                        }}
+                        data-bs-target={`#editClient-${client.id}`}
+                        // onClick={() => {
+                        //   setSelectedClientID(client.id);
+                        // }}
                       >
                         <AppRemixIcons icon="ri-pencil-line" />
                       </button>
                       <AppModal
-                        target={`ModalDe-${client.id}`}
+                        target={`editClient-${client.id}`}
                         title={`Editar info de:  ${client.name} ${client.surname}`}
                         isCloseButton
                         isCloseButtonText="Cerrar"
@@ -99,9 +112,8 @@ export default function ClientHomeScreen() {
                         // onAccept={handleSubmit}
                         content={
                           <ClientEdit
-                            clientID={client.id}
-                            onSubmit={(e) => {
-                              setSelectedClientID(undefined);
+                            client={client}
+                            onSubmit={() => {
                               getClients();
                             }}
                           />
@@ -109,7 +121,10 @@ export default function ClientHomeScreen() {
                       />
                     </td>
                     <td>
-                      <button className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center">
+                      <button
+                        className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center"
+                        onClick={() => deleteClient(client)}
+                      >
                         <AppRemixIcons icon="ri-delete-bin-line" />
                       </button>
                     </td>
@@ -122,7 +137,6 @@ export default function ClientHomeScreen() {
           )}
         </div>
       </div>
-      {/* > Tabla */}
     </>
   );
 }
