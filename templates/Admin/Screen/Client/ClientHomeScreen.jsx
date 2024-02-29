@@ -21,38 +21,20 @@ export default function ClientHomeScreen() {
   }, []);
 
   const deleteClient = useCallback(
-    (client) => {
+    (clientID) => {
       axios
         .delete('http://localhost/public/index.php/api/client/delete', {
-          data: client
+          data: { clientID },
         })
         .then(() => getClients());
     },
     [getClients]
   );
 
-
   return (
     <>
-      <button
-        type="button"
-        className="btn btn-outline-secondary d-inline-flex align-items-center"
-        data-bs-toggle="modal"
-        data-bs-target="#targetModaClientAdd"
-      >
-        <AppRemixIcons icon="ri-user-add-line" />
-        Nuevo Cliente
-      </button>
-      <AppModal
-        target="targetModaClientAdd"
-        title="Nuevo Cliente"
-        isCloseButton
-        isCloseButtonText="Cerrar"
-        isSuccessButton
-        isSuccessButtonText="Alta"
-        // onAccept={handleSubmit}
-        content={<ClientAdd />}
-      />
+      <ClientAdd onSubmit={() => getClients()} />
+
       {/* > Tabla */}
       <div id="container">
         <div className="mt-5">
@@ -87,43 +69,21 @@ export default function ClientHomeScreen() {
                     <td>
                       <button className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center">
                         {/* <AppRemixIcons icon="ri-search-line" /> */}
-                        <AppRemixIcons icon="ri-file-list-3-line" />
+                        <AppRemixIcons icon="ri-arrow-up-circle-line" />
                       </button>
                     </td>
                     <td>
-                      <button
-                        type="button"
-                        className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center"
-                        data-bs-toggle="modal"
-                        data-bs-target={`#editClient-${client.id}`}
-                        // onClick={() => {
-                        //   setSelectedClientID(client.id);
-                        // }}
-                      >
-                        <AppRemixIcons icon="ri-pencil-line" />
-                      </button>
-                      <AppModal
-                        target={`editClient-${client.id}`}
-                        title={`Editar info de:  ${client.name} ${client.surname}`}
-                        isCloseButton
-                        isCloseButtonText="Cerrar"
-                        isSuccessButton
-                        isSuccessButtonText="Alta"
-                        // onAccept={handleSubmit}
-                        content={
-                          <ClientEdit
-                            client={client}
-                            onSubmit={() => {
-                              getClients();
-                            }}
-                          />
-                        }
+                      <ClientEdit
+                        client={client}
+                        onSubmit={() => {
+                          getClients();
+                        }}
                       />
                     </td>
                     <td>
                       <button
                         className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center"
-                        onClick={() => deleteClient(client)}
+                        onClick={() => deleteClient(client.id)}
                       >
                         <AppRemixIcons icon="ri-delete-bin-line" />
                       </button>

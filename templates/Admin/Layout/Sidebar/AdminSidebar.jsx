@@ -36,8 +36,21 @@ export default function AdminSidebar() {
                     actualRoute.pathname === '/admin/users' ? 'linkInRoute' : ''
                   }`}
                 >
-                  <AppRemixIcons icon="ri-user-line" />
+                  <AppRemixIcons icon="ri-shield-user-line" />
                   <span>Usuarios</span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/admin/clients"
+                  className={`nav-link ms-3 ${
+                    actualRoute.pathname === '/admin/clients'
+                      ? 'linkInRoute'
+                      : ''
+                  }`}
+                >
+                  <AppRemixIcons icon="ri-user-line" />
+                  <span>Clientes</span>
                 </Link>
               </li>
               <li>
