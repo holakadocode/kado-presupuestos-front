@@ -11,7 +11,7 @@ export default function AppModal(props) {
   } = props;
   return (
     <>
-      <div className="modal fade" id={target} tabindex="-1">
+      <div className="modal fade" id={target} tabIndex="-1">
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
