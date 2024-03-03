@@ -11,20 +11,46 @@
 // import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
 // import Box from "@mui/material/Box";
 // import Modal from "@mui/material/Modal";
+import { TreeItem, TreeView } from "@mui/x-tree-view";
 import AppRemixIcons from "../../Layout/Component/Icon/AppRemixIcons";
-
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { useState } from "react";
 
 export default function AdminAlmacen() {
+  const [folder, setFolder] = useState({
+    "Tornillos": ["Tornillo plano", "Tornillo estrella", "Tornillo Torx"],
+    "Tuercas": ["Tuerca redonda", "Tuerca cuadrada", "Tuerca ovalada"],
+  });
+
+  const FOLDERNAMES = Object.keys(folder);
 
   return (
     <>
-        <button className="btn btn-outline-secondary d-inline-flex align-items-center">
+      <button className="btn btn-outline-secondary d-inline-flex align-items-center">
         <AppRemixIcons icon="ri-folder-add-line" className="me-2" />
         Nueva Carpeta
       </button>
 
+      <TreeView
+        aria-label="file system navigator"
+        defaultCollapseIcon={<ExpandMoreIcon />}
+        defaultExpandIcon={<ChevronRightIcon />}
+        sx={{ height: "auto", flexGrow: 1, maxWidth: "auto", overflowY: "auto" }}
+      >
+        {FOLDERNAMES.map((folderName, index) => (
+          <TreeItem key={index} nodeId={`folder-${index}`} label={folderName}>
+                        {folder[folderName].map((itemName, idx) => (
+                          <>
+              <TreeItem key={`${index}-${idx}`} nodeId={`item-${index}-${idx}`} label={itemName} />
+              <AppRemixIcons icon="ri-edit-line" className="me-2" />
+            <AppRemixIcons icon="ri-delete-bin-2-line" className="me-2" />
+            </>
+            ))} 
+          </TreeItem>
+        ))}
+      </TreeView>
 
-    
       {/* <button
         type="button"
         className="btn btn-primary"
