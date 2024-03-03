@@ -31,6 +31,10 @@ export default function AdminAlmacen() {
 
   return (
     <>
+
+
+
+    
       {/* <button
         type="button"
         className="btn btn-primary"
