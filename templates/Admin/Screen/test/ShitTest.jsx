@@ -1,4 +1,3 @@
-import ProjectDefaultRoute from '../../../../src/Routing/ProjectDefaultRoute';
 import AppCard from '../../Layout/Component/Form/AppCard';
 import AppDatePicker from '../../Layout/Component/Form/AppDatePicker';
 import AppInput from '../../Layout/Component/Form/AppInput';
@@ -8,7 +7,6 @@ import AppSelect from '../../Layout/Component/Form/AppSelect';
 import AppRemixIcons from '../../Layout/Component/Icon/AppRemixIcons';
 
 export default function ShitTest() {
-  console.log('ProjectDefaultRoute', ProjectDefaultRoute());
   return (
     <>
       {/* > Botones */}
