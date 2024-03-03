@@ -29,7 +29,7 @@ export default function AppSelect(props) {
     disabled,
     helperText,
     error,
-    fullWidth = false,
+    fullWidth = true,
     isReadOnly = false,
     color,
     onChange,

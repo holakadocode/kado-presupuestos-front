@@ -1,5 +1,4 @@
 import { TextField } from '@mui/material';
-import { useEffect, useState } from 'react';
 
 // title: Nombre que aparecera como titulo
 // placeholder: Descripcion de ayuda que aparece al pinchar en el cuadro, antes de introducidr texto
@@ -38,7 +37,7 @@ export default function AppNumber(props) {
         variant="outlined"
         label={title}
         placeholder={placeholder}
-        defaultValue={value}
+        value={value}
         required={required}
         disabled={disabled}
         InputProps={{
