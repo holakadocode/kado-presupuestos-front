@@ -5,15 +5,18 @@ import AppRemixIcons from '../../Icon/AppRemixIcons';
 import AppModal from '../../Form/AppModal';
 import AppInput from '../../Form/AppInput';
 import AppNumber from '../../Form/AppNumber';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
 export default function ClientAdd(props) {
   const { onSubmit } = props;
+  const [showModal, setShowModal] = useState(false);
+
   const handleAddClient = useCallback((values) => {
     axios
       .put('http://localhost/public/index.php/api/client/add', values)
       .then((r) => onSubmit())
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => setShowModal(false));
   }, []);
 
   return (
@@ -21,8 +24,7 @@ export default function ClientAdd(props) {
       <button
         type="button"
         className="btn btn-outline-secondary d-inline-flex align-items-center"
-        data-bs-toggle="modal"
-        data-bs-target="#targetModaClientAdd"
+        onClick={() => setShowModal(true)}
       >
         <AppRemixIcons icon="ri-user-add-line" />
         Nuevo Cliente
@@ -43,21 +45,19 @@ export default function ClientAdd(props) {
         // validationSchema={validationSchema}
         validateOnChange={false}
         validateOnBlur={false}
-        enableReinitialize
+        // enableReinitialize
         onSubmit={handleAddClient}
-        // onSubmit={() => {
-        //   console.log();
-        // }}
       >
         {({ setFieldValue, values, handleSubmit, errors }) => (
           <Form onSubmit={handleSubmit}>
             <AppModal
-              target="targetModaClientAdd"
+              target={showModal}
+              onClose={() => setShowModal(false)}
               title="Nuevo Cliente"
               isCloseButton
-              isCloseButtonText="Cerrar"
+              closeButtonText="Cerrar"
               isSuccessButton
-              isSuccessButtonText="Alta"
+              successButtonText="Alta"
               onAccept={handleSubmit}
             >
               <div className="row mb-3">
@@ -66,7 +66,7 @@ export default function ClientAdd(props) {
                     title="NIF"
                     placeholder="NIF"
                     value={values.nif}
-                    required="true"
+                    required={true}
                     // error=""
                     onChange={(v) => setFieldValue('nif', v)}
                   />
@@ -78,8 +78,8 @@ export default function ClientAdd(props) {
                     title="Nombre"
                     placeholder="Nombre"
                     value={values.name}
-                    required="true"
-                    error=""
+                    required
+                    // error=""
                     onChange={(v) => setFieldValue('name', v)}
                   />
                 </div>
@@ -87,9 +87,9 @@ export default function ClientAdd(props) {
                   <AppInput
                     title="Apellidos"
                     placeholder="Apellidos"
-                    // value=""
-                    required="true"
-                    error=""
+                    value={values.surname}
+                    required
+                    // error=""
                     onChange={(v) => setFieldValue('surname', v)}
                   />
                 </div>
@@ -99,9 +99,9 @@ export default function ClientAdd(props) {
                   <AppNumber
                     title="Teléfono"
                     placeholder="Teléfono"
-                    // value=""
-                    required="true"
-                    error=""
+                    value={values.tlf}
+                    required
+                    // error=""
                     onChange={(v) => setFieldValue('tlf', v)}
                   />
                 </div>
@@ -109,9 +109,9 @@ export default function ClientAdd(props) {
                   <AppInput
                     title="Email"
                     placeholder="Email de contacto"
-                    // value=""
-                    required="true"
-                    error=""
+                    value={values.contactEmail}
+                    required
+                    // error=""
                     onChange={(v) => setFieldValue('contactEmail', v)}
                   />
                 </div>
@@ -120,9 +120,9 @@ export default function ClientAdd(props) {
                 <AppInput
                   title="Dirección"
                   placeholder="Dirección"
-                  // value=""
-                  required="true"
-                  error=""
+                  value={values.address}
+                  required
+                  // error=""
                   onChange={(v) => setFieldValue('address', v)}
                 />
               </div>
@@ -131,9 +131,9 @@ export default function ClientAdd(props) {
                   <AppNumber
                     title="CP"
                     placeholder="Código postal"
-                    // value=""
-                    required="true"
-                    error=""
+                    value={values.cp}
+                    required
+                    // error=""
                     onChange={(v) => setFieldValue('cp', v)}
                   />
                 </div>
@@ -141,9 +141,9 @@ export default function ClientAdd(props) {
                   <AppInput
                     title="Ciudad"
                     placeholder="Ciudad"
-                    // value=""
-                    required="true"
-                    error=""
+                    value={values.city}
+                    required
+                    // error=""
                     onChange={(v) => setFieldValue('city', v)}
                   />
                 </div>

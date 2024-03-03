@@ -12,7 +12,7 @@ export default function AppCard(props) {
         </>
       )}
       <div className="card-body">
-        <p className="card-text">{children}</p>
+        <span className="card-text">{children}</span>
       </div>
     </div>
   );

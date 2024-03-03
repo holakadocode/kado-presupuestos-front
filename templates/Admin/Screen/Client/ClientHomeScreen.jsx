@@ -42,16 +42,16 @@ export default function ClientHomeScreen() {
             <table className="table table-hover">
               <thead>
                 <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Nombre</th>
-                  <th scope="col">Apellidos</th>
-                  <th scope="col">Teléfono</th>
-                  <th scope="col">Email contacto</th>
-                  <th scope="col">Dirección</th>
-                  <th scope="col">C.P</th>
-                  <th scope="col">Ciudad</th>
-                  <th scope="col">NIF</th>
-                  <th colspan="3"></th>
+                  <th>#</th>
+                  <th>Nombre</th>
+                  <th>Apellidos</th>
+                  <th>Teléfono</th>
+                  <th>Email contacto</th>
+                  <th>Dirección</th>
+                  <th>C.P</th>
+                  <th>Ciudad</th>
+                  <th>NIF</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>

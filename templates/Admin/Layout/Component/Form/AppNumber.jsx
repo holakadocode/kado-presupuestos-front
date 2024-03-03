@@ -37,7 +37,7 @@ export default function AppNumber(props) {
         variant="outlined"
         label={title}
         placeholder={placeholder}
-        defaultValue={value}
+        value={value}
         required={required}
         disabled={disabled}
         InputProps={{
