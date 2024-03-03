@@ -7,30 +7,24 @@
 // import Typography from "@mui/material/Typography";
 // import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 // import IconButton from "@mui/material/IconButton";
-// import DeleteIcon from "@mui/icons-material/Delete";
+// import DeleteIcon from "@mui/icons-material/Dqelete";
 // import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
 // import Box from "@mui/material/Box";
 // import Modal from "@mui/material/Modal";
+import AppRemixIcons from "../../Layout/Component/Icon/AppRemixIcons";
 
-// const style = {
-//   position: "absolute",
-//   top: "50%",
-//   left: "50%",
-//   transform: "translate(-50%, -50%)",
-//   width: 400,
-//   bgcolor: "background.paper",
-//   border: "2px solid #000",
-//   boxShadow: 24,
-//   p: 4,
-// };
 
 export default function AdminAlmacen() {
-  // const [open, setOpen] = useState(false);
-  // const handleOpen = () => setOpen(true);
-  // const handleClose = () => setOpen(false);
 
   return (
     <>
+        <button className="btn btn-outline-secondary d-inline-flex align-items-center">
+        <AppRemixIcons icon="ri-folder-add-line" className="me-2" />
+        Nueva Carpeta
+      </button>
+
+
+    
       {/* <button
         type="button"
         className="btn btn-primary"
