@@ -1,12 +1,10 @@
 
 import AppRemixIcons from '../../Layout/Component/Icon/AppRemixIcons';
-
 import axios from 'axios';
 import { useCallback, useState } from 'react';
 import { useEffect } from 'react';
 import ProviderAdd from '../../Layout/Specific/Provider/ProviderAdd';
 import ProviderEdit from '../../Layout/Specific/Provider/ProviderEdit';
-
 
 export default function ProviderHomeScreen() {
   const [providers, setProviders] = useState();
@@ -33,31 +31,31 @@ export default function ProviderHomeScreen() {
     [getProviders]
 
   );
-
   
   return (
     <>
       <ProviderAdd onSubmit={() => getProviders()} />
+
       <div id="container">
         <div className="mt-5">
           {providers ? (
           <table className="table table-hover">
             <thead>
               <tr>
-                <th scope="col">codigo</th>
-                <th scope="col">Nombre Empresa</th>
-                <th scope="col">Razon Social</th>
-                <th scope="col">Nif</th>
-                <th scope="col">Contacto</th>
-                <th scope="col">Email</th>
-                <th scope="col">Direccion</th>
-                <th scope="col">FechaAlta</th>
+                <th>codigo</th>
+                <th>Nombre Empresa</th>
+                <th>Razon Social</th>
+                <th>Nif</th>
+                <th>Contacto</th>
+                <th>Email</th>
+                <th>Direccion</th>
+                <th>FechaAlta</th>
               </tr>
             </thead>
             <tbody>
               {providers?.map((provider) => (
                 <tr key={provider.id}>
-                  <th scope="row">{provider.idProvider}</th>
+                  <th>{provider.idProvider}</th>
                   <td>{provider.nameCompany}</td>
                   <td>{provider.businessName}</td>
                   <td>{provider.nif}</td>
@@ -67,7 +65,6 @@ export default function ProviderHomeScreen() {
                   <td>{provider.fechaAlta}</td>
                   <td>
                     <button className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center">
-
                       <AppRemixIcons icon="ri-arrow-up-circle-line" />
                     </button>
                   </td>

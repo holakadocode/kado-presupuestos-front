@@ -1,14 +1,17 @@
-import {Form, Formik } from 'formik';
+import { Form, Formik } from 'formik';
 import AppModal from '../../Component/Form/AppModal';
 import AppRemixIcons from '../../Component/Icon/AppRemixIcons';
 import AppNumber from '../../Component/Form/AppNumber';
 import AppInput from '../../Component/Form/AppInput';
 import * as Yup from 'yup';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import axios from 'axios';
+import AppDatePicker from '../../Component/Form/AppDatePicker';
 
 export default function ProviderAdd(props) {
   const { onSubmit } = props;
+  const [showModal, setShowModal] = useState(false);
+
   const handleAddProvider = useCallback((values) => {
     axios
       .put('http://localhost/public/index.php/api/provider/add', values)
@@ -21,8 +24,7 @@ export default function ProviderAdd(props) {
       <button
         type="button"
         className="btn btn-outline-secondary d-inline-flex align-items-center"
-        data-bs-toggle="modal"
-        data-bs-target="#targetModalProviderAdd"
+        onClick={() => setShowModal(true)}
       >
         <AppRemixIcons icon="ri-user-add-line" />
         Nuevo Proveedor
@@ -30,14 +32,14 @@ export default function ProviderAdd(props) {
 
       <Formik
         initialValues={{
-          idProvider: 0,
+          idProvider: '1-0001',
           nameCompany: '',
           businessName: '',
           nif: '',
           contactPerson: '',
           email: '',
           address: '',
-          fechaAlta: 0,
+          dateStamp: null,
         }}
         // validationSchema={validationSchema}
         validationOnChange={false}
@@ -56,90 +58,87 @@ export default function ProviderAdd(props) {
         {({ setFieldValue, values, handleSubmit, errors }) => (
           <Form onSubmit={handleSubmit}>
             <AppModal
-              target="targetModalProviderAdd"
+              target={showModal}
+              onClose={() => setShowModal(false)}
               title="Nuevo Proveedor"
               isCloseButton
-              isCloseButtonText="Cerrar"
+              closeButtonText="Cerrar"
               isSuccessButton
-              isSuccessButtonText="Alta"
+              successButtonText="Crear"
               onAccept={handleSubmit}
             >
               <div className="row mb-3">
-                <div className="col-5">
+                <div className="col-6">
                   <AppNumber
                     title="Codigo Proveedor"
                     placeholder="Codigo de Proveedor"
-                    values={values.idProvider}
+                    value={values.idProvider}
                     onChange={(v) => setFieldValue('idProvider', v)}
+                    isReadOnly
                   />
                 </div>
-              </div>
-              <div className="row mb-3">
-                <div className="col-5">
-                  <AppInput
-                    title="Nombre Empresa"
-                    placeholder="Nombre Empresa"
-                    values={values.nameCompany}
-                    onChange={(v) => setFieldValue('nameCompany', v)}
-                  />
-                </div>
-              </div>
-              <div className="col-7">
-                <AppInput
-                  title="Razon social"
-                  placeholder="Razon social"
-                  values={values.businessName}
-                  onChange={(v) => setFieldValue('businessName', v)}
-                />
-              </div>
-              <div className="row mb-3">
-                <div className="col-5">
+                <div className="col-6">
                   <AppInput
                     title="NIF"
                     placeholder="NIF"
-                    values={values.nif}
+                    value={values.nif}
                     onChange={(v) => setFieldValue('nif', v)}
                   />
                 </div>
               </div>
               <div className="row mb-3">
-                <AppInput
-                  title="Persona de contacto"
-                  placeholder="Persona de contacto"
-                  values={values.contactPerson}
-                  onChange={(v) => setFieldValue('contactPerson', v)}
-                />
+                <div className="col-6">
+                  <AppInput
+                    title="Nombre Empresa"
+                    placeholder="Nombre Empresa"
+                    value={values.nameCompany}
+                    onChange={(v) => setFieldValue('nameCompany', v)}
+                  />
+                </div>
+                <div className="col-6">
+                  <AppInput
+                    title="Razon social"
+                    placeholder="Razon social"
+                    value={values.businessName}
+                    onChange={(v) => setFieldValue('businessName', v)}
+                  />
+                </div>
               </div>
+
               <div className="row mb-3">
-                <AppInput
-                  title="Email"
-                  placeholder="Email"
-                  values={values.email}
-                  onChange={(v) => setFieldValue('email', v)}
-                />
+                <div className="col-6">
+                  <AppInput
+                    title="Persona de contacto"
+                    placeholder="Persona de contacto"
+                    value={values.contactPerson}
+                    onChange={(v) => setFieldValue('contactPerson', v)}
+                  />
+                </div>
+                <div className="col-6">
+                  <AppInput
+                    title="Email"
+                    placeholder="Email"
+                    value={values.email}
+                    onChange={(v) => setFieldValue('email', v)}
+                  />
+                </div>
+
+                <div className="col-6 mt-3">
+                  <AppDatePicker
+                    title={'Fecha creación'}
+                    onChange={(v) => setFieldValue('dateStamp', v)}
+                    value={values.dateStamp}
+                  />
+                </div>
+                <div className="col-12 mt-3">
+                  <AppInput
+                    title="Dirección"
+                    placeholder="Dirección"
+                    value={values.address}
+                    onChange={(v) => setFieldValue('address', v)}
+                  />
+                </div>
               </div>
-              <div className="row mb-3">
-                <AppInput
-                  title="Dirección"
-                  placeholder="Dirección"
-                  values={values.address}
-                  onChange={(v) => setFieldValue('address', v)}
-                />
-              </div>
-              <div className="row mb-3">
-                <span className="input-group-text" id="basic-addon1">
-                  Fecha de Alta
-                </span>
-                <AppInput
-                  type="date"
-                  name="fechaAlta"
-                  placeholder="Fecha de Alta"
-                  className="form-control"
-                />
-              </div>
-              <button type="submit" className="btn btn-primary">
-                Crear
-              </button>
             </AppModal>
           </Form>
         )}

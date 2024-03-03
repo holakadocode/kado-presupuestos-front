@@ -5,6 +5,7 @@ import AdminHomeScreen from '../../templates/Admin/Screen/AdminHomeScreen';
 import AdminAlmacen from '../../templates/Admin/Screen/Store/AdminAlmacen';
 import ProviderHomeScreen from '../../templates/Admin/Screen/Provider/ProviderHomeScreen';
 import ShitTest from '../../templates/Admin/Screen/test/ShitTest';
+import ClientHomeScreen from '../../templates/Admin/Screen/Client/ClientHomeScreen';
 
 export default function RoutingScreen() {
   return (
