@@ -3,10 +3,9 @@ import AdminLoginScreen from '../../templates/AdminLoginScreen';
 import AdminSidebar from '../../templates/Admin/Layout/Sidebar/AdminSidebar';
 import AdminHomeScreen from '../../templates/Admin/Screen/AdminHomeScreen';
 import AdminAlmacen from '../../templates/Admin/Screen/Store/AdminAlmacen';
-import AdminProvider from '../../templates/Admin/Screen/AdminProvider';
-import ClientHomeScreen from '../../templates/Admin/Screen/Client/ClientHomeScreen';
+import ProviderHomeScreen from '../../templates/Admin/Screen/Provider/ProviderHomeScreen';
 import ShitTest from '../../templates/Admin/Screen/test/ShitTest';
-import { useState } from 'react';
+import ClientHomeScreen from '../../templates/Admin/Screen/Client/ClientHomeScreen';
 
 export default function RoutingScreen() {
   return (
@@ -19,7 +18,7 @@ export default function RoutingScreen() {
         <Route path="/admin/clients" element={<ClientHomeScreen />} />
         <Route path="/admin/clients/:clientID/budget/list" element={'¡holi!'} />
         <Route path="/admin/almacen" element={<AdminAlmacen />} />
-        <Route path="/admin/provider" element={<AdminProvider />} />
+        <Route path="/admin/provider" element={<ProviderHomeScreen />} />
         <Route path="/admin/shitTest" element={<ShitTest />} />
       </Route>
     </Routes>
