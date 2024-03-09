@@ -32,7 +32,6 @@ export default function AppNumber(props) {
 
   return (
     <>
-      {console.log('value', value)}
       <TextField
         id="outlined-basic"
         variant="outlined"
