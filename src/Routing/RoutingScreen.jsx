@@ -7,6 +7,7 @@ import AdminProvider from '../../templates/Admin/Screen/AdminProvider';
 import ClientHomeScreen from '../../templates/Admin/Screen/Client/ClientHomeScreen';
 import ShitTest from '../../templates/Admin/Screen/test/ShitTest';
 import { useState } from 'react';
+import BudgetHomeScreen from '../../templates/Admin/Screen/Budget/BudgetHomeScreen';
 
 export default function RoutingScreen() {
   return (
@@ -21,6 +22,7 @@ export default function RoutingScreen() {
         <Route path="/admin/almacen" element={<AdminAlmacen />} />
         <Route path="/admin/provider" element={<AdminProvider />} />
         <Route path="/admin/shitTest" element={<ShitTest />} />
+        <Route path="/admin/budget" element={<BudgetHomeScreen />} />
       </Route>
     </Routes>
   );
