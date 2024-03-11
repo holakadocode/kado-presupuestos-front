@@ -31,36 +31,39 @@ export default function AdminAlmacen() {
   const handleClose = () => setOpen(false);
 
   const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
     width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
+    bgcolor: "background.paper",
+    border: "2px solid #000",
     boxShadow: 24,
     p: 4,
   };
 
   return (
     <>
-     <div>
-      <button className="btn btn-outline-secondary d-inline-flex align-items-center" onClick={handleOpen}>
-        <AppRemixIcons icon="ri-folder-add-line" className="me-2" />
-        Nueva Carpeta
-      </button>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Nueva Carpeta
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-          <Formik
+      <div>
+        <button
+          className="btn btn-outline-secondary d-inline-flex align-items-center"
+          onClick={handleOpen}
+        >
+          <AppRemixIcons icon="ri-folder-add-line" className="me-2" />
+          Nueva Carpeta
+        </button>
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={style}>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              Nueva Carpeta
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              <Formik
                 initialValues={{
                   nombreCarpeta: "",
                 }}
@@ -84,14 +87,18 @@ export default function AdminAlmacen() {
                   <button type="submit" className="btn btn-primary">
                     Crear
                   </button>
-                  <button type="button" className="btn btn-secondary ms-2" onClick={handleClose}>
+                  <button
+                    type="button"
+                    className="btn btn-secondary ms-2"
+                    onClick={handleClose}
+                  >
                     Cerrar
                   </button>
                 </Form>
               </Formik>
-          </Typography>
-        </Box>
-      </Modal>
+            </Typography>
+          </Box>
+        </Modal>
       </div>
 
       <TreeView
@@ -111,19 +118,25 @@ export default function AdminAlmacen() {
               <div className="ms-5 m-2 row" key={idx}>
                 <div className="col-2">{itemName}</div>
                 <div className="col-1">
-                  <AppRemixIcons
-                    icon="ri-edit-line"
-                    className="me-2 btn btn-outline-primary btn-sm"
-                  />
-                </div>
-                <div className="col-1">
-                  <AppRemixIcons
-                    icon="ri-delete-bin-2-line"
-                    className="me-2 btn btn-outline-danger btn-sm"
-                  />
+                  <div className="d-flex">
+                    <AppRemixIcons
+                      icon="ri-edit-line"
+                      className="me-2 btn btn-outline-primary btn-sm"
+                    />
+                    <AppRemixIcons
+                      icon="ri-delete-bin-2-line"
+                      className="me-2 btn btn-outline-danger btn-sm"
+                    />
+                  </div>
                 </div>
               </div>
             ))}
+            <div className="ms-5">
+              <button className="btn btn-outline-primary align-items-center">
+                <AppRemixIcons icon="ri-add-box-line" className="me-2" />
+                Nuevo objeto
+              </button>
+            </div>
           </TreeItem>
         ))}
       </TreeView>
