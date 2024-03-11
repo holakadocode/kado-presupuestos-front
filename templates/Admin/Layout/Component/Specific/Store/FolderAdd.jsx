@@ -1,7 +1,7 @@
 import { useState } from "react";
-import AppRemixIcons from "../../Layout/Component/Icon/AppRemixIcons";
 import { Box, Modal, Typography } from "@mui/material";
 import { Field, Form, Formik } from "formik";
+import AppRemixIcons from "../../Icon/AppRemixIcons";
 
 export default function FolderAdd() {
 
@@ -21,6 +21,8 @@ const style = {
     p: 4,
   };
 
+  return (
+    <>
 <div>
 <button
   className="btn btn-outline-secondary d-inline-flex align-items-center"
@@ -77,4 +79,6 @@ const style = {
   </Box>
 </Modal>
 </div>
-}
+</>
+  )
+    }
