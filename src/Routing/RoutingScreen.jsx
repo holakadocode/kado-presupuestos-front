@@ -6,6 +6,7 @@ import AdminStorage from '../../templates/Admin/Screen/Store/AdminStorage';
 import ProviderHomeScreen from '../../templates/Admin/Screen/Provider/ProviderHomeScreen';
 import ShitTest from '../../templates/Admin/Screen/test/ShitTest';
 import ClientHomeScreen from '../../templates/Admin/Screen/Client/ClientHomeScreen';
+import BudgetHomeScreen from '../../templates/Admin/Screen/Budget/BudgetHomeScreen';
 
 export default function RoutingScreen() {
   return (
@@ -20,6 +21,7 @@ export default function RoutingScreen() {
         <Route path="/admin/almacen" element={<AdminStorage />} />
         <Route path="/admin/provider" element={<ProviderHomeScreen />} />
         <Route path="/admin/shitTest" element={<ShitTest />} />
+        <Route path="/admin/budget" element={<BudgetHomeScreen />} />
       </Route>
     </Routes>
   );
