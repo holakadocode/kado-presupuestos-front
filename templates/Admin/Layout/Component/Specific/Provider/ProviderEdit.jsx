@@ -34,7 +34,6 @@ export default function ProviderEdit(props) {
           payload,
         })
         .then((r) => {
-          console.log(r.data);
           onSubmit();
         })
         .catch((err) => console.log(err))
