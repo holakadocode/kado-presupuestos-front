@@ -34,7 +34,7 @@ export default function ClientAdd(props) {
         initialValues={{
           name: '',
           surname: '',
-          nif: '',
+          taxIdentification: '',
           tlf: '',
           contactEmail: '',
           address: '',
@@ -63,12 +63,11 @@ export default function ClientAdd(props) {
               <div className="row mb-3">
                 <div className="col-5">
                   <AppInput
-                    title="NIF"
-                    placeholder="NIF"
-                    value={values.nif}
+                    title="NIF o CIF"
+                    placeholder="taxIdentification"
+                    value={values.taxIdentification}
                     required={true}
-                    // error=""
-                    onChange={(v) => setFieldValue('nif', v)}
+                    onChange={(v) => setFieldValue('taxIdentification', v)}
                   />
                 </div>
               </div>

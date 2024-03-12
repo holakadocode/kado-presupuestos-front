@@ -88,8 +88,21 @@ export default function AdminSidebar() {
                       : ''
                   }`}
                 >
-                  <AppRemixIcons icon="ri-box-1-line" />
+                  <AppRemixIcons icon="ri-recycle-line" />
                   <span>Pruebas de mierda</span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/admin/budget"
+                  className={`nav-link ms-3 ${
+                    actualRoute.pathname === '/admin/budget'
+                      ? 'linkInRoute'
+                      : ''
+                  }`}
+                >
+                  <AppRemixIcons icon="ri-article-line" />
+                  <span>Presupuestos</span>
                 </Link>
               </li>
             </ul>
@@ -109,12 +122,12 @@ const LogoHead = styled.div`
   font-size: 20px;
 `;
 const Sidebar = styled.div`
-  .linkInRoute{
+  .linkInRoute {
     color: red;
   }
-  ul li{
+  ul li {
     margin-top: 20px;
-    span{
+    span {
       margin-left: 10px;
     }
   }

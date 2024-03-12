@@ -8,7 +8,6 @@ import AppSelect from '../../Layout/Component/Form/AppSelect';
 import AppRemixIcons from '../../Layout/Component/Icon/AppRemixIcons';
 
 export default function ShitTest() {
-  const [openShitModal, setOpenShitModal] = useState(false);
   return (
     <div className='mb-5'>
       {/* > Botones */}
