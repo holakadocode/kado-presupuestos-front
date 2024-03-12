@@ -1,40 +1,64 @@
-// import { useState } from 'react'
-// //import { Route, Routes } from 'react-router-dom';
-// import { Field, Form, Formik } from "formik";
-// import Accordion from "@mui/material/Accordion";
-// import AccordionSummary from "@mui/material/AccordionSummary";
-// import AccordionDetails from "@mui/material/AccordionDetails";
-// import Typography from "@mui/material/Typography";
-// import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-// import IconButton from "@mui/material/IconButton";
-// import DeleteIcon from "@mui/icons-material/Delete";
-// import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
-// import Box from "@mui/material/Box";
-// import Modal from "@mui/material/Modal";
-
-// const style = {
-//   position: "absolute",
-//   top: "50%",
-//   left: "50%",
-//   transform: "translate(-50%, -50%)",
-//   width: 400,
-//   bgcolor: "background.paper",
-//   border: "2px solid #000",
-//   boxShadow: 24,
-//   p: 4,
-// };
+import { Field, Form, Formik } from "formik";
+import { TreeItem, TreeView } from "@mui/x-tree-view";
+import AppRemixIcons from "../../Layout/Component/Icon/AppRemixIcons";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import { useState } from "react";
+import { Box, Modal, Typography } from "@mui/material";
+import FolderAdd from "../../Layout/Component/Specific/Store/FolderAdd";
 
 export default function AdminAlmacen() {
-  // const [open, setOpen] = useState(false);
-  // const handleOpen = () => setOpen(true);
-  // const handleClose = () => setOpen(false);
+  const [folder, setFolder] = useState({
+    Tornillos: ["Tornillo plano", "Tornillo estrella", "Tornillo Torx"],
+    Tuercas: ["Tuerca redonda", "Tuerca cuadrada", "Tuerca ovalada"],
+  });
+
+  const FOLDERNAMES = Object.keys(folder);
 
   return (
     <>
+    <FolderAdd />
 
+      <TreeView
+        aria-label="file system navigator"
+        defaultCollapseIcon={<ExpandMoreIcon />}
+        defaultExpandIcon={<ChevronRightIcon />}
+        sx={{
+          height: "auto",
+          flexGrow: 1,
+          maxWidth: "auto",
+          overflowY: "auto",
+        }}
+      >
+        {FOLDERNAMES.map((folderName, index) => (
+          <TreeItem key={index} nodeId={`folder-${index}`} label={folderName}>
+            {folder[folderName].map((itemName, idx) => (
+              <div className="ms-5 m-2 row" key={idx}>
+                <div className="col-2">{itemName}</div>
+                <div className="col-1">
+                  <div className="d-flex">
+                    <AppRemixIcons
+                      icon="ri-edit-line"
+                      className="me-2 btn btn-outline-primary btn-sm"
+                    />
+                    <AppRemixIcons
+                      icon="ri-delete-bin-2-line"
+                      className="me-2 btn btn-outline-danger btn-sm"
+                    />
+                  </div>
+                </div>
+              </div>
+            ))}
+            <div className="ms-5">
+              <button className="btn btn-outline-primary align-items-center">
+                <AppRemixIcons icon="ri-add-box-line" className="me-2" />
+                Nuevo objeto
+              </button>
+            </div>
+          </TreeItem>
+        ))}
+      </TreeView>
 
-
-    
       {/* <button
         type="button"
         className="btn btn-primary"
