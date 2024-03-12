@@ -34,9 +34,12 @@ export default function ProviderAdd(props) {
   }, []);
 
   const getLastCodProvider = useCallback(() => {
-    if (providers) {
+    if (providers)
       setInitialValues({
-        codProvider: providers[providers.length - 1].codProvider + 1,
+        codProvider:
+          providers.length > 0
+            ? providers[providers.length - 1].codProvider + 1
+            : 1,
         nameCompany: '',
         businessName: '',
         nif: '',
@@ -46,7 +49,6 @@ export default function ProviderAdd(props) {
         address: '',
         city: '',
       });
-    }
   }, [providers]);
 
   useEffect(() => {
@@ -93,7 +95,7 @@ export default function ProviderAdd(props) {
                       onChange={(v) => setFieldValue('codProvider', v)}
                       error={errors.codProvider}
                       helperText={errors.codProvider}
-                      isReadOnly={true}
+                      isReadOnly
                     />
                   </div>
                   <div className="col-6">
@@ -184,7 +186,6 @@ export default function ProviderAdd(props) {
                       onChange={(v) => setFieldValue('city', v)}
                       error={errors.city}
                       helperText={errors.city}
-                     
                     />
                   </div>
                 </div>
