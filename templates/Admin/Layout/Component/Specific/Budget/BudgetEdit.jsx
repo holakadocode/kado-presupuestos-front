@@ -7,7 +7,7 @@ import AppNumber from '../../Form/AppNumber';
 import { useCallback, useState } from 'react';
 import AppModal from '../../Form/AppModal';
 
-export default function ClientEdit(props) {
+export default function BudgetEdit(props) {
   const { client, onSubmit } = props;
   const [showModal, setShowModal] = useState(false);
 

@@ -26,6 +26,8 @@ export default function AppModal(props) {
               left: '50%',
               transform: 'translate(-50%, -10%)',
               width: width,
+              maxHeight: '80%',
+              overflow: 'scroll',
               bgcolor: 'background.paper',
               border: '2px solid #b9b5b5',
               boxShadow: 24,
