@@ -25,6 +25,7 @@ export default function BudgetAdd(props) {
       .get('http://localhost/public/index.php/api/budget/get-data/', values)
       .then((r) => {
         setBudgetData(r.data);
+        console.log(r.data);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -149,7 +150,7 @@ export default function BudgetAdd(props) {
                         <>
                           <div>
                             {
-                              budgetData.clients[values.client]
+                              budgetData?.clients[values.client]
                                 .taxIdentification
                             }
                           </div>

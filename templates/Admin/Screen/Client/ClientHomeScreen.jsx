@@ -4,6 +4,7 @@ import axios from 'axios';
 import AppRemixIcons from '../../Layout/Component/Icon/AppRemixIcons';
 import AppModal from '../../Layout/Component/Form/AppModal';
 import ClientEdit from '../../Layout/Component/Specific/Client/ClientEdit';
+import ProjectDefaultRoute from '../../../../src/Routing/ProjectDefaultRoute';
 
 export default function ClientHomeScreen() {
   const [clients, setClients] = useState();
@@ -11,7 +12,7 @@ export default function ClientHomeScreen() {
 
   const getClients = useCallback(() => {
     axios
-      .get('http://localhost/public/index.php/api/client/list')
+      .get(`${ProjectDefaultRoute}/api/client/list`)
       .then((r) => setClients(r.data))
       .catch((e) => console.log('E', e));
   }, []);
@@ -23,7 +24,7 @@ export default function ClientHomeScreen() {
   const deleteClient = useCallback(
     (clientID) => {
       axios
-        .delete('http://localhost/public/index.php/api/client/delete', {
+        .delete(`${ProjectDefaultRoute}/api/client/delete`, {
           data: { clientID },
         })
         .then(() => getClients());
