@@ -4,8 +4,11 @@ import axios from 'axios';
 import AppRemixIcons from '../../Layout/Component/Icon/AppRemixIcons';
 import AppModal from '../../Layout/Component/Form/AppModal';
 import ClientEdit from '../../Layout/Component/Specific/Client/ClientEdit';
+import { Link, useLocation } from 'react-router-dom';
 
 export default function ClientHomeScreen() {
+  const actualRoute = useLocation();
+
   const [clients, setClients] = useState();
   // const [selectedClientID, setSelectedClientID] = useState();
 
@@ -68,8 +71,17 @@ export default function ClientHomeScreen() {
                     <td>{client.nif}</td>
                     <td>
                       <button className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center">
-                        {/* <AppRemixIcons icon="ri-search-line" /> */}
-                        <AppRemixIcons icon="ri-arrow-up-circle-line" />
+                        <Link
+                          to={`/admin/clients/${client.id}/budget/list`}
+                          className={`nav-link ${
+                            actualRoute.pathname ===
+                            `/admin/clients/${client.id}/budget/list`
+                              ? 'linkInRoute'
+                              : ''
+                          }`}
+                        >
+                          <AppRemixIcons icon="ri-arrow-up-circle-line" />
+                        </Link>
                       </button>
                     </td>
                     <td>

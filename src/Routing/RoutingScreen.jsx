@@ -7,6 +7,7 @@ import AdminProvider from '../../templates/Admin/Screen/AdminProvider';
 import ClientHomeScreen from '../../templates/Admin/Screen/Client/ClientHomeScreen';
 import ShitTest from '../../templates/Admin/Screen/test/ShitTest';
 import { useState } from 'react';
+import ClientBudgetScreen from '../../templates/Admin/Screen/Client/ClientBudgetScreen';
 
 export default function RoutingScreen() {
   return (
@@ -17,7 +18,7 @@ export default function RoutingScreen() {
         <Route path="/admin" element={<AdminHomeScreen />} />
         <Route path="/admin/users" element={<AdminHomeScreen />} />
         <Route path="/admin/clients" element={<ClientHomeScreen />} />
-        <Route path="/admin/clients/:clientID/budget/list" element={'¡holi!'} />
+        <Route path="/admin/clients/:clientID/budget/list" element={<ClientBudgetScreen/>} />
         <Route path="/admin/almacen" element={<AdminAlmacen />} />
         <Route path="/admin/provider" element={<AdminProvider />} />
         <Route path="/admin/shitTest" element={<ShitTest />} />
