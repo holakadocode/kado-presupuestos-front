@@ -4,13 +4,14 @@ import { useCallback, useState } from 'react';
 import { useEffect } from 'react';
 import ProviderAdd from '../../Layout/Component/Specific/Provider/ProviderAdd';
 import ProviderEdit from '../../Layout/Component/Specific/Provider/ProviderEdit';
+import ProjectDefaultRoute from '../../../../src/Routing/ProjectDefaultRoute';
 
 export default function ProviderHomeScreen() {
   const [providers, setProviders] = useState();
 
   const getProviders = useCallback(async () => {
     axios
-      .get('http://localhost/public/index.php/api/provider/list/')
+      .get(`${ProjectDefaultRoute}/api/provider/list`)
       .then((r) => setProviders(r.data))
       .catch((e) => console.log('E', e));
   }, []);
@@ -22,7 +23,7 @@ export default function ProviderHomeScreen() {
   const deleteProvider = useCallback(
     (providerID) => {
       axios
-        .delete('http://localhost/public/index.php/api/provider/delete', {
+        .delete(`${ProjectDefaultRoute}/api/provider/delete`, {
           data: { providerID },
         })
         .then(() => getProviders());
