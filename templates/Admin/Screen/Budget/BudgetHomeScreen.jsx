@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 import AppRemixIcons from '../../Layout/Component/Icon/AppRemixIcons';
 import BudgetAdd from '../../Layout/Component/Specific/Budget/BudgetAdd';
+import ProjectDefaultRoute from '../../../../src/Routing/ProjectDefaultRoute';
 
 
 export default function BudgetHomeScreen() {
@@ -9,8 +10,9 @@ export default function BudgetHomeScreen() {
   // const [selectedClientID, setSelectedClientID] = useState();
 
   const getClients = useCallback(() => {
+    console.log(ProjectDefaultRoute)
     axios
-      .get('http://localhost/public/index.php/api/budget/list')
+      .get(`${ProjectDefaultRoute}/api/budget/list`)
       .then((r) => setBudgets(r.data))
       .catch((e) => console.log('E', e));
   }, []);
