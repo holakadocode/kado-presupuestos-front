@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 import AppRemixIcons from '../../Layout/Component/Icon/AppRemixIcons';
-import { useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import ProjectDefaultRoute from '../../../../src/Routing/ProjectDefaultRoute';
 
 export default function ClientBudgetHomeScreen() {
+  const actualRoute = useLocation();
+
   const { clientID } = useParams();
   const [client, setClient] = useState();
   const [clientBudgets, setClientBudgets] = useState([]);
@@ -73,10 +75,16 @@ export default function ClientBudgetHomeScreen() {
                         <td>{budgets.iva}</td>
                         <td>{budgets.total}</td>
                         <td>
-                          <button className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center">
+                          <button
+                            className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center"
+                            onClick={() =>
+                              window.open(`${ProjectDefaultRoute}/api/xls/test`)
+                            }
+                          >
                             <AppRemixIcons icon="ri-file-excel-line" />
                           </button>
                         </td>
+
                         <td>
                           <button className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center">
                             <AppRemixIcons icon="ri-pencil-line" />
