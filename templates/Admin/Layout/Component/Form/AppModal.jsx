@@ -1,5 +1,4 @@
 import { Box, Modal } from '@mui/material';
-import { useState } from 'react';
 
 export default function AppModal(props) {
   const {
@@ -43,9 +42,8 @@ export default function AppModal(props) {
                   <button
                     type="button"
                     className="btn-close"
-                    data-bs-dismiss="modal"
-                    aria-label="Close"
-                  ></button>
+                    onClick={() => onClose(false)}
+                  />
                 </div>
                 <div className="modal-body">{children}</div>
                 <div className="modal-footer">
