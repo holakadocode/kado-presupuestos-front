@@ -6,15 +6,33 @@ import AppModal from '../../Form/AppModal';
 import AppInput from '../../Form/AppInput';
 import AppNumber from '../../Form/AppNumber';
 import { useCallback, useState } from 'react';
+import * as Yup from 'yup';
+import ProjectDefaultRoute from '../../../../../../src/Routing/ProjectDefaultRoute';
 
 export default function ClientAdd(props) {
   const { onSubmit } = props;
   const [showModal, setShowModal] = useState(false);
+  const [validationSchema] = useState(
+    Yup.object().shape({
+      name: Yup.string().required('Requerido'),
+      surname: Yup.string().required('Requerido'),
+      taxIdentification: Yup.string().required('Requerido'),
+      tlf: Yup.number().required('Requerido'),
+      contactEmail: Yup.string().required('Requerido'),
+      address: Yup.string().required('Requerido'),
+      cp: Yup.number().required('Requerido'),
+      city: Yup.string().required('Requerido'),
+      // primaryKey: Yup.string().required('Requerido'),
+    })
+  );
 
-  const handleAddClient = useCallback((values) => {
+  const handleAddClient = useCallback((values, { resetForm }) => {
     axios
-      .put('http://localhost/public/index.php/api/client/add', values)
-      .then((r) => onSubmit())
+      .put(`${ProjectDefaultRoute}/api/client/add`, values)
+      .then((r) => {
+        onSubmit();
+        resetForm();
+      })
       .catch((err) => console.log(err))
       .finally(() => setShowModal(false));
   }, []);
@@ -42,10 +60,10 @@ export default function ClientAdd(props) {
           city: '',
           primaryKey: 'holaKase',
         }}
-        // validationSchema={validationSchema}
+        validationSchema={validationSchema}
         validateOnChange={false}
         validateOnBlur={false}
-        // enableReinitialize
+        enableReinitialize
         onSubmit={handleAddClient}
       >
         {({ setFieldValue, values, handleSubmit, errors }) => (
@@ -68,6 +86,8 @@ export default function ClientAdd(props) {
                     value={values.taxIdentification}
                     required={true}
                     onChange={(v) => setFieldValue('taxIdentification', v)}
+                    error={errors.taxIdentification}
+                    helperText={errors.taxIdentification}
                   />
                 </div>
               </div>
@@ -78,8 +98,9 @@ export default function ClientAdd(props) {
                     placeholder="Nombre"
                     value={values.name}
                     required
-                    // error=""
                     onChange={(v) => setFieldValue('name', v)}
+                    error={errors.name}
+                    helperText={errors.name}
                   />
                 </div>
                 <div className="col-7">
@@ -88,8 +109,9 @@ export default function ClientAdd(props) {
                     placeholder="Apellidos"
                     value={values.surname}
                     required
-                    // error=""
                     onChange={(v) => setFieldValue('surname', v)}
+                    error={errors.surname}
+                    helperText={errors.surname}
                   />
                 </div>
               </div>
@@ -100,8 +122,9 @@ export default function ClientAdd(props) {
                     placeholder="Teléfono"
                     value={values.tlf}
                     required
-                    // error=""
                     onChange={(v) => setFieldValue('tlf', v)}
+                    error={errors.tlf}
+                    helperText={errors.tlf}
                   />
                 </div>
                 <div className="col-7">
@@ -110,8 +133,9 @@ export default function ClientAdd(props) {
                     placeholder="Email de contacto"
                     value={values.contactEmail}
                     required
-                    // error=""
                     onChange={(v) => setFieldValue('contactEmail', v)}
+                    error={errors.contactEmail}
+                    helperText={errors.contactEmail}
                   />
                 </div>
               </div>
@@ -121,8 +145,9 @@ export default function ClientAdd(props) {
                   placeholder="Dirección"
                   value={values.address}
                   required
-                  // error=""
                   onChange={(v) => setFieldValue('address', v)}
+                  error={errors.address}
+                  helperText={errors.address}
                 />
               </div>
               <div className="row mb-3">
@@ -132,8 +157,9 @@ export default function ClientAdd(props) {
                     placeholder="Código postal"
                     value={values.cp}
                     required
-                    // error=""
                     onChange={(v) => setFieldValue('cp', v)}
+                    error={errors.cp}
+                    helperText={errors.cp}
                   />
                 </div>
                 <div className="col-8">
@@ -142,8 +168,9 @@ export default function ClientAdd(props) {
                     placeholder="Ciudad"
                     value={values.city}
                     required
-                    // error=""
                     onChange={(v) => setFieldValue('city', v)}
+                    error={errors.city}
+                    helperText={errors.city}
                   />
                 </div>
               </div>

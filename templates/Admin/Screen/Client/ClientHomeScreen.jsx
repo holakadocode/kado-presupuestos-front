@@ -9,7 +9,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 export default function ClientHomeScreen() {
   const [clients, setClients] = useState();
-    const actualRoute = useLocation();
+  const actualRoute = useLocation();
 
   // const [selectedClientID, setSelectedClientID] = useState();
 
@@ -72,19 +72,19 @@ export default function ClientHomeScreen() {
                       <td>{client.city}</td>
                       <td>{client.taxIdentification}</td>
                       <td>
-                        <button className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center">
-                          <Link
-                            to={`/admin/clients/${client.id}/budget/list`}
-                            className={`nav-link ${
-                              actualRoute.pathname ===
-                              `/admin/clients/${client.id}/budget/list`
-                                ? 'linkInRoute'
-                                : ''
-                            }`}
-                          >
+                        <Link
+                          to={`/admin/clients/${client.id}/budget/list`}
+                          className={`nav-link ${
+                            actualRoute.pathname ===
+                            `/admin/clients/${client.id}/budget/list`
+                              ? 'linkInRoute'
+                              : ''
+                          }`}
+                        >
+                          <button className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center">
                             <AppRemixIcons icon="ri-arrow-up-circle-line" />
-                          </Link>
-                        </button>
+                          </button>
+                        </Link>
                       </td>
                       <td>
                         <ClientEdit
