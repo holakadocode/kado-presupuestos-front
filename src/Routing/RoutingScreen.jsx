@@ -7,6 +7,7 @@ import ProviderHomeScreen from '../../templates/Admin/Screen/Provider/ProviderHo
 import ShitTest from '../../templates/Admin/Screen/test/ShitTest';
 import ClientHomeScreen from '../../templates/Admin/Screen/Client/ClientHomeScreen';
 import BudgetHomeScreen from '../../templates/Admin/Screen/Budget/BudgetHomeScreen';
+import CompanyHomeScreen from '../../templates/Admin/Screen/Company/CompanyHomeScreen';
 import ClientBudgetHomeScreen from '../../templates/Admin/Screen/Client/ClientBudgetHomeScreen';
 
 export default function RoutingScreen() {
@@ -17,6 +18,7 @@ export default function RoutingScreen() {
       <Route path="/admin" element={<AdminSidebar />}>
         <Route path="/admin" element={<AdminHomeScreen />} />
         <Route path="/admin/users" element={<AdminHomeScreen />} />
+        <Route path="/admin/company" element={<CompanyHomeScreen />} />
         <Route path="/admin/clients" element={<ClientHomeScreen />} />
         <Route
           path="/admin/clients/:clientID/budget/list"
