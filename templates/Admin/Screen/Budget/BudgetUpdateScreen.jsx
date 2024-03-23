@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import axios from 'axios';
 import { Form, Formik } from 'formik';
 import AppRemixIcons from '../../Layout/Component/Icon/AppRemixIcons';
@@ -8,29 +7,24 @@ import AppNumber from '../../Layout/Component/Form/AppNumber';
 import { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import AppSelect from '../../Layout/Component/Form/AppSelect';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-export default function BudgetUpdateScreen(props) {
-  const { onSubmit } = props;
-  const { clientID } = useParams();
+export default function BudgetUpdateScreen() {
+  const { clientID, budgetID } = useParams();
+  const navigate = useNavigate();
   const [ownCompany, setOwnCompany] = useState();
   const [clientSelector, setClientSelector] = useState([]);
   const [client, setClient] = useState();
   const [articles, setArticles] = useState();
+  const [articlesSelector, setArticlesSelector] = useState();
   const [budget, setBudget] = useState();
   const [showArticlesModal, setShowArticlesModal] = useState();
-  // const newArticle = {
-  //   code: '',
-  //   article: '',
-  //   quantity: '',
-  //   price: '',
-  //   total: '',
-  // };
 
   const getData = useCallback(() => {
     axios
-      .post('http://localhost/public/index.php/api/budget/get-data', {
+      .post('http://localhost/public/index.php/api/budget/update/get-data', {
         clientID,
+        budgetID,
       })
       .then((r) => {
         setOwnCompany(r.data.ownCompany);
@@ -38,9 +32,10 @@ export default function BudgetUpdateScreen(props) {
         setClientSelector(r.data.clients);
         setBudget(r.data.budget);
         setArticles(r.data.articles);
+        setArticlesSelector(r.data.articlesSelector);
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [clientID, budgetID]);
 
   useState(() => {
     getData();
@@ -69,7 +64,6 @@ export default function BudgetUpdateScreen(props) {
           tempValues.articles[index].article = r.data.name;
           tempValues.articles[index].quantity = 1;
           tempValues.articles[index].price = r.data.price;
-          tempValues.articles[index].total = r.data.price;
           setFieldValue('articles', tempValues.articles);
         })
         .catch((err) => console.log(err));
@@ -77,12 +71,20 @@ export default function BudgetUpdateScreen(props) {
     []
   );
 
-  const handleAddClient = useCallback((payload) => {
-    axios
-      .put('http://localhost/public/index.php/api/budget/add', { payload })
-      .then((r) => onSubmit())
-      .catch((err) => console.log(err));
-  }, []);
+  const handleAddClient = useCallback(
+    (payload) => {
+      axios
+        .post('http://localhost/public/index.php/api/budget/update', {
+          payload,
+          clientID,
+          budgetID,
+        })
+        .then(() => navigate(`/admin/clients/${clientID}/budget/list`))
+        // .then(() => Navigate(`/admin/budget/${clientID}/show/${budgetID}`))
+        .catch((err) => console.log(err));
+    },
+    [clientID, budgetID]
+  );
 
   const handleAddNewArticle = useCallback((values, setFieldValue) => {
     let tempArticles = values.articles;
@@ -91,9 +93,8 @@ export default function BudgetUpdateScreen(props) {
       {
         code: '',
         article: '',
-        quantity: '',
+        quantity: 1,
         price: '',
-        total: '',
       },
     ];
     setFieldValue('articles', add);
@@ -118,27 +119,18 @@ export default function BudgetUpdateScreen(props) {
 
   return (
     <>
-      {/* {client && (
+      {client && budget && (
         <Formik
           initialValues={{
-            title: 'Presupuesto para un subnormal profundo',
-            budgetID: `P-000${budget?.id + 1}`,
+            title: budget.title,
+            budgetID: `P-000${budget?.id}`,
             iva: 21,
-            client: client,
-            articles: [
-              {
-                code: null,
-                article: '',
-                quantity: 1,
-                price: null,
-                total: null,
-              },
-            ],
+            client: client.id,
+            articles: articles,
           }}
           // validationSchema={validationSchema}
           validateOnChange={false}
           validateOnBlur={false}
-          // enableReinitialize
           onSubmit={handleAddClient}
         >
           {({ setFieldValue, values, handleSubmit, errors }) => (
@@ -243,7 +235,7 @@ export default function BudgetUpdateScreen(props) {
                     >
                       <AppSelect
                         title={'Articulos'}
-                        options={articles}
+                        options={articlesSelector}
                         onChange={(v) => {
                           handleSetSavedItem(v, values, i, setFieldValue);
                           setShowArticlesModal(undefined);
@@ -384,12 +376,12 @@ export default function BudgetUpdateScreen(props) {
                 onClick={handleSubmit}
               >
                 <AppRemixIcons icon="ri-upload-line" className="me-2" />
-                Finalizar presupuesto
+                Actualizar presupuesto
               </button>
             </Form>
           )}
         </Formik>
-      )} */}
+      )}
     </>
   );
 }
@@ -399,8 +391,6 @@ const TableHeader = styled.div`
   border-color: #b6b4b4;
   background-color: #373837;
   color: white;
-  /* height: 160px; */
-
   padding: 3px;
   display: grid;
   grid-template-columns: 0.1fr 0.1fr 0.5fr 0.1fr 0.1fr 0.1fr 120px;
@@ -420,7 +410,6 @@ const TableArticle = styled.div`
   border-color: #b6b4b4;
   display: flex;
   align-items: center;
-  /* height: 160px; */
   padding: 3px;
   display: grid;
   grid-template-columns: 0.1fr 0.1fr 0.5fr 0.1fr 0.1fr 0.1fr 120px;
@@ -447,7 +436,6 @@ const ResultTableHead = styled.div`
   color: white;
   display: flex;
   align-items: end;
-  /* height: 160px; */
   padding: 3px;
   display: grid;
   grid-template-columns: 0.1fr 0.6fr 0.1fr 0.1fr 0.1fr 120px;
@@ -473,7 +461,6 @@ const ResultTable = styled.div`
   border: 1px solid;
   display: flex;
   align-items: end;
-  /* height: 160px; */
   padding: 3px;
   display: grid;
   grid-template-columns: 0.1fr 0.6fr 0.1fr 0.1fr 0.1fr 120px;

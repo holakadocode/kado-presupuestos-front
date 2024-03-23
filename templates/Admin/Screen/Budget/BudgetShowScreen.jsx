@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 
-export default function BudgetShowScreen(props) {
+export default function BudgetShowScreen() {
   const { clientID, budgetID } = useParams();
   const [budget, setBudget] = useState();
 

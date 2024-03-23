@@ -1,14 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 import AppRemixIcons from '../../Layout/Component/Icon/AppRemixIcons';
-import BudgetAdd from './BudgetAddScreen';
 import { Link } from 'react-router-dom';
 
 export default function BudgetHomeScreen() {
   const [budgets, setBudgets] = useState();
-  // const [selectedClientID, setSelectedClientID] = useState();
 
-  const getClients = useCallback(() => {
+  const getBudgets = useCallback(() => {
     axios
       .get('http://localhost/public/index.php/api/budget/list')
       .then((r) => setBudgets(r.data))
@@ -16,19 +14,19 @@ export default function BudgetHomeScreen() {
   }, []);
 
   useEffect(() => {
-    getClients();
+    getBudgets();
   }, []);
 
-  // const deleteClient = useCallback(
-  //   (clientID) => {
-  //     axios
-  //       .delete('http://localhost/public/index.php/api/client/delete', {
-  //         data: { clientID },
-  //       })
-  //       .then(() => getClients());
-  //   },
-  //   [getClients]
-  // );
+  const handleDeleteBudget = useCallback(
+    (budgetID) => {
+      axios
+        .delete('http://localhost/public/index.php/api/budget/delete', {
+          data: { budgetID },
+        })
+        .then(() => getBudgets());
+    },
+    []
+  );
 
   return (
     <>
@@ -100,7 +98,10 @@ export default function BudgetHomeScreen() {
                         </Link>
                       </td>
                       <td>
-                        <button className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center">
+                        <button
+                          className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center"
+                          onClick={() => handleDeleteBudget(budget.id)}
+                        >
                           <AppRemixIcons icon="ri-delete-bin-line" />
                         </button>
                       </td>

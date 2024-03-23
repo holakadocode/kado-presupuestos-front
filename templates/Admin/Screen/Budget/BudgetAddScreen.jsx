@@ -1,31 +1,24 @@
 /* eslint-disable react/prop-types */
 import axios from 'axios';
-import { Form, Formik, useFormikContext } from 'formik';
+import { Form, Formik } from 'formik';
 import AppRemixIcons from '../../Layout/Component/Icon/AppRemixIcons';
 import AppModal from '../../Layout/Component/Form/AppModal';
 import AppInput from '../../Layout/Component/Form/AppInput';
 import AppNumber from '../../Layout/Component/Form/AppNumber';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import AppSelect from '../../Layout/Component/Form/AppSelect';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-export default function BudgetAddScreen(props) {
-  const { onSubmit } = props;
+export default function BudgetAddScreen() {
   const { clientID } = useParams();
+  const navigate = useNavigate();
   const [ownCompany, setOwnCompany] = useState();
   const [clientSelector, setClientSelector] = useState([]);
   const [client, setClient] = useState();
   const [articles, setArticles] = useState();
   const [budget, setBudget] = useState();
   const [showArticlesModal, setShowArticlesModal] = useState();
-  // const newArticle = {
-  //   code: '',
-  //   article: '',
-  //   quantity: '',
-  //   price: '',
-  //   total: '',
-  // };
 
   const getData = useCallback(() => {
     axios
@@ -80,7 +73,7 @@ export default function BudgetAddScreen(props) {
   const handleAddClient = useCallback((payload) => {
     axios
       .put('http://localhost/public/index.php/api/budget/add', { payload })
-      .then((r) => onSubmit())
+      .then(() => navigate(`/admin/clients/${clientID}/budget/list`))
       .catch((err) => console.log(err));
   }, []);
 
@@ -91,7 +84,7 @@ export default function BudgetAddScreen(props) {
       {
         code: '',
         article: '',
-        quantity: '',
+        quantity: 1,
         price: '',
         total: '',
       },
@@ -121,8 +114,8 @@ export default function BudgetAddScreen(props) {
       {client && (
         <Formik
           initialValues={{
-            title: 'Presupuesto para un subnormal profundo',
-            budgetID: `P-000${budget?.id + 1}` ,
+            title: '',
+            budgetID: `P-000${budget?.id + 1}`,
             iva: 21,
             client: client,
             articles: [
@@ -131,14 +124,12 @@ export default function BudgetAddScreen(props) {
                 article: '',
                 quantity: 1,
                 price: null,
-                total: null,
               },
             ],
           }}
           // validationSchema={validationSchema}
           validateOnChange={false}
           validateOnBlur={false}
-          // enableReinitialize
           onSubmit={handleAddClient}
         >
           {({ setFieldValue, values, handleSubmit, errors }) => (
@@ -244,11 +235,6 @@ export default function BudgetAddScreen(props) {
                       target={showArticlesModal === i}
                       onClose={() => setShowArticlesModal(undefined)}
                       title={`Añadir articulo creado`}
-                      // isCloseButton
-                      // closeButtonText="Cerrar"
-                      // isSuccessButton
-                      // successButtonText="Alta"
-                      // onAccept={handleSubmit}
                     >
                       <AppSelect
                         title={'Articulos'}
@@ -412,7 +398,6 @@ const TableHeader = styled.div`
   border-color: #b6b4b4;
   background-color: #373837;
   color: white;
-  /* height: 160px; */
 
   padding: 3px;
   display: grid;
@@ -433,7 +418,6 @@ const TableArticle = styled.div`
   border-color: #b6b4b4;
   display: flex;
   align-items: center;
-  /* height: 160px; */
   padding: 3px;
   display: grid;
   grid-template-columns: 0.1fr 0.1fr 0.5fr 0.1fr 0.1fr 0.1fr 120px;
@@ -460,7 +444,6 @@ const ResultTableHead = styled.div`
   color: white;
   display: flex;
   align-items: end;
-  /* height: 160px; */
   padding: 3px;
   display: grid;
   grid-template-columns: 0.1fr 0.6fr 0.1fr 0.1fr 0.1fr 120px;
@@ -486,7 +469,6 @@ const ResultTable = styled.div`
   border: 1px solid;
   display: flex;
   align-items: end;
-  /* height: 160px; */
   padding: 3px;
   display: grid;
   grid-template-columns: 0.1fr 0.6fr 0.1fr 0.1fr 0.1fr 120px;

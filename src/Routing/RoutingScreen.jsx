@@ -27,7 +27,7 @@ export default function RoutingScreen() {
         <Route path="/admin/budget" element={<BudgetHomeScreen />} />
         <Route path="/admin/budget/:clientID/add" element={<BudgetAddScreen />} />
         <Route path="/admin/budget/:clientID/show/:budgetID" element={<BudgetShowScreen />} />
-        {/* <Route path="/admin/budget/:clientID/update/:budgetID" element={<BudgetUpdateScreen />} /> */}
+        <Route path="/admin/budget/:clientID/update/:budgetID" element={<BudgetUpdateScreen />} />
       </Route>
     </Routes>
   );
