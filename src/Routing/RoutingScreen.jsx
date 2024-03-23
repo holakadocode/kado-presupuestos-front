@@ -7,6 +7,9 @@ import ProviderHomeScreen from '../../templates/Admin/Screen/Provider/ProviderHo
 import ShitTest from '../../templates/Admin/Screen/test/ShitTest';
 import ClientHomeScreen from '../../templates/Admin/Screen/Client/ClientHomeScreen';
 import BudgetHomeScreen from '../../templates/Admin/Screen/Budget/BudgetHomeScreen';
+import BudgetAddScreen from '../../templates/Admin/Screen/Budget/BudgetAddScreen';
+import BudgetUpdateScreen from '../../templates/Admin/Screen/Budget/BudgetUpdateScreen';
+import BudgetShowScreen from '../../templates/Admin/Screen/Budget/BudgetShowScreen';
 
 export default function RoutingScreen() {
   return (
@@ -22,6 +25,9 @@ export default function RoutingScreen() {
         <Route path="/admin/provider" element={<ProviderHomeScreen />} />
         <Route path="/admin/shitTest" element={<ShitTest />} />
         <Route path="/admin/budget" element={<BudgetHomeScreen />} />
+        <Route path="/admin/budget/:clientID/add" element={<BudgetAddScreen />} />
+        <Route path="/admin/budget/:clientID/show/:budgetID" element={<BudgetShowScreen />} />
+        {/* <Route path="/admin/budget/:clientID/update/:budgetID" element={<BudgetUpdateScreen />} /> */}
       </Route>
     </Routes>
   );

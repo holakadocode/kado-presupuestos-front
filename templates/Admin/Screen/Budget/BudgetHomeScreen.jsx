@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 import AppRemixIcons from '../../Layout/Component/Icon/AppRemixIcons';
-import BudgetAdd from '../../Layout/Component/Specific/Budget/BudgetAdd';
-
+import BudgetAdd from './BudgetAddScreen';
+import { Link } from 'react-router-dom';
 
 export default function BudgetHomeScreen() {
   const [budgets, setBudgets] = useState();
@@ -32,9 +32,12 @@ export default function BudgetHomeScreen() {
 
   return (
     <>
-      <BudgetAdd onSubmit={() => getClients()} />
-
-      
+      <Link
+        to="/admin/budget/0/add"
+        className="btn btn-outline-secondary d-inline-flex align-items-center"
+      >
+        Nuevo Presupuesto
+      </Link>
 
       {/* > Tabla */}
       <div id="container">
@@ -46,6 +49,7 @@ export default function BudgetHomeScreen() {
                   <tr>
                     <th>#</th>
                     <th>Fecha</th>
+                    <th>Cliente</th>
                     <th>Nombre</th>
                     <th>Iva</th>
                     <th>Total</th>
@@ -57,19 +61,43 @@ export default function BudgetHomeScreen() {
                     <tr key={budget.id}>
                       <td>{budget.id}</td>
                       <td>{budget.dateTime}</td>
+                      <td>{budget.clientName}</td>
                       <td>{budget.title}</td>
                       <td>{budget.iva}</td>
                       <td>{budget.total}</td>
                       <td>
-                        <button className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center">
-                          {/* <AppRemixIcons icon="ri-search-line" /> */}
-                          <AppRemixIcons icon="ri-arrow-up-circle-line" />
-                        </button>
+                        <Link
+                          to={`/admin/budget/${budget.clientID}/show/${budget.id}`}
+                          // className={`nav-link ms-3 ${
+                          //   actualRoute.pathname === '/admin'
+                          //     ? 'linkInRoute'
+                          //     : ''
+                          // }`}
+                        >
+                          <button className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center">
+                            <AppRemixIcons
+                              icon="ri-eye-line"
+                              title="Ver presupuesto"
+                            />
+                          </button>
+                        </Link>
                       </td>
                       <td>
-                        <button className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center">
-                          <AppRemixIcons icon="ri-pencil-line" />
-                        </button>
+                        <Link
+                          to={`/admin/budget/${budget.clientID}/update/${budget.id}`}
+                          // className={`nav-link ms-3 ${
+                          //   actualRoute.pathname === '/admin'
+                          //     ? 'linkInRoute'
+                          //     : ''
+                          // }`}
+                        >
+                          <button className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center">
+                            <AppRemixIcons
+                              icon="ri-pencil-line"
+                              title="Editar presupuesto"
+                            />
+                          </button>
+                        </Link>
                       </td>
                       <td>
                         <button className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center">
