@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import axios from 'axios';
 import { Form, Formik } from 'formik';
 import AppRemixIcons from '../../Layout/Component/Icon/AppRemixIcons';
@@ -70,12 +69,15 @@ export default function BudgetAddScreen() {
     []
   );
 
-  const handleAddClient = useCallback((payload) => {
-    axios
-      .put('http://localhost/public/index.php/api/budget/add', { payload })
-      .then(() => navigate(`/admin/clients/${clientID}/budget/list`))
-      .catch((err) => console.log(err));
-  }, []);
+  const handleAddClient = useCallback(
+    (payload) => {
+      axios
+        .put('http://localhost/public/index.php/api/budget/add', { payload })
+        .then((r) => navigate(`/admin/clients/${r.data}/budget/list`))
+        .catch((err) => console.log(err));
+    },
+    [clientID]
+  );
 
   const handleAddNewArticle = useCallback((values, setFieldValue) => {
     let tempArticles = values.articles;

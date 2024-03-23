@@ -70,8 +70,8 @@ export default function ProviderAdd(props) {
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
-          validationOnChange={false}
-          validationOnBlur={false}
+          validateOnChange={false}
+          validateOnBlur={false}
           onSubmit={handleAddProvider}
         >
           {({ setFieldValue, values, handleSubmit, errors }) => (

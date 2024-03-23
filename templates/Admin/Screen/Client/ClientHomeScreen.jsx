@@ -56,7 +56,7 @@ export default function ClientHomeScreen() {
                     <th>C.P</th>
                     <th>Ciudad</th>
                     <th>NIF</th>
-                    <th></th>
+                    <th className="text-center">Opciones</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -71,36 +71,36 @@ export default function ClientHomeScreen() {
                       <td>{client.cp}</td>
                       <td>{client.city}</td>
                       <td>{client.taxIdentification}</td>
-                      <td>
-                        <Link
-                          to={`/admin/clients/${client.id}/budget/list`}
-                          className={`nav-link ${
-                            actualRoute.pathname ===
-                            `/admin/clients/${client.id}/budget/list`
-                              ? 'linkInRoute'
-                              : ''
-                          }`}
-                        >
-                          <button className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center">
-                            <AppRemixIcons icon="ri-arrow-up-circle-line" />
+                      <td className="d-flex justify-content-center">
+                        <div className="d-inline-flex justify-content-center align-items-center">
+                          <Link
+                            to={`/admin/clients/${client.id}/budget/list`}
+                            className={`nav-link me-2 ${
+                              actualRoute.pathname ===
+                              `/admin/clients/${client.id}/budget/list`
+                                ? 'linkInRoute'
+                                : ''
+                            }`}
+                          >
+                            <button className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center">
+                              <AppRemixIcons icon="ri-arrow-up-circle-line" />
+                            </button>
+                          </Link>
+
+                          <ClientEdit
+                            client={client}
+                            onSubmit={() => {
+                              getClients();
+                            }}
+                          />
+
+                          <button
+                            className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center ms-2"
+                            onClick={() => deleteClient(client.id)}
+                          >
+                            <AppRemixIcons icon="ri-delete-bin-line" />
                           </button>
-                        </Link>
-                      </td>
-                      <td>
-                        <ClientEdit
-                          client={client}
-                          onSubmit={() => {
-                            getClients();
-                          }}
-                        />
-                      </td>
-                      <td>
-                        <button
-                          className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center"
-                          onClick={() => deleteClient(client.id)}
-                        >
-                          <AppRemixIcons icon="ri-delete-bin-line" />
-                        </button>
+                        </div>
                       </td>
                     </tr>
                   ))}

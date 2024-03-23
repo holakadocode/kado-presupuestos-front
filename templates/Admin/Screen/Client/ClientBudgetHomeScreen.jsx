@@ -28,6 +28,14 @@ export default function ClientBudgetHomeScreen() {
     getClientBudgets();
   }, [getClientBudgets]);
 
+  const handleDeleteBudget = useCallback((budgetID) => {
+    axios
+      .delete('http://localhost/public/index.php/api/budget/delete', {
+        data: { budgetID },
+      })
+      .then(() => getClientBudgets());
+  }, []);
+
   return (
     <>
       {client && clientBudgets && (
@@ -52,6 +60,13 @@ export default function ClientBudgetHomeScreen() {
             </div>
           </div>
 
+          <Link
+            to={`/admin/budget/${client.id}/add`}
+            className="btn btn-outline-secondary d-inline-flex align-items-center"
+          >
+            Nuevo Presupuesto
+          </Link>
+
           {/* > Tabla */}
           <div id="container">
             <div className="mt-5">
@@ -63,37 +78,45 @@ export default function ClientBudgetHomeScreen() {
                       <th>Título</th>
                       <th>IVA</th>
                       <th>Total</th>
-
-                      <th></th>
+                      <th className='text-center'>Opciones</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {clientBudgets?.map((budgets) => (
-                      <tr key={budgets.id}>
-                        <td>{budgets.id}</td>
-                        <td>{budgets.title}</td>
-                        <td>{budgets.iva}</td>
-                        <td>{budgets.total}</td>
-                        <td>
-                          <button
-                            className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center"
-                            onClick={() =>
-                              window.open(`${ProjectDefaultRoute}/api/xls/test`)
-                            }
-                          >
-                            <AppRemixIcons icon="ri-file-excel-line" />
-                          </button>
-                        </td>
-
-                        <td>
-                          <button className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center">
-                            <AppRemixIcons icon="ri-pencil-line" />
-                          </button>
-                        </td>
-                        <td>
-                          <button className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center">
-                            <AppRemixIcons icon="ri-delete-bin-line" />
-                          </button>
+                    {clientBudgets?.map((budget) => (
+                      <tr key={budget.id}>
+                        <td>{budget.id}</td>
+                        <td>{budget.title}</td>
+                        <td>{budget.iva}</td>
+                        <td>{budget.total}</td>
+                        <td className="d-flex justify-content-center">
+                          <div className="d-inline-flex justify-content-center align-items-center">
+                            <button
+                              className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center"
+                              onClick={() =>
+                                window.open(
+                                  `${ProjectDefaultRoute}/api/xls/test`
+                                )
+                              }
+                            >
+                              <AppRemixIcons icon="ri-file-excel-line" />
+                            </button>
+                            <Link
+                              to={`/admin/budget/${client.id}/update/${budget.id}`}
+                            >
+                              <button className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center ms-2">
+                                <AppRemixIcons
+                                  icon="ri-pencil-line"
+                                  title="Editar presupuesto"
+                                />
+                              </button>
+                            </Link>
+                            <button
+                              className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center ms-2"
+                              onClick={() => handleDeleteBudget(budget.id)}
+                            >
+                              <AppRemixIcons icon="ri-delete-bin-line" />
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))}
