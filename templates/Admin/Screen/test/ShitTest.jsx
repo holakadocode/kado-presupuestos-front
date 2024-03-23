@@ -139,10 +139,13 @@ export default function ShitTest() {
           <AppSelect
             title={'Selecciona una tonteria'}
             options={[
+              { label: 'Carpeta', value: 0, isFolder: true },
               { label: 'camello portugues', value: 1 },
               { label: 'Manco con picor de entrepierna', value: 2 },
               { label: 'Tortilla con piña', value: 3 },
-              { label: 'Cantautora muda', value: 4 },
+              { label: 'Carpetita', value: 4, isFolder: true },
+              { label: 'Cantautora muda', value: 5 },
+              { label: 'Cantautora muda', value: 6 },
             ]}
             placeholder="placeholder"
             helperText="texto pequeñito que si quieres lo quitas"

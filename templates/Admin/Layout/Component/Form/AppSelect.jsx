@@ -61,10 +61,14 @@ export default function AppSelect(props) {
             color={color}
           >
             {options?.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
+              <MenuItem
+                key={option.value}
+                value={option.value}
+                disabled={option?.isFolder}
+              >
+                {option.isFolder ? <b>{option.label}</b> : option.label}
               </MenuItem>
-            ))}{' '}
+            ))}
           </Select>
           <FormHelperText>{helperText}</FormHelperText>
         </FormControl>
@@ -86,8 +90,12 @@ export default function AppSelect(props) {
             color={color}
           >
             {options?.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
+              <MenuItem
+                key={option.value}
+                value={option.value}
+                disabled={option?.isFolder}
+              >
+                {option.isFolder ? <b>{option.label}</b> : option.label}
               </MenuItem>
             ))}
           </Select>
