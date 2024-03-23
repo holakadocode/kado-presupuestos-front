@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 import AppRemixIcons from '../../Layout/Component/Icon/AppRemixIcons';
+import ProjectDefaultRoute from '../../../../src/Routing/ProjectDefaultRoute';
 import { Link } from 'react-router-dom';
 
 export default function BudgetHomeScreen() {
@@ -8,7 +9,7 @@ export default function BudgetHomeScreen() {
 
   const getBudgets = useCallback(() => {
     axios
-      .get('http://localhost/public/index.php/api/budget/list')
+      .get(`${ProjectDefaultRoute}/api/budget/list`)
       .then((r) => setBudgets(r.data))
       .catch((e) => console.log('E', e));
   }, []);

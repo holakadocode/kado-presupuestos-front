@@ -4,14 +4,18 @@ import axios from 'axios';
 import AppRemixIcons from '../../Layout/Component/Icon/AppRemixIcons';
 import AppModal from '../../Layout/Component/Form/AppModal';
 import ClientEdit from '../../Layout/Component/Specific/Client/ClientEdit';
+import ProjectDefaultRoute from '../../../../src/Routing/ProjectDefaultRoute';
+import { Link, useLocation } from 'react-router-dom';
 
 export default function ClientHomeScreen() {
   const [clients, setClients] = useState();
+  const actualRoute = useLocation();
+
   // const [selectedClientID, setSelectedClientID] = useState();
 
   const getClients = useCallback(() => {
     axios
-      .get('http://localhost/public/index.php/api/client/list')
+      .get(`${ProjectDefaultRoute}/api/client/list`)
       .then((r) => setClients(r.data))
       .catch((e) => console.log('E', e));
   }, []);
@@ -23,7 +27,7 @@ export default function ClientHomeScreen() {
   const deleteClient = useCallback(
     (clientID) => {
       axios
-        .delete('http://localhost/public/index.php/api/client/delete', {
+        .delete(`${ProjectDefaultRoute}/api/client/delete`, {
           data: { clientID },
         })
         .then(() => getClients());
@@ -66,12 +70,21 @@ export default function ClientHomeScreen() {
                       <td>{client.address}</td>
                       <td>{client.cp}</td>
                       <td>{client.city}</td>
-                      <td>{client.nif}</td>
+                      <td>{client.taxIdentification}</td>
                       <td>
-                        <button className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center">
-                          {/* <AppRemixIcons icon="ri-search-line" /> */}
-                          <AppRemixIcons icon="ri-arrow-up-circle-line" />
-                        </button>
+                        <Link
+                          to={`/admin/clients/${client.id}/budget/list`}
+                          className={`nav-link ${
+                            actualRoute.pathname ===
+                            `/admin/clients/${client.id}/budget/list`
+                              ? 'linkInRoute'
+                              : ''
+                          }`}
+                        >
+                          <button className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center">
+                            <AppRemixIcons icon="ri-arrow-up-circle-line" />
+                          </button>
+                        </Link>
                       </td>
                       <td>
                         <ClientEdit

@@ -31,6 +31,19 @@ export default function AdminSidebar() {
             >
               <li>
                 <Link
+                  to="/admin/company"
+                  className={`nav-link ms-3 ${
+                    actualRoute.pathname === '/admin/company'
+                      ? 'linkInRoute'
+                      : ''
+                  }`}
+                >
+                  <AppRemixIcons icon="ri-building-3-line" />
+                  <span>Mi Compañia</span>
+                </Link>
+              </li>
+              <li>
+                <Link
                   to="/admin/users"
                   className={`nav-link ms-3 ${
                     actualRoute.pathname === '/admin/users' ? 'linkInRoute' : ''

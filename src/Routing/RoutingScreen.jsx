@@ -10,6 +10,8 @@ import BudgetHomeScreen from '../../templates/Admin/Screen/Budget/BudgetHomeScre
 import BudgetAddScreen from '../../templates/Admin/Screen/Budget/BudgetAddScreen';
 import BudgetUpdateScreen from '../../templates/Admin/Screen/Budget/BudgetUpdateScreen';
 import BudgetShowScreen from '../../templates/Admin/Screen/Budget/BudgetShowScreen';
+import CompanyHomeScreen from '../../templates/Admin/Screen/Company/CompanyHomeScreen';
+import ClientBudgetHomeScreen from '../../templates/Admin/Screen/Client/ClientBudgetHomeScreen';
 
 export default function RoutingScreen() {
   return (
@@ -19,8 +21,12 @@ export default function RoutingScreen() {
       <Route path="/admin" element={<AdminSidebar />}>
         <Route path="/admin" element={<AdminHomeScreen />} />
         <Route path="/admin/users" element={<AdminHomeScreen />} />
+        <Route path="/admin/company" element={<CompanyHomeScreen />} />
         <Route path="/admin/clients" element={<ClientHomeScreen />} />
-        <Route path="/admin/clients/:clientID/budget/list" element={'¡holi!'} />
+        <Route
+          path="/admin/clients/:clientID/budget/list"
+          element={<ClientBudgetHomeScreen />}
+        />
         <Route path="/admin/almacen" element={<AdminStorage />} />
         <Route path="/admin/provider" element={<ProviderHomeScreen />} />
         <Route path="/admin/shitTest" element={<ShitTest />} />
