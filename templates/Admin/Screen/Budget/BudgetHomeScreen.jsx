@@ -18,16 +18,13 @@ export default function BudgetHomeScreen() {
     getBudgets();
   }, []);
 
-  const handleDeleteBudget = useCallback(
-    (budgetID) => {
-      axios
-        .delete('http://localhost/public/index.php/api/budget/delete', {
-          data: { budgetID },
-        })
-        .then(() => getBudgets());
-    },
-    []
-  );
+  const handleDeleteBudget = useCallback((budgetID) => {
+    axios
+      .delete('http://localhost/public/index.php/api/budget/delete', {
+        data: { budgetID },
+      })
+      .then(() => getBudgets());
+  }, []);
 
   return (
     <>
@@ -52,7 +49,7 @@ export default function BudgetHomeScreen() {
                     <th>Nombre</th>
                     <th>Iva</th>
                     <th>Total</th>
-                    <th></th>
+                    <th className="text-center">Opciones</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -64,47 +61,42 @@ export default function BudgetHomeScreen() {
                       <td>{budget.title}</td>
                       <td>{budget.iva}</td>
                       <td>{budget.total}</td>
-                      <td>
-                        <Link
-                          to={`/admin/budget/${budget.clientID}/show/${budget.id}`}
-                          // className={`nav-link ms-3 ${
-                          //   actualRoute.pathname === '/admin'
-                          //     ? 'linkInRoute'
-                          //     : ''
-                          // }`}
-                        >
-                          <button className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center">
-                            <AppRemixIcons
-                              icon="ri-eye-line"
-                              title="Ver presupuesto"
-                            />
+                      <td className="d-flex justify-content-center">
+                        <div className="d-inline-flex justify-content-center align-items-center">
+                          <Link
+                            to={`/admin/budget/${budget.clientID}/show/${budget.id}`}
+                            // className={`nav-link ms-3 ${
+                            //   actualRoute.pathname === '/admin'
+                            //     ? 'linkInRoute'
+                            //     : ''
+                            // }`}
+                          >
+                            <button className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center">
+                              <AppRemixIcons
+                                icon="ri-eye-line"
+                                title="Ver presupuesto"
+                              />
+                            </button>
+                          </Link>
+
+                          <Link
+                            to={`/admin/budget/${budget.clientID}/update/${budget.id}`}
+                          >
+                            <button className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center ms-2">
+                              <AppRemixIcons
+                                icon="ri-pencil-line"
+                                title="Editar presupuesto"
+                              />
+                            </button>
+                          </Link>
+
+                          <button
+                            className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center ms-2"
+                            onClick={() => handleDeleteBudget(budget.id)}
+                          >
+                            <AppRemixIcons icon="ri-delete-bin-line" />
                           </button>
-                        </Link>
-                      </td>
-                      <td>
-                        <Link
-                          to={`/admin/budget/${budget.clientID}/update/${budget.id}`}
-                          // className={`nav-link ms-3 ${
-                          //   actualRoute.pathname === '/admin'
-                          //     ? 'linkInRoute'
-                          //     : ''
-                          // }`}
-                        >
-                          <button className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center">
-                            <AppRemixIcons
-                              icon="ri-pencil-line"
-                              title="Editar presupuesto"
-                            />
-                          </button>
-                        </Link>
-                      </td>
-                      <td>
-                        <button
-                          className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center"
-                          onClick={() => handleDeleteBudget(budget.id)}
-                        >
-                          <AppRemixIcons icon="ri-delete-bin-line" />
-                        </button>
+                        </div>
                       </td>
                     </tr>
                   ))}

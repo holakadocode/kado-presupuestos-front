@@ -51,6 +51,7 @@ export default function ProviderHomeScreen() {
                     <th>Email</th>
                     <th>Telefono</th>
                     <th>Direccion</th>
+                    <th className="text-center">Opciones</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -66,21 +67,21 @@ export default function ProviderHomeScreen() {
                       <td>{provider.phone}</td>
                       <td>{provider.address}</td>
 
-                      <td>
-                        <ProviderEdit
-                          provider={provider}
-                          onSubmit={() => {
-                            getProviders(provider.id);
-                          }}
-                        />
-                      </td>
-                      <td>
-                        <button
-                          className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center"
-                          onClick={() => deleteProvider(provider.id)}
-                        >
-                          <AppRemixIcons icon="ri-delete-bin-line" />
-                        </button>
+                      <td className="d-flex justify-content-center">
+                        <div className="d-inline-flex justify-content-center align-items-center">
+                          <ProviderEdit
+                            provider={provider}
+                            onSubmit={() => {
+                              getProviders(provider.id);
+                            }}
+                          />
+                          <button
+                            className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center ms-2"
+                            onClick={() => deleteProvider(provider.id)}
+                          >
+                            <AppRemixIcons icon="ri-delete-bin-line" />
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}

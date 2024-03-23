@@ -63,8 +63,8 @@ export default function CompanyAdd(props) {
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
-          validationOnChange={false}
-          validationOnBlur={false}
+          validateOnChange={false}
+          validateOnBlur={false}
           onSubmit={handleAddCompany}
         >
           {({ setFieldValue, values, handleSubmit, errors }) => (
