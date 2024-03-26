@@ -4,9 +4,10 @@ import axios from 'axios';
 import { useCallback, useState } from 'react';
 import AppRemixIcons from '../../Icon/AppRemixIcons';
 import { Form, Formik } from 'formik';
+import * as Yup from 'yup';
 import AppModal from '../../Form/AppModal';
 import AppInput from '../../Form/AppInput';
-import * as Yup from 'yup';
+import ProjectDefaultRoute from '../../../../src/Routing/ProjectDefaultRoute';
 
 export default function CompanyEdit(props) {
   const { company, onSubmit } = props;
@@ -25,7 +26,7 @@ export default function CompanyEdit(props) {
   const handleCompanyEdit = useCallback(
     (payload) => {
       axios
-        .post('http://localhost/public/index.php/api/company/edit', {
+        .post(`${ProjectDefaultRoute}/api/company/edit`, {
           companyID: company.id,
           payload,
         })

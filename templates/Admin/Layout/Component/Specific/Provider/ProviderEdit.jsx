@@ -2,13 +2,13 @@
 /* eslint-disable react/prop-types */
 import axios from 'axios';
 import { useCallback, useState } from 'react';
+import * as Yup from 'yup';
 import AppRemixIcons from '../../Icon/AppRemixIcons';
 import { Form, Formik } from 'formik';
 import AppModal from '../../Form/AppModal';
 import AppNumber from '../../Form/AppNumber';
 import AppInput from '../../Form/AppInput';
-import * as Yup from 'yup';
-
+import ProjectDefaultRoute from '../../../../../../src/Routing/ProjectDefaultRoute';
 
 export default function ProviderEdit(props) {
   const { provider, onSubmit } = props;
@@ -29,7 +29,7 @@ export default function ProviderEdit(props) {
   const handleProviderEdit = useCallback(
     (payload) => {
       axios
-        .post('http://localhost/public/index.php/api/provider/edit', {
+        .post(`${ProjectDefaultRoute}/api/provider/edit`, {
           providerID: provider.id,
           payload,
         })

@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
+import ProjectDefaultRoute from '../../../../src/Routing/ProjectDefaultRoute';
 
 export default function BudgetShowScreen() {
   const { clientID, budgetID } = useParams();
@@ -9,7 +10,7 @@ export default function BudgetShowScreen() {
 
   const getData = useCallback(() => {
     axios
-      .post('http://localhost/public/index.php/api/budget/get', {
+      .post(`${ProjectDefaultRoute}/api/budget/get`, {
         clientID,
         budgetID,
       })
