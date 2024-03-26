@@ -6,6 +6,7 @@ import AppInput from '../../Form/AppInput';
 import AppNumber from '../../Form/AppNumber';
 import { useCallback, useState } from 'react';
 import AppModal from '../../Form/AppModal';
+import ProjectDefaultRoute from '../../../../src/Routing/ProjectDefaultRoute';
 
 export default function BudgetEdit(props) {
   const { client, onSubmit } = props;
@@ -14,7 +15,7 @@ export default function BudgetEdit(props) {
   const handleClientEdit = useCallback(
     (payload) => {
       axios
-        .post('http://localhost/public/index.php/api/client/edit', {
+        .post(`${ProjectDefaultRoute}/api/client/edit`, {
           clientID: client.id,
           payload,
         })

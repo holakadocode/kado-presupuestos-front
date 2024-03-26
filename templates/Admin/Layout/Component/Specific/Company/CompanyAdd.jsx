@@ -1,12 +1,12 @@
 /* eslint-disable react/prop-types */
 import { Form, Formik } from 'formik';
-import AppModal from '../../Form/AppModal';
-import AppRemixIcons from '../../Icon/AppRemixIcons';
-import AppNumber from '../../Form/AppNumber';
-import AppInput from '../../Form/AppInput';
 import * as Yup from 'yup';
 import { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
+import AppModal from '../../Form/AppModal';
+import AppRemixIcons from '../../Icon/AppRemixIcons';
+import AppInput from '../../Form/AppInput';
+import ProjectDefaultRoute from '../../../../src/Routing/ProjectDefaultRoute';
 
 export default function CompanyAdd(props) {
   const { company, onSubmit } = props;
@@ -25,7 +25,7 @@ export default function CompanyAdd(props) {
 
   const handleAddCompany = useCallback((values) => {
     axios
-      .put('http://localhost/public/index.php/api/company/add', values)
+      .put(`${ProjectDefaultRoute}/api/company/add`, values)
       .then((r) => onSubmit())
       .catch((err) => console.log(err))
       .finally(() => setInitialValues(undefined));

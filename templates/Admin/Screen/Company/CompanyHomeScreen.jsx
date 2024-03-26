@@ -4,13 +4,14 @@ import { useCallback, useState } from 'react';
 import { useEffect } from 'react';
 import CompanyAdd from '../../Layout/Component/Specific/Company/CompanyAdd';
 import CompanyEdit from '../../Layout/Component/Specific/Company/CompanyEdit';
+import ProjectDefaultRoute from '../../../../src/Routing/ProjectDefaultRoute';
 
 export default function CompanyHomeScreen() {
   const [company, setCompany] = useState();
 
   const getCompany = useCallback(async () => {
     axios
-      .get('http://localhost/public/index.php/api/company/list/')
+      .get(`${ProjectDefaultRoute}/api/company/list/`)
       .then((r) => setCompany(r.data))
       .catch((e) => console.log('E', e));
   }, []);
@@ -22,7 +23,7 @@ export default function CompanyHomeScreen() {
   const deleteCompany = useCallback(
     (companyID) => {
       axios
-        .delete('http://localhost/public/index.php/api/company/delete', {
+        .delete(`${ProjectDefaultRoute}/api/company/delete`, {
           data: { companyID },
         })
         .then(() => getCompany());
