@@ -10,6 +10,11 @@ import AppInput from '../../Form/AppInput';
 import * as Yup from 'yup';
 
 
+ /**
+  * @param mixed props
+  * 
+  * @return [type]
+  */
 export default function ProviderEdit(props) {
   const { provider, onSubmit } = props;
   const [showEditProvider, setShowEditProvider] = useState(false);

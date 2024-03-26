@@ -9,6 +9,11 @@ import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import AppSelect from '../../Form/AppSelect';
 
+ /**
+  * @param mixed props
+  * 
+  * @return [type]
+  */
 export default function BudgetAdd(props) {
   const { onSubmit } = props;
   const [budgetData, setBudgetData] = useState();

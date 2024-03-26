@@ -5,6 +5,9 @@ import { useEffect } from 'react';
 import CompanyAdd from '../../Layout/Component/Specific/Company/CompanyAdd';
 import CompanyEdit from '../../Layout/Component/Specific/Company/CompanyEdit';
 
+ /**
+  * @return [type]
+  */
 export default function CompanyHomeScreen() {
   const [company, setCompany] = useState();
 

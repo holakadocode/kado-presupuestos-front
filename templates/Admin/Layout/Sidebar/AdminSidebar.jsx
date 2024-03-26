@@ -2,6 +2,9 @@ import { Link, Outlet, useLocation } from 'react-router-dom';
 import AppRemixIcons from '../Component/Icon/AppRemixIcons';
 import styled from 'styled-components';
 
+ /**
+  * @return [type]
+  */
 export default function AdminSidebar() {
   const actualRoute = useLocation();
 
@@ -10,7 +13,7 @@ export default function AdminSidebar() {
       <div className="d-flex">
         <div
           className="bg-light d-none d-md-block flex-grow-0 vh-100 rounded-end shadow"
-          style={{ width: '250px', position: 'fixed' }}
+          style={{ width: '250px' }}
         >
           <div className="ms-3 mt-3">
             <LogoHead>

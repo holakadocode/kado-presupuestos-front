@@ -7,6 +7,11 @@ import AppNumber from '../../Form/AppNumber';
 import { useCallback, useState } from 'react';
 import AppModal from '../../Form/AppModal';
 
+ /**
+  * @param mixed props
+  * 
+  * @return [type]
+  */
 export default function BudgetEdit(props) {
   const { client, onSubmit } = props;
   const [showModal, setShowModal] = useState(false);

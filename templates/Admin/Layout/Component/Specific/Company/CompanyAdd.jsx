@@ -8,6 +8,11 @@ import * as Yup from 'yup';
 import { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 
+ /**
+  * @param mixed props
+  * 
+  * @return [type]
+  */
 export default function CompanyAdd(props) {
   const { company, onSubmit } = props;
   const [initialValues, setInitialValues] = useState();

@@ -4,6 +4,9 @@ import AppRemixIcons from '../../Layout/Component/Icon/AppRemixIcons';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import ProjectDefaultRoute from '../../../../src/Routing/ProjectDefaultRoute';
 
+ /**
+  * @return [type]
+  */
 export default function ClientBudgetHomeScreen() {
   const actualRoute = useLocation();
 

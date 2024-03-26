@@ -8,6 +8,11 @@ import * as Yup from 'yup';
 import { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 
+ /**
+  * @param mixed props
+  * 
+  * @return [type]
+  */
 export default function ProviderAdd(props) {
   const { providers, onSubmit } = props;
   const [initialValues, setInitialValues] = useState();

@@ -7,6 +7,9 @@ import ClientEdit from '../../Layout/Component/Specific/Client/ClientEdit';
 import ProjectDefaultRoute from '../../../../src/Routing/ProjectDefaultRoute';
 import { Link, useLocation } from 'react-router-dom';
 
+ /**
+  * @return [type]
+  */
 export default function ClientHomeScreen() {
   const [clients, setClients] = useState();
   const actualRoute = useLocation();

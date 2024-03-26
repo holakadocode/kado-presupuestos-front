@@ -6,6 +6,9 @@ import * as Yup from 'yup';
 import AppInput from './Admin/Layout/Component/Form/AppInput';
 import { useState } from 'react';
 
+ /**
+  * @return [type]
+  */
 export default function AdminLoginScreen() {
   const [validationSchema] = useState(
     Yup.object().shape({

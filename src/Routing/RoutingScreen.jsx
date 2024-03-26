@@ -13,6 +13,9 @@ import BudgetShowScreen from '../../templates/Admin/Screen/Budget/BudgetShowScre
 import CompanyHomeScreen from '../../templates/Admin/Screen/Company/CompanyHomeScreen';
 import ClientBudgetHomeScreen from '../../templates/Admin/Screen/Client/ClientBudgetHomeScreen';
 
+ /**
+  * @return [type]
+  */
 export default function RoutingScreen() {
   return (
     <Routes>

@@ -8,6 +8,11 @@ import AppModal from '../../Form/AppModal';
 import AppInput from '../../Form/AppInput';
 import * as Yup from 'yup';
 
+ /**
+  * @param mixed props
+  * 
+  * @return [type]
+  */
 export default function CompanyEdit(props) {
   const { company, onSubmit } = props;
   const [showEditCompany, setShowEditCompany] = useState(false);

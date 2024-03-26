@@ -4,6 +4,9 @@ import AppRemixIcons from '../../Layout/Component/Icon/AppRemixIcons';
 import ProjectDefaultRoute from '../../../../src/Routing/ProjectDefaultRoute';
 import { Link } from 'react-router-dom';
 
+ /**
+  * @return [type]
+  */
 export default function BudgetHomeScreen() {
   const [budgets, setBudgets] = useState();
 
