@@ -1,12 +1,13 @@
 /* eslint-disable react/prop-types */
 import { Form, Formik } from 'formik';
+import * as Yup from 'yup';
+import { useCallback, useEffect, useState } from 'react';
+import axios from 'axios';
 import AppModal from '../../Form/AppModal';
 import AppRemixIcons from '../../Icon/AppRemixIcons';
 import AppNumber from '../../Form/AppNumber';
 import AppInput from '../../Form/AppInput';
-import * as Yup from 'yup';
-import { useCallback, useEffect, useState } from 'react';
-import axios from 'axios';
+import ProjectDefaultRoute from '../../../../../../src/Routing/ProjectDefaultRoute';
 
  /**
   * @param mixed props
@@ -32,7 +33,7 @@ export default function ProviderAdd(props) {
 
   const handleAddProvider = useCallback((values) => {
     axios
-      .put('http://localhost/public/index.php/api/provider/add', values)
+      .put(`${ProjectDefaultRoute}/api/provider/add`, values)
       .then((r) => onSubmit())
       .catch((err) => console.log(err))
       .finally(() => setInitialValues(undefined));

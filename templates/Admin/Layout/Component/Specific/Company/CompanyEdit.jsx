@@ -4,8 +4,9 @@ import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import AppRemixIcons from '../../Icon/AppRemixIcons';
 import { Form, Formik } from 'formik';
-import AppInput from '../../Form/AppInput';
 import * as Yup from 'yup';
+import AppInput from '../../Form/AppInput';
+import ProjectDefaultRoute from '../../../../src/Routing/ProjectDefaultRoute';
 
 export default function CompanyEdit() {
   const [company, setCompany] = useState(false);
@@ -27,11 +28,10 @@ export default function CompanyEdit() {
     })
   );
   const getCompany = useCallback(
-    (payload) => {
+    () => {
       axios
-        .get('http://localhost/public/index.php/api/company/get')
+        .get(`${ProjectDefaultRoute}/public/index.php/api/company/get`)
         .then((r) => {
-          console.log(r.data);
           setCompany(r.data);
         })
         .catch((err) => console.log(err));

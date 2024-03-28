@@ -6,6 +6,7 @@ import AppInput from '../../Layout/Component/Form/AppInput';
 import AppNumber from '../../Layout/Component/Form/AppNumber';
 import { useCallback, useState } from 'react';
 import styled from 'styled-components';
+import ProjectDefaultRoute from '../../../../src/Routing/ProjectDefaultRoute';
 import AppSelect from '../../Layout/Component/Form/AppSelect';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -24,7 +25,7 @@ export default function BudgetAddScreen() {
 
   const getData = useCallback(() => {
     axios
-      .post('http://localhost/public/index.php/api/budget/get-data', {
+      .post(`${ProjectDefaultRoute}/api/budget/get-data`, {
         clientID,
       })
       .then((r) => {
@@ -43,7 +44,7 @@ export default function BudgetAddScreen() {
 
   const getSelectedClient = useCallback((selectedClientID) => {
     axios
-      .post('http://localhost/public/index.php/api/budget/client/get', {
+      .post(`${ProjectDefaultRoute}/api/budget/client/get`, {
         clientID: selectedClientID,
       })
       .then((r) => {
@@ -55,7 +56,7 @@ export default function BudgetAddScreen() {
   const handleSetSavedItem = useCallback(
     (articleID, values, index, setFieldValue) => {
       axios
-        .post('http://localhost/public/index.php/api/budget/article/get', {
+        .post(`${ProjectDefaultRoute}/api/budget/article/get`, {
           articleID,
         })
         .then((r) => {
@@ -75,7 +76,7 @@ export default function BudgetAddScreen() {
   const handleAddClient = useCallback(
     (payload) => {
       axios
-        .put('http://localhost/public/index.php/api/budget/add', { payload })
+        .put(`${ProjectDefaultRoute}/api/budget/add`, { payload })
         .then((r) => navigate(`/admin/clients/${r.data}/budget/list`))
         .catch((err) => console.log(err));
     },

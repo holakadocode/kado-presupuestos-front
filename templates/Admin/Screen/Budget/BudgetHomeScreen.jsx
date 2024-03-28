@@ -23,7 +23,7 @@ export default function BudgetHomeScreen() {
 
   const handleDeleteBudget = useCallback((budgetID) => {
     axios
-      .delete('http://localhost/public/index.php/api/budget/delete', {
+      .delete(`${ProjectDefaultRoute}/api/budget/delete`, {
         data: { budgetID },
       })
       .then(() => getBudgets());

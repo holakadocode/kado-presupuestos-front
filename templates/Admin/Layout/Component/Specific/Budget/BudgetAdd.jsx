@@ -1,13 +1,13 @@
-/* eslint-disable react/prop-types */
 import axios from 'axios';
-import { Form, Formik, useFormikContext } from 'formik';
+import { Form, Formik, } from 'formik';
 import AppRemixIcons from '../../Icon/AppRemixIcons';
 import AppModal from '../../Form/AppModal';
 import AppInput from '../../Form/AppInput';
 import AppNumber from '../../Form/AppNumber';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import AppSelect from '../../Form/AppSelect';
+import ProjectDefaultRoute from '../../../../src/Routing/ProjectDefaultRoute';
 
  /**
   * @param mixed props
@@ -27,7 +27,7 @@ export default function BudgetAdd(props) {
 
   const getData = useCallback((values) => {
     axios
-      .get('http://localhost/public/index.php/api/budget/get-data/', values)
+      .get(`${ProjectDefaultRoute}/api/budget/get-data/`, values)
       .then((r) => {
         setBudgetData(r.data);
         console.log(r.data);
@@ -37,7 +37,7 @@ export default function BudgetAdd(props) {
 
   const handleAddClient = useCallback((values) => {
     axios
-      .put('http://localhost/public/index.php/api/client/add', values)
+      .put(`${ProjectDefaultRoute}/api/client/add`, values)
       .then((r) => onSubmit())
       .catch((err) => console.log(err))
       .finally(() => budgetData(undefined));
