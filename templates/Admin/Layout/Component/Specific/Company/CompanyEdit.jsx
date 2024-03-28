@@ -6,10 +6,12 @@ import AppRemixIcons from '../../Icon/AppRemixIcons';
 import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import AppInput from '../../Form/AppInput';
-import ProjectDefaultRoute from '../../../../src/Routing/ProjectDefaultRoute';
+import ProjectDefaultRoute from '../../../../../../src/Routing/ProjectDefaultRoute';
+import { Alert } from '@mui/material';
 
 export default function CompanyEdit() {
   const [company, setCompany] = useState(false);
+  const [success, setSuccess] = useState(false);
   const [validationSchema] = useState(
     Yup.object().shape({
       name: Yup.string().required('Requerido'),
@@ -27,17 +29,15 @@ export default function CompanyEdit() {
         .required('Requerido'),
     })
   );
-  const getCompany = useCallback(
-    () => {
-      axios
-        .get(`${ProjectDefaultRoute}/public/index.php/api/company/get`)
-        .then((r) => {
-          setCompany(r.data);
-        })
-        .catch((err) => console.log(err));
-    },
-    [company]
-  );
+  const getCompany = useCallback(() => {
+    axios
+      .get(`${ProjectDefaultRoute}/api/company/get`)
+      .then((r) => {
+        console.log(r.data);
+        setCompany(r.data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   useEffect(() => {
     getCompany();
@@ -45,123 +45,132 @@ export default function CompanyEdit() {
 
   const handleCompanyEdit = useCallback((payload) => {
     axios
-      .post('http://localhost/public/index.php/api/company/edit', {
+      .post(`${ProjectDefaultRoute}/api/company/edit`, {
         payload,
       })
-      .then((r) => {})
+      .then((r) => {
+        setSuccess(true);
+      })
       .catch((err) => console.log(err));
   }, []);
 
   return (
     <>
       {company ? (
-        <Formik
-          initialValues={{
-            name: company.name || '',
-            taxIdentification: company.taxIdentification || '',
-            address: company.address || '',
-            cp: company.cp || '',
-            city: company.city || '',
-            phone: company.phone || '',
-            email: company.email || '',
-          }}
-          validationSchema={validationSchema}
-          validateOnChange={false}
-          validateOnBlur={false}
-          // enableReinitialize
-          onSubmit={handleCompanyEdit}
-        >
-          {({ setFieldValue, values, handleSubmit, errors }) => (
-            <Form onSubmit={handleSubmit}>
-              <div className="row mb-3">
-                <div className="col-6">
-                  <AppInput
-                    title="Nombre Compañia"
-                    placeholder="Nombre Compañia"
-                    value={values.name}
-                    onChange={(v) => setFieldValue('name', v)}
-                    error={errors.name}
-                    helperText={errors.name}
-                  />
+        <>
+          <Formik
+            initialValues={{
+              name: company.name || '',
+              taxIdentification: company.taxIdentification || '',
+              address: company.address || '',
+              cp: company.cp || '',
+              city: company.city || '',
+              phone: company.phone || '',
+              email: company.email || '',
+            }}
+            validationSchema={validationSchema}
+            validateOnChange={false}
+            validateOnBlur={false}
+            // enableReinitialize
+            onSubmit={handleCompanyEdit}
+          >
+            {({ setFieldValue, values, handleSubmit, errors }) => (
+              <Form onSubmit={handleSubmit}>
+                <div className="row mb-3">
+                  <div className="col-6">
+                    <AppInput
+                      title="Nombre Compañia"
+                      placeholder="Nombre Compañia"
+                      value={values.name}
+                      onChange={(v) => setFieldValue('name', v)}
+                      error={errors.name}
+                      helperText={errors.name}
+                    />
+                  </div>
+                  <div className="col-6">
+                    <AppInput
+                      title="CIF"
+                      placeholder="CIF"
+                      value={values.taxIdentification}
+                      onChange={(v) => setFieldValue('taxIdentification', v)}
+                      error={errors.taxIdentification}
+                      helperText={errors.taxIdentification}
+                    />
+                  </div>
                 </div>
-                <div className="col-6">
-                  <AppInput
-                    title="CIF"
-                    placeholder="CIF"
-                    value={values.taxIdentification}
-                    onChange={(v) => setFieldValue('taxIdentification', v)}
-                    error={errors.taxIdentification}
-                    helperText={errors.taxIdentification}
-                  />
+                <div className="row mb-3">
+                  <div className="col-6">
+                    <AppInput
+                      title="Dirección Empresa"
+                      placeholder="Dirección Empresa"
+                      value={values.address}
+                      onChange={(v) => setFieldValue('address', v)}
+                      error={errors.address}
+                      helperText={errors.address}
+                    />
+                  </div>
+                  <div className="col-6">
+                    <AppInput
+                      title="Codigo Postal"
+                      placeholder="Codigo Postal"
+                      value={values.cp}
+                      onChange={(v) => setFieldValue('cp', v)}
+                      error={errors.cp}
+                      helperText={errors.cp}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="row mb-3">
-                <div className="col-6">
-                  <AppInput
-                    title="Dirección Empresa"
-                    placeholder="Dirección Empresa"
-                    value={values.address}
-                    onChange={(v) => setFieldValue('address', v)}
-                    error={errors.address}
-                    helperText={errors.address}
-                  />
-                </div>
-                <div className="col-6">
-                  <AppInput
-                    title="Codigo Postal"
-                    placeholder="Codigo Postal"
-                    value={values.cp}
-                    onChange={(v) => setFieldValue('cp', v)}
-                    error={errors.cp}
-                    helperText={errors.cp}
-                  />
-                </div>
-              </div>
 
-              <div className="row mb-3">
-                <div className="col-6">
-                  <AppInput
-                    title="Ciudad"
-                    placeholder="Ciudad"
-                    value={values.city}
-                    onChange={(v) => setFieldValue('city', v)}
-                    error={errors.city}
-                    helperText={errors.city}
-                  />
+                <div className="row mb-3">
+                  <div className="col-6">
+                    <AppInput
+                      title="Ciudad"
+                      placeholder="Ciudad"
+                      value={values.city}
+                      onChange={(v) => setFieldValue('city', v)}
+                      error={errors.city}
+                      helperText={errors.city}
+                    />
+                  </div>
+                  <div className="col-6">
+                    <AppInput
+                      title="Phone"
+                      placeholder="Phone"
+                      value={values.phone}
+                      onChange={(v) => setFieldValue('phone', v)}
+                      error={errors.phone}
+                      helperText={errors.phone}
+                    />
+                  </div>
                 </div>
-                <div className="col-6">
-                  <AppInput
-                    title="Phone"
-                    placeholder="Phone"
-                    value={values.phone}
-                    onChange={(v) => setFieldValue('phone', v)}
-                    error={errors.phone}
-                    helperText={errors.phone}
-                  />
+                <div className="row mb-3">
+                  <div className="col-6">
+                    <AppInput
+                      title="Email"
+                      placeholder="Email"
+                      value={values.email}
+                      onChange={(v) => setFieldValue('email', v)}
+                      error={errors.email}
+                      helperText={errors.email}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="row mb-3">
-                <div className="col-6">
-                  <AppInput
-                    title="Email"
-                    placeholder="Email"
-                    value={values.email}
-                    onChange={(v) => setFieldValue('email', v)}
-                    error={errors.email}
-                    helperText={errors.email}
-                  />
-                </div>
-              </div>
-              <button
-                type="submit"
-                className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center"
-              >
-                <AppRemixIcons icon="ri-pencil-line" />
-                Actualizar
-              </button>
-            </Form>
+                <button
+                  type="submit"
+                  className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center"
+                >
+                  <AppRemixIcons icon="ri-pencil-line" />
+                  Actualizar
+                </button>
+              </Form>
+            )}
+          </Formik>
+          {success && (
+            <Alert severity="success" className="mt-3">
+              Empresa editada
+            </Alert>
           )}
-        </Formik>
+        </>
       ) : (
         <div>Cargando</div>
       )}
