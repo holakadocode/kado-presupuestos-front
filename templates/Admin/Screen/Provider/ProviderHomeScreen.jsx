@@ -6,6 +6,9 @@ import ProviderAdd from '../../Layout/Component/Specific/Provider/ProviderAdd';
 import ProviderEdit from '../../Layout/Component/Specific/Provider/ProviderEdit';
 import ProjectDefaultRoute from '../../../../src/Routing/ProjectDefaultRoute';
 
+ /**
+  * @return [type]
+  */
 export default function ProviderHomeScreen() {
   const [providers, setProviders] = useState();
 

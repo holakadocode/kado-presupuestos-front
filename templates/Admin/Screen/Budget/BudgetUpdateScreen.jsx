@@ -10,6 +10,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import AppSelect from '../../Layout/Component/Form/AppSelect';
 import ProjectDefaultRoute from '../../../../src/Routing/ProjectDefaultRoute';
 
+ /**
+  * @return [type]
+  */
 export default function BudgetUpdateScreen() {
   const { clientID, budgetID } = useParams();
   const navigate = useNavigate();

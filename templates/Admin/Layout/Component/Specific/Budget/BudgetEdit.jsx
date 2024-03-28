@@ -8,6 +8,11 @@ import { useCallback, useState } from 'react';
 import AppModal from '../../Form/AppModal';
 import ProjectDefaultRoute from '../../../../src/Routing/ProjectDefaultRoute';
 
+ /**
+  * @param mixed props
+  * 
+  * @return [type]
+  */
 export default function BudgetEdit(props) {
   const { client, onSubmit } = props;
   const [showModal, setShowModal] = useState(false);

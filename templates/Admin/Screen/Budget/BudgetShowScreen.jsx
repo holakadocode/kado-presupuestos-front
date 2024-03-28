@@ -4,6 +4,9 @@ import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import ProjectDefaultRoute from '../../../../src/Routing/ProjectDefaultRoute';
 
+ /**
+  * @return [type]
+  */
 export default function BudgetShowScreen() {
   const { clientID, budgetID } = useParams();
   const [budget, setBudget] = useState();

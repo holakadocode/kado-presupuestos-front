@@ -7,6 +7,9 @@ import { useState } from "react";
 import { Box, Modal, Typography } from "@mui/material";
 import FolderAdd from "../../Layout/Component/Specific/Store/FolderAdd";
 
+ /**
+  * @return [type]
+  */
 export default function AdminAlmacen() {
   const [folder, setFolder] = useState({
     Tornillos: ["Tornillo plano", "Tornillo estrella", "Tornillo Torx"],

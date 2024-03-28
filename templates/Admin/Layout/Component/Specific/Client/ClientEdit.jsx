@@ -9,6 +9,11 @@ import AppModal from '../../Form/AppModal';
 import * as Yup from 'yup';
 import ProjectDefaultRoute from '../../../../../../src/Routing/ProjectDefaultRoute';
 
+ /**
+  * @param mixed props
+  * 
+  * @return [type]
+  */
 export default function ClientEdit(props) {
   const { client, onSubmit } = props;
   const [showModal, setShowModal] = useState(false);
