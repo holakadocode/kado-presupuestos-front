@@ -3,6 +3,7 @@ import axios from 'axios';
 import AppRemixIcons from '../../Layout/Component/Icon/AppRemixIcons';
 import ProjectDefaultRoute from '../../../../src/Routing/ProjectDefaultRoute';
 import { Link, useNavigate } from 'react-router-dom';
+import BudgetAdd from '../../Layout/Component/Specific/Budget/BudgetAdd';
 
 export default function BudgetHomeScreen() {
   const [budgets, setBudgets] = useState();
@@ -26,6 +27,14 @@ export default function BudgetHomeScreen() {
         }
       });
   }, [localStorage]);
+
+  const getClients = useCallback(() => {
+    console.log(ProjectDefaultRoute)
+    axios
+      .get(`${ProjectDefaultRoute}/api/budget/list`)
+      .then((r) => setBudgets(r.data))
+      .catch((e) => console.log('E', e));
+  }, []);
 
   useEffect(() => {
     getBudgets();
