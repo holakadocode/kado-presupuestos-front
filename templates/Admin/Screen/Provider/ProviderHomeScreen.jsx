@@ -5,18 +5,27 @@ import { useEffect } from 'react';
 import ProviderAdd from '../../Layout/Component/Specific/Provider/ProviderAdd';
 import ProviderEdit from '../../Layout/Component/Specific/Provider/ProviderEdit';
 import ProjectDefaultRoute from '../../../../src/Routing/ProjectDefaultRoute';
+import { useNavigate } from 'react-router-dom';
 
- /**
-  * @return [type]
-  */
 export default function ProviderHomeScreen() {
   const [providers, setProviders] = useState();
+  const navigate = useNavigate();
 
   const getProviders = useCallback(async () => {
     axios
-      .get(`${ProjectDefaultRoute}/api/provider/list`)
+      .get(`${ProjectDefaultRoute}/api/provider/list`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+        },
+      })
       .then((r) => setProviders(r.data))
-      .catch((e) => console.log('E', e));
+      .catch((errors) => {
+        console.log(errors);
+        if (errors.response?.status === 401) {
+          localStorage.removeItem('authToken', null);
+          navigate('/');
+        }
+      });
   }, []);
 
   useEffect(() => {
@@ -26,10 +35,23 @@ export default function ProviderHomeScreen() {
   const deleteProvider = useCallback(
     (providerID) => {
       axios
-        .delete(`${ProjectDefaultRoute}/api/provider/delete`, {
-          data: { providerID },
-        })
-        .then(() => getProviders());
+        .delete(
+          `${ProjectDefaultRoute}/api/provider/delete`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+            },
+            data: { providerID },
+          }
+        )
+        .then(() => getProviders())
+        .catch((errors) => {
+          console.log(errors);
+          if (errors.response?.status === 401) {
+            localStorage.removeItem('authToken', null);
+            navigate('/');
+          }
+        });
     },
     [getProviders]
   );

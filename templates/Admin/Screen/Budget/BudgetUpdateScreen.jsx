@@ -10,9 +10,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import AppSelect from '../../Layout/Component/Form/AppSelect';
 import ProjectDefaultRoute from '../../../../src/Routing/ProjectDefaultRoute';
 
- /**
-  * @return [type]
-  */
 export default function BudgetUpdateScreen() {
   const { clientID, budgetID } = useParams();
   const navigate = useNavigate();
@@ -26,10 +23,15 @@ export default function BudgetUpdateScreen() {
 
   const getData = useCallback(() => {
     axios
-      .post(`${ProjectDefaultRoute}/api/budget/update/get-data`, {
-        clientID,
-        budgetID,
-      })
+      .post(
+        `${ProjectDefaultRoute}/api/budget/update/get-data`,
+        { clientID, budgetID },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+          },
+        }
+      )
       .then((r) => {
         setOwnCompany(r.data.ownCompany);
         setClient(r.data.client);
@@ -38,7 +40,13 @@ export default function BudgetUpdateScreen() {
         setArticles(r.data.articles);
         setArticlesSelector(r.data.articlesSelector);
       })
-      .catch((err) => console.log(err));
+      .catch((errors) => {
+        console.log(errors);
+        if (errors.response?.status === 401) {
+          localStorage.removeItem('authToken', null);
+          navigate('/');
+        }
+      });
   }, [clientID, budgetID]);
 
   useState(() => {
@@ -47,21 +55,39 @@ export default function BudgetUpdateScreen() {
 
   const getSelectedClient = useCallback((selectedClientID) => {
     axios
-      .post(`${ProjectDefaultRoute}/api/budget/client/get`, {
-        clientID: selectedClientID,
-      })
+      .post(
+        `${ProjectDefaultRoute}/api/budget/client/get`,
+        { clientID: selectedClientID },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+          },
+        }
+      )
       .then((r) => {
         setClient(r.data);
       })
-      .catch((err) => console.log(err));
+      .catch((errors) => {
+        console.log(errors);
+        if (errors.response?.status === 401) {
+          localStorage.removeItem('authToken', null);
+          navigate('/');
+        }
+      });
   }, []);
 
   const handleSetSavedItem = useCallback(
     (articleID, values, index, setFieldValue) => {
       axios
-        .post(`${ProjectDefaultRoute}/api/budget/article/get`, {
-          articleID,
-        })
+        .post(
+          `${ProjectDefaultRoute}/api/budget/article/get`,
+          { articleID },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+            },
+          }
+        )
         .then((r) => {
           let tempValues = { ...values };
           tempValues.articles[index].code = r.data.code;
@@ -70,7 +96,13 @@ export default function BudgetUpdateScreen() {
           tempValues.articles[index].price = r.data.price;
           setFieldValue('articles', tempValues.articles);
         })
-        .catch((err) => console.log(err));
+        .catch((errors) => {
+          console.log(errors);
+          if (errors.response?.status === 401) {
+            localStorage.removeItem('authToken', null);
+            navigate('/');
+          }
+        });
     },
     []
   );
@@ -78,14 +110,23 @@ export default function BudgetUpdateScreen() {
   const handleAddClient = useCallback(
     (payload) => {
       axios
-        .post(`${ProjectDefaultRoute}/api/budget/update`, {
-          payload,
-          clientID,
-          budgetID,
-        })
+        .post(
+          `${ProjectDefaultRoute}/api/budget/update`,
+          { payload, clientID, budgetID },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+            },
+          }
+        )
         .then(() => navigate(`/admin/clients/${clientID}/budget/list`))
-        // .then(() => Navigate(`/admin/budget/${clientID}/show/${budgetID}`))
-        .catch((err) => console.log(err));
+        .catch((errors) => {
+          console.log(errors);
+          if (errors.response?.status === 401) {
+            localStorage.removeItem('authToken', null);
+            navigate('/');
+          }
+        });
     },
     [clientID, budgetID]
   );

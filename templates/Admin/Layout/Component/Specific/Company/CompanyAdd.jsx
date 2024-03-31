@@ -7,9 +7,11 @@ import AppModal from '../../Form/AppModal';
 import AppRemixIcons from '../../Icon/AppRemixIcons';
 import AppInput from '../../Form/AppInput';
 import ProjectDefaultRoute from '../../../../src/Routing/ProjectDefaultRoute';
+import { useNavigate } from 'react-router-dom';
 
 export default function CompanyAdd(props) {
   const { company, onSubmit } = props;
+  const navigate = useNavigate();
   const [initialValues, setInitialValues] = useState();
   const [validationSchema] = useState(
     Yup.object().shape({
@@ -25,10 +27,24 @@ export default function CompanyAdd(props) {
 
   const handleAddCompany = useCallback((values) => {
     axios
-      .put(`${ProjectDefaultRoute}/api/company/add`, values)
+      .put(
+        `${ProjectDefaultRoute}/api/company/add`,
+        { values },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+          },
+        }
+      )
       .then((r) => onSubmit())
-      .catch((err) => console.log(err))
-      .finally(() => setInitialValues(undefined));
+      .finally(() => setInitialValues(undefined))
+      .catch((errors) => {
+        console.log(errors);
+        if (errors.response?.status === 401) {
+          localStorage.removeItem('authToken', null);
+          navigate('/');
+        }
+      });
   }, []);
 
   const getLastCodCompany = useCallback(() => {

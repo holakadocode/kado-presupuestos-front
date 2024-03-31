@@ -8,14 +8,11 @@ import { useCallback, useState } from 'react';
 import AppModal from '../../Form/AppModal';
 import * as Yup from 'yup';
 import ProjectDefaultRoute from '../../../../../../src/Routing/ProjectDefaultRoute';
+import { useNavigate } from 'react-router-dom';
 
- /**
-  * @param mixed props
-  * 
-  * @return [type]
-  */
 export default function ClientEdit(props) {
   const { client, onSubmit } = props;
+  const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [validationSchema] = useState(
     Yup.object().shape({
@@ -34,15 +31,27 @@ export default function ClientEdit(props) {
   const handleClientEdit = useCallback(
     (payload) => {
       axios
-        .post(`${ProjectDefaultRoute}/api/client/edit`, {
-          clientID: client.id,
-          payload,
-        })
+        .post(
+          `${ProjectDefaultRoute}/api/client/edit`,
+          { payload },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+            },
+            clientID: client.id,
+          }
+        )
         .then((r) => {
           onSubmit();
         })
-        .catch((err) => console.log(err))
-        .finally(() => setShowModal(false));
+        .finally(() => setShowModal(false))
+        .catch((errors) => {
+          console.log(errors);
+          if (errors.response?.status === 401) {
+            localStorage.removeItem('authToken', null);
+            navigate('/');
+          }
+        });
     },
     [client]
   );

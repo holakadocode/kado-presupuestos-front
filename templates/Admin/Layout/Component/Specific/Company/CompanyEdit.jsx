@@ -6,10 +6,12 @@ import AppRemixIcons from '../../Icon/AppRemixIcons';
 import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import AppInput from '../../Form/AppInput';
-import ProjectDefaultRoute from '../../../../src/Routing/ProjectDefaultRoute';
+import ProjectDefaultRoute from '../../../../../../src/Routing/ProjectDefaultTemplate';
+import { useNavigate } from 'react-router-dom';
 
 export default function CompanyEdit() {
   const [company, setCompany] = useState(false);
+  const navigate = useNavigate();
   const [validationSchema] = useState(
     Yup.object().shape({
       name: Yup.string().required('Requerido'),
@@ -27,17 +29,25 @@ export default function CompanyEdit() {
         .required('Requerido'),
     })
   );
-  const getCompany = useCallback(
-    () => {
-      axios
-        .get(`${ProjectDefaultRoute}/public/index.php/api/company/get`)
-        .then((r) => {
-          setCompany(r.data);
-        })
-        .catch((err) => console.log(err));
-    },
-    [company]
-  );
+
+  const getCompany = useCallback(() => {
+    axios
+      .get(`${ProjectDefaultRoute}/public/index.php/api/company/get`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+        },
+      })
+      .then((r) => {
+        setCompany(r.data);
+      })
+      .catch((errors) => {
+        console.log(errors);
+        if (errors.response?.status === 401) {
+          localStorage.removeItem('authToken', null);
+          navigate('/');
+        }
+      });
+  }, [company]);
 
   useEffect(() => {
     getCompany();
@@ -45,11 +55,23 @@ export default function CompanyEdit() {
 
   const handleCompanyEdit = useCallback((payload) => {
     axios
-      .post('http://localhost/public/index.php/api/company/edit', {
-        payload,
-      })
+      .post(
+        'http://localhost/public/index.php/api/company/edit',
+        { payload },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+          },
+        }
+      )
       .then((r) => {})
-      .catch((err) => console.log(err));
+      .catch((errors) => {
+        console.log(errors);
+        if (errors.response?.status === 401) {
+          localStorage.removeItem('authToken', null);
+          navigate('/');
+        }
+      });
   }, []);
 
   return (

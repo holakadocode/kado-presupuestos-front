@@ -9,10 +9,8 @@ import styled from 'styled-components';
 import ProjectDefaultRoute from '../../../../src/Routing/ProjectDefaultRoute';
 import AppSelect from '../../Layout/Component/Form/AppSelect';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Snackbar } from '@mui/material';
 
- /**
-  * @return [type]
-  */
 export default function BudgetAddScreen() {
   const { clientID } = useParams();
   const navigate = useNavigate();
@@ -22,12 +20,19 @@ export default function BudgetAddScreen() {
   const [articles, setArticles] = useState();
   const [budget, setBudget] = useState();
   const [showArticlesModal, setShowArticlesModal] = useState();
+  const [showWarning, setShowWarning] = useState();
 
   const getData = useCallback(() => {
     axios
-      .post(`${ProjectDefaultRoute}/api/budget/get-data`, {
-        clientID,
-      })
+      .post(
+        `${ProjectDefaultRoute}/api/budget/get-data`,
+        { clientID },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+          },
+        }
+      )
       .then((r) => {
         setOwnCompany(r.data.ownCompany);
         setClient(r.data.client);
@@ -35,8 +40,14 @@ export default function BudgetAddScreen() {
         setBudget(r.data.budget);
         setArticles(r.data.articles);
       })
-      .catch((err) => console.log(err));
-  }, []);
+      .catch((errors) => {
+        console.log(errors);
+        if (errors.response?.status === 401) {
+          localStorage.removeItem('authToken', null);
+          navigate('/');
+        }
+      });
+  }, [clientID]);
 
   useState(() => {
     getData();
@@ -44,21 +55,39 @@ export default function BudgetAddScreen() {
 
   const getSelectedClient = useCallback((selectedClientID) => {
     axios
-      .post(`${ProjectDefaultRoute}/api/budget/client/get`, {
-        clientID: selectedClientID,
-      })
+      .post(
+        `${ProjectDefaultRoute}/api/budget/client/get`,
+        { clientID: selectedClientID },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+          },
+        }
+      )
       .then((r) => {
         setClient(r.data);
       })
-      .catch((err) => console.log(err));
+      .catch((errors) => {
+        console.log(errors);
+        if (errors.response?.status === 401) {
+          localStorage.removeItem('authToken', null);
+          navigate('/');
+        }
+      });
   }, []);
 
   const handleSetSavedItem = useCallback(
     (articleID, values, index, setFieldValue) => {
       axios
-        .post(`${ProjectDefaultRoute}/api/budget/article/get`, {
-          articleID,
-        })
+        .post(
+          `${ProjectDefaultRoute}/api/budget/article/get`,
+          { articleID },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+            },
+          }
+        )
         .then((r) => {
           let tempValues = { ...values };
           tempValues.articles[index].code = r.data.code;
@@ -68,7 +97,13 @@ export default function BudgetAddScreen() {
           tempValues.articles[index].total = r.data.price;
           setFieldValue('articles', tempValues.articles);
         })
-        .catch((err) => console.log(err));
+        .catch((errors) => {
+          console.log(errors);
+          if (errors.response?.status === 401) {
+            localStorage.removeItem('authToken', null);
+            navigate('/');
+          }
+        });
     },
     []
   );
@@ -76,26 +111,51 @@ export default function BudgetAddScreen() {
   const handleAddClient = useCallback(
     (payload) => {
       axios
-        .put(`${ProjectDefaultRoute}/api/budget/add`, { payload })
+        .put(
+          `${ProjectDefaultRoute}/api/budget/add`,
+          { payload },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+            },
+          }
+        )
         .then((r) => navigate(`/admin/clients/${r.data}/budget/list`))
-        .catch((err) => console.log(err));
+        .catch((errors) => {
+          console.log(errors);
+          if (errors.response?.status === 401) {
+            localStorage.removeItem('authToken', null);
+            navigate('/');
+          }
+        });
     },
     [clientID]
   );
 
   const handleAddNewArticle = useCallback((values, setFieldValue) => {
     let tempArticles = values.articles;
-    let add = [
-      ...tempArticles,
-      {
-        code: '',
-        article: '',
-        quantity: 1,
-        price: '',
-        total: '',
-      },
-    ];
-    setFieldValue('articles', add);
+    let lastArticle = tempArticles[tempArticles.length - 1];
+
+    if (
+      lastArticle.article !== '' &&
+      lastArticle.quantity !== '' &&
+      lastArticle.price !== null
+    ) {
+      setShowWarning(undefined);
+      let add = [
+        ...tempArticles,
+        {
+          code: '',
+          article: '',
+          quantity: 1,
+          price: '',
+          total: '',
+        },
+      ];
+      setFieldValue('articles', add);
+    } else {
+      setShowWarning('Rellene los parametros de su ultimo articulo añadido');
+    }
   }, []);
 
   const handleDeleteArticle = useCallback((index, values, setFieldValue) => {
@@ -387,10 +447,38 @@ export default function BudgetAddScreen() {
                 type="button"
                 className="btn btn-outline-secondary d-inline-flex align-items-center mt-4"
                 onClick={handleSubmit}
+                disabled={values.articles.some(
+                  (article) =>
+                    article.article.trim() === '' ||
+                    article.quantity <= 0 ||
+                    article.price <= 0
+                )}
+                title={
+                  values.articles.some(
+                    (article) =>
+                      article.article.trim() === '' ||
+                      article.quantity <= 0 ||
+                      article.price <= 0
+                  )
+                    ? 'Debe rellenar todos los campos de los articulos'
+                    : 'Finalizar'
+                }
               >
                 <AppRemixIcons icon="ri-upload-line" className="me-2" />
                 Finalizar presupuesto
               </button>
+
+              <Snackbar
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'center',
+                }}
+                open={showWarning}
+                autoHideDuration={6000}
+                onClose={() => setShowWarning(undefined)}
+                message={showWarning}
+                key={('top', 'center')}
+              />
             </Form>
           )}
         </Formik>

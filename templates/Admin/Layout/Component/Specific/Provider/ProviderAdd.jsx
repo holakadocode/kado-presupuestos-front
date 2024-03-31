@@ -8,14 +8,11 @@ import AppRemixIcons from '../../Icon/AppRemixIcons';
 import AppNumber from '../../Form/AppNumber';
 import AppInput from '../../Form/AppInput';
 import ProjectDefaultRoute from '../../../../../../src/Routing/ProjectDefaultRoute';
+import { useNavigate } from 'react-router-dom';
 
- /**
-  * @param mixed props
-  * 
-  * @return [type]
-  */
 export default function ProviderAdd(props) {
   const { providers, onSubmit } = props;
+  const navigate = useNavigate();
   const [initialValues, setInitialValues] = useState();
   const [validationSchema] = useState(
     Yup.object().shape({
@@ -33,10 +30,24 @@ export default function ProviderAdd(props) {
 
   const handleAddProvider = useCallback((values) => {
     axios
-      .put(`${ProjectDefaultRoute}/api/provider/add`, values)
+      .put(
+        `${ProjectDefaultRoute}/api/provider/add`,
+        { values },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+          },
+        }
+      )
       .then((r) => onSubmit())
-      .catch((err) => console.log(err))
-      .finally(() => setInitialValues(undefined));
+      .finally(() => setInitialValues(undefined))
+      .catch((errors) => {
+        console.log(errors);
+        if (errors.response?.status === 401) {
+          localStorage.removeItem('authToken', null);
+          navigate('/');
+        }
+      });
   }, []);
 
   const getLastCodProvider = useCallback(() => {
