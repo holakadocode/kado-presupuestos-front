@@ -34,6 +34,36 @@ export default function ClientBudgetHomeScreen() {
       });
   }, [clientID]);
 
+  const getExcelBudget = useCallback((budgetID) => {
+    axios
+      .post(
+        `${ProjectDefaultRoute}/api/xls/test`,
+        { clientID, budgetID },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+          },
+          responseType: 'blob',
+        }
+      )
+      .then((r) => {
+        const url = window.URL.createObjectURL(new Blob([r.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `P-000${budgetID}.xlsx`);
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode.removeChild(link);
+      })
+      .catch((errors) => {
+        console.log(errors);
+        if (errors.response?.status === 401) {
+          localStorage.removeItem('authToken', null);
+          navigate('/');
+        }
+      });
+  }, [clientID]);
+
   useEffect(() => {
     getClientBudgets();
   }, [getClientBudgets]);
@@ -115,14 +145,11 @@ export default function ClientBudgetHomeScreen() {
                           <div className="d-inline-flex justify-content-center align-items-center">
                             <button
                               className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center"
-                              onClick={() =>
-                                window.open(
-                                  `${ProjectDefaultRoute}/api/xls/test`
-                                )
-                              }
+                              onClick={() => getExcelBudget(budget.id)}
                             >
                               <AppRemixIcons icon="ri-file-excel-line" />
                             </button>
+                            
                             <Link
                               to={`/admin/budget/${client.id}/update/${budget.id}`}
                             >

@@ -372,7 +372,6 @@ export default function BudgetAddScreen() {
                     <AppNumber
                       value={values.articles[i].price}
                       required
-                      // error=""
                       onChange={(v) =>
                         handleAddInSelectedArticle(
                           'price',
@@ -385,7 +384,7 @@ export default function BudgetAddScreen() {
                     />
                   </div>
                   <div>
-                    {parseFloat(article.quantity) * parseFloat(article.price)}
+                    {parseFloat(article.quantity) * parseFloat(article.price)} €
                   </div>
                   <div>
                     <button className="btn btn-outline-secondary d-inline-flex align-items-center">
@@ -428,7 +427,7 @@ export default function BudgetAddScreen() {
                       (sum, article) => sum + article.quantity * article.price,
                       0
                     ) * 0.21
-                  ).toFixed(2)}
+                  ).toFixed(2)} €
                 </div>
                 <div>
                   {values.articles
@@ -436,7 +435,7 @@ export default function BudgetAddScreen() {
                       (sum, article) => sum + article.quantity * article.price,
                       0
                     )
-                    .toFixed(2)}
+                    .toFixed(2)} €
                 </div>
                 <div>
                   {(
@@ -447,7 +446,7 @@ export default function BudgetAddScreen() {
                           parseFloat(article.price),
                       0
                     ) * 1.21
-                  ).toFixed(2)}
+                  ).toFixed(2)} €
                 </div>
               </ResultTable>
 

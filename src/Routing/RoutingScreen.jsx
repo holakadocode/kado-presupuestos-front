@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import AdminLoginScreen from '../../templates/AdminLoginScreen';
 import AdminSidebar from '../../templates/Admin/Layout/Sidebar/AdminSidebar';
@@ -10,9 +11,8 @@ import BudgetHomeScreen from '../../templates/Admin/Screen/Budget/BudgetHomeScre
 import BudgetAddScreen from '../../templates/Admin/Screen/Budget/BudgetAddScreen';
 import BudgetUpdateScreen from '../../templates/Admin/Screen/Budget/BudgetUpdateScreen';
 import BudgetShowScreen from '../../templates/Admin/Screen/Budget/BudgetShowScreen';
-import CompanyHomeScreen from '../../templates/Admin/Screen/Company/CompanyHomeScreen';
 import ClientBudgetHomeScreen from '../../templates/Admin/Screen/Client/ClientBudgetHomeScreen';
-import { useEffect, useState } from 'react';
+import CompanyUpdateScreen from '../../templates/Admin/Screen/Company/CompanyUpdateScreen';
 
 export default function RoutingScreen() {
   const navigate = useNavigate();
@@ -37,7 +37,7 @@ export default function RoutingScreen() {
       <Route path="/admin" element={<AdminSidebar />}>
         <Route path="/admin" element={<AdminHomeScreen />} />
         <Route path="/admin/users" element={<AdminHomeScreen />} />
-        <Route path="/admin/company" element={<CompanyHomeScreen />} />
+        <Route path="/admin/company" element={<CompanyUpdateScreen />} />
         <Route path="/admin/clients" element={<ClientHomeScreen />} />
         <Route
           path="/admin/clients/:clientID/budget/list"

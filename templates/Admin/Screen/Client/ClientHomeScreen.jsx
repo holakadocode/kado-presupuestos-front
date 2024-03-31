@@ -96,6 +96,7 @@ export default function ClientHomeScreen() {
                         <div className="d-inline-flex justify-content-center align-items-center">
                           <Link
                             to={`/admin/clients/${client.id}/budget/list`}
+                            title="Ver presupuestos del cliente"
                             className={`nav-link me-2 ${
                               actualRoute.pathname ===
                               `/admin/clients/${client.id}/budget/list`
