@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Box, Modal, Typography } from "@mui/material";
 import { Field, Form, Formik } from "formik";
 import AppRemixIcons from "../../Icon/AppRemixIcons";
+import axios from "axios";
+import ProjectDefaultRoute from "../../../../../../src/Routing/ProjectDefaultRoute";
 
-export default function FolderAdd() {
+export default function FolderAdd(props) {
+  const { onSubmit } = props;
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -19,6 +22,14 @@ export default function FolderAdd() {
     boxShadow: 24,
     p: 4,
   };
+
+  const handleAddFolder = useCallback((values) => {
+    axios
+      .put(`${ProjectDefaultRoute}/api/storage/add`, values)
+      .then((r) => onSubmit())
+      .finally(()=>setOpen(false)) 
+      .catch((err) => console.log(err))
+  }, []);
 
   return (
     <>
@@ -45,12 +56,12 @@ export default function FolderAdd() {
                 initialValues={{
                   nombreCarpeta: "",
                 }}
-                onSubmit={(values, { resetForm }) => {
-                  handleClose();
-                  resetForm();
-                }}
+                validateOnChange={false}
+                validateOnBlur={false}
+                onSubmit={(v)=>handleAddFolder(v)}
               >
-                <Form>
+                {({ setFieldValue, values, handleSubmit, errors }) => (
+                <Form onSubmit={handleSubmit}>
                   <div className="input-group mb-3">
                     <span className="input-group-text" id="basic-addon1">
                       Nombre
@@ -73,6 +84,7 @@ export default function FolderAdd() {
                     Cerrar
                   </button>
                 </Form>
+              )}
               </Formik>
             </Typography>
           </Box>
