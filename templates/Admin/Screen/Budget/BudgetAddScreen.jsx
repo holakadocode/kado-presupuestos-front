@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Form, Formik } from 'formik';
+import * as Yup from 'yup';
 import AppRemixIcons from '../../Layout/Component/Icon/AppRemixIcons';
 import AppModal from '../../Layout/Component/Form/AppModal';
 import AppInput from '../../Layout/Component/Form/AppInput';
@@ -21,6 +22,11 @@ export default function BudgetAddScreen() {
   const [budget, setBudget] = useState();
   const [showArticlesModal, setShowArticlesModal] = useState();
   const [showWarning, setShowWarning] = useState();
+  const [validationSchema] = useState(
+    Yup.object().shape({
+      client: Yup.string().required('Requerido'),
+    })
+  );
 
   const getData = useCallback(() => {
     axios
@@ -193,7 +199,7 @@ export default function BudgetAddScreen() {
               },
             ],
           }}
-          // validationSchema={validationSchema}
+          validationSchema={validationSchema}
           validateOnChange={false}
           validateOnBlur={false}
           onSubmit={handleAddClient}
@@ -246,6 +252,8 @@ export default function BudgetAddScreen() {
                       </>
                     )}
                   </div>
+                  {errors.client &&
+                    setShowWarning('Faltan los datos del cliente')}
                 </div>
 
                 {/* Datos del cliente */}

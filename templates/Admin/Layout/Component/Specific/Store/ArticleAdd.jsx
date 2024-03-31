@@ -1,166 +1,136 @@
-import { useCallback, useState } from "react";
-import { Box, Modal, Typography } from "@mui/material";
-import { Field, Form, Formik } from "formik";
-import AppRemixIcons from "../../Icon/AppRemixIcons";
-import axios from "axios";
-import ProjectDefaultRoute from "../../../../../../src/Routing/ProjectDefaultRoute";
+import { useCallback, useState } from 'react';
+import { Box, Modal, Typography } from '@mui/material';
+import { Field, Form, Formik } from 'formik';
+import * as Yup from 'yup';
+import AppRemixIcons from '../../Icon/AppRemixIcons';
+import axios from 'axios';
+import ProjectDefaultRoute from '../../../../../../src/Routing/ProjectDefaultRoute';
+import AppInput from '../../Form/AppInput';
+import AppModal from '../../Form/AppModal';
+import AppNumber from '../../Form/AppNumber';
 
 export default function ArticleAdd(props) {
-  const {folderID, onSubmit} = props;
-    
+  const { folderID, onSubmit } = props;
+  const [validationSchema] = useState(
+    Yup.object().shape({
+      name: Yup.string().required('Requerido'),
+      code: Yup.string().required('Requerido'),
+      price: Yup.number().required('Requerido'),
+    })
+  );
+
   const [open, setOpen] = useState(false);
 
-  const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 400,
-    bgcolor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    p: 4,
-  };
-
-//   const [folder, setFolder] = useState();
-
-//   const getFolder = useCallback(() => {
-//     axios
-//       .get(`${ProjectDefaultRoute}/api/storage/list`)
-//       .then((r) => setFolder(r.data))
-//       .catch((e) => console.log('E', e));
-//   }, []);
-
-  const handleAddArticle = useCallback((values) => {
-    axios
-      .put(`${ProjectDefaultRoute}/api/storage/articleAdd`, {values, folderID})
-      .then((r) => onSubmit())
-      .catch((err) => console.log(err));
-  }, [folderID]);
+  const handleAddArticle = useCallback(
+    (values) => {
+      axios
+        .put(
+          `${ProjectDefaultRoute}/api/storage/articleAdd`,
+          { values, folderID },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+            },
+          }
+        )
+        .then((r) => onSubmit())
+        .catch((err) => console.log(err));
+    },
+    [folderID]
+  );
 
   return (
     <>
       <div>
-        <button
-          className="btn btn-outline-primary align-items-center"
+        <span
           onClick={() => setOpen(true)}
+          className="btn btn-outline-primary btn-sm"
         >
-          <AppRemixIcons icon="ri-add-box-line" className="me-2" />
-          Nuevo Articulo
-        </button>
-        <Modal
-          open={open}
-          onClose={() => setOpen(false)}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
+          <AppRemixIcons icon="ri-add-line" /> Añadir Articulo
+        </span>
+
+        <Formik
+          initialValues={{
+            name: '',
+            description: '',
+            code: '',
+            distributorCode: '',
+            distributorPrice: '',
+            articlePrice: '',
+            price: '',
+          }}
+          validationSchema={validationSchema}
+          validateOnChange={false}
+          validateOnBlur={false}
+          onSubmit={(v) => handleAddArticle(v)}
         >
-          <Box sx={style}>
-            <Typography id="modal-modal-title" variant="h6" component="h2">
-              Nuevo Artículo
-            </Typography>
-            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              <Formik
-                initialValues={{
-                  name: "Tornillo estrella",
-                  description: "adsad",
-                  code: "23",
-                  distributorCode: "2323",
-                  distributorPrice: "23",
-                  articlePrice: "23",
-                }}
-                validateOnChange={false}
-                validateOnBlur={false}
-                onSubmit={(v) => handleAddArticle(v)}
+          {({ setFieldValue, values, handleSubmit, errors }) => (
+            <Form>
+              <AppModal
+                target={open}
+                onClose={() => setOpen(false)}
+                title="Actualizar articulo"
+                isCloseButton
+                closeButtonText="Cerrar"
+                isSuccessButton
+                successButtonText="Actualizar"
+                onAccept={handleSubmit}
               >
-                {({ setFieldValue, values, handleSubmit, errors }) => (
-                  <Form onSubmit={handleSubmit}>
-                    <div className="input-group mb-3">
-                      <span className="input-group-text" id="basic-addon1">
-                        Nombre
-                      </span>
-                      <Field
-                        type="text"
-                        name="name"
-                        placeholder="Nombre del artículo"
-                        className="form-control"
-                      />
-                    </div>
-                    <div className="input-group mb-3">
-                      <span className="input-group-text" id="basic-addon1">
-                        Descripción
-                      </span>
-                      <Field
-                        type="text"
-                        name="description"
-                        placeholder="Descripción del artículo"
-                        className="form-control"
-                      />
-                    </div>
-                    <div className="input-group mb-3">
-                      <span className="input-group-text" id="basic-addon1">
-                        Código
-                      </span>
-                      <Field
-                        type="text"
-                        name="code"
-                        placeholder="Código del artículo"
-                        className="form-control"
-                      />
-                    </div>
-                    <div className="input-group mb-3">
-                      <span className="input-group-text" id="basic-addon1">
-                        Código del distribuidor
-                      </span>
-                      <Field
-                        type="text"
-                        name="distributorCode"
-                        placeholder="Código del distribuidor"
-                        className="form-control"
-                      />
-                    </div>
-                    <div className="input-group mb-3">
-                      <span className="input-group-text" id="basic-addon1">
-                        Precio del distribuidor
-                      </span>
-                      <Field
-                        type="number"
-                        step="any"
-                        name="distributorPrice"
-                        placeholder="Precio del distribuidor"
-                        className="form-control"
-                      />
-                    </div>
-                    <div className="input-group mb-3">
-                      <span className="input-group-text" id="basic-addon1">
-                        Precio
-                      </span>
-                      <Field
-                        type="number"
-                        step="any"
-                        name="articlePrice"
-                        placeholder="Precio del artículo"
-                        className="form-control"
-                      />
-                    </div>
-                    <button
-                      type="submit"
-                      className="btn btn-primary"
-                    >
-                      Crear
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-secondary ms-2"
-                      onClick={()=>setOpen(false)}
-                    >
-                      Cerrar
-                    </button>
-                  </Form>
-                )}
-              </Formik>
-            </Typography>
-          </Box>
-        </Modal>
+                <AppInput
+                  title={'Nombre de articulo'}
+                  value={values.name}
+                  helperText={errors.name}
+                  onChange={(v) => setFieldValue('name', v)}
+                  error={errors.name}
+                />
+
+                <AppInput
+                  title={'Descripción'}
+                  value={values.description}
+                  helperText={errors.description}
+                  onChange={(v) => setFieldValue('description', v)}
+                  error={errors.description}
+                  className="mt-3"
+                />
+
+                <AppInput
+                  title={'Código'}
+                  value={values.code}
+                  helperText={errors.code}
+                  onChange={(v) => setFieldValue('code', v)}
+                  error={errors.code}
+                  className="mt-3"
+                />
+                <AppInput
+                  title={'Código del distribuidor'}
+                  value={values.distributorCode}
+                  helperText={errors.distributorCode}
+                  onChange={(v) => setFieldValue('distributorCode', v)}
+                  error={errors.distributorCode}
+                  className="mt-3"
+                />
+
+                <AppNumber
+                  title={'Precio del distribuidor'}
+                  value={values.distributorPrice}
+                  helperText={errors.distributorPrice}
+                  onChange={(v) => setFieldValue('distributorPrice', v)}
+                  error={errors.distributorPrice}
+                  className="mt-3"
+                />
+
+                <AppNumber
+                  title={'Precio'}
+                  value={values.price}
+                  helperText={errors.price}
+                  onChange={(v) => setFieldValue('price', v)}
+                  error={errors.price}
+                  className="mt-3"
+                />
+              </AppModal>
+            </Form>
+          )}
+        </Formik>
       </div>
     </>
   );

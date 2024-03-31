@@ -28,10 +28,11 @@ export default function AppNumber(props) {
     color,
     focused,
     onChange,
+    className
   } = props;
 
   return (
-    <>
+    <div className={className}>
       <TextField
         id="outlined-basic"
         variant="outlined"
@@ -73,6 +74,6 @@ export default function AppNumber(props) {
           )
         }
       />
-    </>
+    </div>
   );
 }
