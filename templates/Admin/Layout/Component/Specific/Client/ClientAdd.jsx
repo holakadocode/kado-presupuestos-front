@@ -20,7 +20,7 @@ export default function ClientAdd(props) {
       surname: Yup.string().required('Requerido'),
       taxIdentification: Yup.string().required('Requerido'),
       tlf: Yup.number().required('Requerido'),
-      contactEmail: Yup.string().required('Requerido'),
+      contactEmail: Yup.string().email().required('Requerido'),
       address: Yup.string().required('Requerido'),
       cp: Yup.number().required('Requerido'),
       city: Yup.string().required('Requerido'),
