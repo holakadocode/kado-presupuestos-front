@@ -7,9 +7,6 @@ import ClientEdit from '../../Layout/Component/Specific/Client/ClientEdit';
 import ProjectDefaultRoute from '../../../../src/Routing/ProjectDefaultRoute';
 import { Link, useLocation } from 'react-router-dom';
 
- /**
-  * @return [type]
-  */
 export default function ClientHomeScreen() {
   const [clients, setClients] = useState();
   const actualRoute = useLocation();
@@ -18,7 +15,11 @@ export default function ClientHomeScreen() {
 
   const getClients = useCallback(() => {
     axios
-      .get(`${ProjectDefaultRoute}/api/client/list`)
+      .get(`${ProjectDefaultRoute}/api/client/list`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+        },
+      })
       .then((r) => setClients(r.data))
       .catch((e) => console.log('E', e));
   }, []);
@@ -30,9 +31,15 @@ export default function ClientHomeScreen() {
   const deleteClient = useCallback(
     (clientID) => {
       axios
-        .delete(`${ProjectDefaultRoute}/api/client/delete`, {
-          data: { clientID },
-        })
+        .delete(
+          `${ProjectDefaultRoute}/api/client/delete`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+            },
+            data: { clientID },
+          }
+        )
         .then(() => getClients());
     },
     [getClients]

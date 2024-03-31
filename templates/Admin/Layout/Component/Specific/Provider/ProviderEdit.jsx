@@ -1,5 +1,3 @@
-/* eslint-disable react/jsx-no-undef */
-/* eslint-disable react/prop-types */
 import axios from 'axios';
 import { useCallback, useState } from 'react';
 import * as Yup from 'yup';
@@ -9,14 +7,11 @@ import AppModal from '../../Form/AppModal';
 import AppNumber from '../../Form/AppNumber';
 import AppInput from '../../Form/AppInput';
 import ProjectDefaultRoute from '../../../../../../src/Routing/ProjectDefaultRoute';
+import { useNavigate } from 'react-router-dom';
 
- /**
-  * @param mixed props
-  * 
-  * @return [type]
-  */
 export default function ProviderEdit(props) {
   const { provider, onSubmit } = props;
+  const navigate = useNavigate();
   const [showEditProvider, setShowEditProvider] = useState(false);
   const [validationSchema] = useState(
      Yup.object().shape({
@@ -34,15 +29,26 @@ export default function ProviderEdit(props) {
   const handleProviderEdit = useCallback(
     (payload) => {
       axios
-        .post(`${ProjectDefaultRoute}/api/provider/edit`, {
-          providerID: provider.id,
-          payload,
-        })
-        .then((r) => {
+        .post(
+          `${ProjectDefaultRoute}/api/provider/edit`,
+          { providerID: provider.id, payload },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+            },
+          }
+        )
+        .then(() => {
           onSubmit();
         })
-        .catch((err) => console.log(err))
-        .finally(() => setShowEditProvider(false));
+        .finally(() => setShowEditProvider(false))
+        .catch((errors) => {
+          console.log(errors);
+          if (errors.response?.status === 401) {
+            localStorage.removeItem('authToken', null);
+            navigate('/');
+          }
+        });
     },
     [provider]
   );

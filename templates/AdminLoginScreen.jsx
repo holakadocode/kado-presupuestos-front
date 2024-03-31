@@ -1,30 +1,34 @@
-// import axios from 'axios';
-// import { useCallback } from 'react';
-
-import { Field, Form, Formik } from 'formik';
+import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import AppInput from './Admin/Layout/Component/Form/AppInput';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
- /**
-  * @return [type]
-  */
-export default function AdminLoginScreen() {
+export default function AdminLoginScreen(props) {
+  const { onLogin } = props;
+  const navigate = useNavigate();
+
   const [validationSchema] = useState(
     Yup.object().shape({
-      email: Yup.string()
+      username: Yup.string()
         .required('Introduzca un email')
         .email('El email no es valido'),
       password: Yup.string().required('Introduzca su contraseña'),
     })
   );
 
-  // const handleTestUrl = useCallback(async () => {
-  //   axios
-  //     .get('http://localhost/public/index.php/api/test')
-  //     .then((r) => console.log(r.data))
-  //     .catch((err) => console.log(err));
-  // });
+  const handleLogin = useCallback((payload) => {
+    axios
+      .post('http://localhost/public/index.php/api/login_check', {
+        ...payload,
+      })
+      .then((r) => {
+        onLogin(r.data.token);
+        navigate(`/admin`);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <>
@@ -36,22 +40,23 @@ export default function AdminLoginScreen() {
               <div className="card-body">
                 <Formik
                   initialValues={{
-                    email: null,
-                    password: null,
+                    username: 'a@b.es',
+                    password: '1234',
                   }}
                   validationSchema={validationSchema}
                   validateOnChange={false}
                   validateOnBlur={false}
                   enableReinitialize
-                  onSubmit={(v) => console.log(v)}
+                  onSubmit={(v) => handleLogin(v)}
                 >
                   {({ setFieldValue, values, handleSubmit, errors }) => (
                     <Form onSubmit={handleSubmit}>
                       <div className="mb-3">
                         <AppInput
                           title="Email"
-                          error={errors.email}
-                          helperText={errors.email}
+                          value={values.username}
+                          error={errors.username}
+                          helperText={errors.username}
                           onChange={(v) => setFieldValue('email', v)}
                         />
                       </div>
@@ -59,6 +64,7 @@ export default function AdminLoginScreen() {
                         <AppInput
                           title="Contraseña"
                           type="password"
+                          value={values.password}
                           error={errors.password}
                           helperText={errors.password}
                           onChange={(v) => setFieldValue('password', v)}

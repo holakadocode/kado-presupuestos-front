@@ -1,7 +1,3 @@
- /**
-  * @return [type]
-  */
 export default function AdminHomeScreen() {
-  const holi = 0;
-  return <div>adminHomeScreen</div>;
+  return <div>Esta usted en la Pagina de inicio</div>;
 }
