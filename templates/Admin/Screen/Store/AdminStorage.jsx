@@ -81,14 +81,19 @@ export default function AdminStorage() {
               <ArticleAdd folderID={folder.id} />
             </div>
             {folder.articles.map((article) => (
-              <div className="d-inline-flex mt-2 ms-3" key={article.id}>
-                <div>{article.name}</div>
-                <ArticleEdit onSubmit={() => getFolders()} article={article} />
-                <span onClick={() => deleteArticle(article.id)}>
-                  <AppRemixIcons
-                    icon="ri-delete-bin-2-line"
-                    className="btn btn-outline-danger btn-sm"
+              <div className="mt-2 ms-3" key={article.id}>
+                {article.name}
+                <span className="d-inline-flex">
+                  <ArticleEdit
+                    onSubmit={() => getFolders()}
+                    article={article}
                   />
+                  <span onClick={() => deleteArticle(article.id)}>
+                    <AppRemixIcons
+                      icon="ri-delete-bin-2-line"
+                      className="btn btn-outline-danger btn-sm"
+                    />
+                  </span>
                 </span>
               </div>
             ))}

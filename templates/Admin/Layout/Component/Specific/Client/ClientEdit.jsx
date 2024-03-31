@@ -60,6 +60,7 @@ export default function ClientEdit(props) {
     <>
       <button
         type="button"
+        title="Editar cliente"
         className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center"
         onClick={() => setShowModal(true)}
       >
