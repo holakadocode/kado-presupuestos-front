@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import AdminLoginScreen from '../../templates/AdminLoginScreen';
 import AdminSidebar from '../../templates/Admin/Layout/Sidebar/AdminSidebar';
 import AdminHomeScreen from '../../templates/Admin/Screen/AdminHomeScreen';
@@ -12,14 +12,27 @@ import BudgetUpdateScreen from '../../templates/Admin/Screen/Budget/BudgetUpdate
 import BudgetShowScreen from '../../templates/Admin/Screen/Budget/BudgetShowScreen';
 import CompanyHomeScreen from '../../templates/Admin/Screen/Company/CompanyHomeScreen';
 import ClientBudgetHomeScreen from '../../templates/Admin/Screen/Client/ClientBudgetHomeScreen';
+import { useEffect, useState } from 'react';
 
- /**
-  * @return [type]
-  */
 export default function RoutingScreen() {
+  const navigate = useNavigate();
+
+  const handleSetToken = (value) => {
+    localStorage.setItem('authToken', value);
+  };
+
+  useEffect(() => {
+    if (!localStorage.getItem('authToken')) {
+      navigate('/');
+    }
+  }, [localStorage.getItem('authToken')]);
+
   return (
     <Routes>
-      <Route path="/" element={<AdminLoginScreen />} />
+      <Route
+        path="/"
+        element={<AdminLoginScreen onLogin={(v) => handleSetToken(v)} />}
+      />
 
       <Route path="/admin" element={<AdminSidebar />}>
         <Route path="/admin" element={<AdminHomeScreen />} />
@@ -34,9 +47,18 @@ export default function RoutingScreen() {
         <Route path="/admin/provider" element={<ProviderHomeScreen />} />
         <Route path="/admin/shitTest" element={<ShitTest />} />
         <Route path="/admin/budget" element={<BudgetHomeScreen />} />
-        <Route path="/admin/budget/:clientID/add" element={<BudgetAddScreen />} />
-        <Route path="/admin/budget/:clientID/show/:budgetID" element={<BudgetShowScreen />} />
-        <Route path="/admin/budget/:clientID/update/:budgetID" element={<BudgetUpdateScreen />} />
+        <Route
+          path="/admin/budget/:clientID/add"
+          element={<BudgetAddScreen />}
+        />
+        <Route
+          path="/admin/budget/:clientID/show/:budgetID"
+          element={<BudgetShowScreen />}
+        />
+        <Route
+          path="/admin/budget/:clientID/update/:budgetID"
+          element={<BudgetUpdateScreen />}
+        />
       </Route>
     </Routes>
   );

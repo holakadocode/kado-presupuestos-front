@@ -1,19 +1,18 @@
-/* eslint-disable react/jsx-no-undef */
 /* eslint-disable react/prop-types */
-import axios from 'axios';
-import { useCallback, useEffect, useState } from 'react';
-import AppRemixIcons from '../../Icon/AppRemixIcons';
 import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
+import { useCallback, useEffect, useState } from 'react';
+import axios from 'axios';
+import AppModal from '../../Form/AppModal';
+import AppRemixIcons from '../../Icon/AppRemixIcons';
 import AppInput from '../../Form/AppInput';
-import ProjectDefaultRoute from '../../../../../../src/Routing/ProjectDefaultRoute';
-import { Alert } from '@mui/material';
+import ProjectDefaultRoute from '../../../../src/Routing/ProjectDefaultRoute';
 import { useNavigate } from 'react-router-dom';
 
-export default function CompanyEdit() {
-  const [company, setCompany] = useState(false);
-  const [success, setSuccess] = useState(false);
+export default function CompanyAdd(props) {
+  const { company, onSubmit } = props;
   const navigate = useNavigate();
+  const [initialValues, setInitialValues] = useState();
   const [validationSchema] = useState(
     Yup.object().shape({
       name: Yup.string().required('Requerido'),
@@ -21,52 +20,24 @@ export default function CompanyEdit() {
       address: Yup.string().required('Requerido'),
       cp: Yup.string().required('Requerido'),
       city: Yup.string().required('Requerido'),
-      phone: Yup.number()
-        .typeError('Eso no parece un numero de telefono')
-        .positive('No puede ser un numero negativo')
-        .integer('No puede contener numeros decimales')
-        .required('Numero de telefono es requerido'),
-      email: Yup.string()
-        .email('Debe ser un email valido')
-        .required('Requerido'),
+      phone: Yup.string().required('Requerido'),
+      email: Yup.string().required('Requerido'),
     })
   );
 
-  const getCompany = useCallback(() => {
+  const handleAddCompany = useCallback((values) => {
     axios
-      .get(`${ProjectDefaultRoute}/public/index.php/api/company/get`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('authToken')}`,
-        },
-      })
-      .then((r) => {
-        setCompany(r.data);
-      })
-      .catch((errors) => {
-        console.log(errors);
-        if (errors.response?.status === 401) {
-          localStorage.removeItem('authToken', null);
-          navigate('/');
-        }
-      });
-  }, [company]);
-
-  useEffect(() => {
-    getCompany();
-  }, []);
-
-  const handleCompanyEdit = useCallback((payload) => {
-    axios
-      .post(
-        'http://localhost/public/index.php/api/company/edit',
-        { payload },
+      .put(
+        `${ProjectDefaultRoute}/api/company/add`,
+        { values },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('authToken')}`,
           },
         }
       )
-      .then((r) => {})
+      .then((r) => onSubmit())
+      .finally(() => setInitialValues(undefined))
       .catch((errors) => {
         console.log(errors);
         if (errors.response?.status === 401) {
@@ -76,28 +47,54 @@ export default function CompanyEdit() {
       });
   }, []);
 
+  const getLastCodCompany = useCallback(() => {
+    if (company)
+      setInitialValues({
+        name: '',
+        taxIdentification: '',
+        address: '',
+        cp: '',
+        city: '',
+        phone: null,
+        email: '',
+      });
+  }, [company]);
+
+  useEffect(() => {
+    getLastCodCompany();
+  }, []);
+
   return (
     <>
-      {company ? (
-        <>
-          <Formik
-            initialValues={{
-              name: company.name || '',
-              taxIdentification: company.taxIdentification || '',
-              address: company.address || '',
-              cp: company.cp || '',
-              city: company.city || '',
-              phone: company.phone || '',
-              email: company.email || '',
-            }}
-            validationSchema={validationSchema}
-            validateOnChange={false}
-            validateOnBlur={false}
-            // enableReinitialize
-            onSubmit={handleCompanyEdit}
-          >
-            {({ setFieldValue, values, handleSubmit, errors }) => (
-              <Form onSubmit={handleSubmit}>
+      <button
+        type="button"
+        className="btn btn-outline-secondary d-inline-flex align-items-center"
+        onClick={() => getLastCodCompany()}
+      >
+        <AppRemixIcons icon="ri-user-add-line" />
+        Añadir datos Compañia
+      </button>
+
+      {initialValues && (
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          validateOnChange={false}
+          validateOnBlur={false}
+          onSubmit={handleAddCompany}
+        >
+          {({ setFieldValue, values, handleSubmit, errors }) => (
+            <Form onSubmit={handleSubmit}>
+              <AppModal
+                target={initialValues}
+                onClose={() => setInitialValues(undefined)}
+                title="Datos Compañia"
+                isCloseButton
+                closeButtonText="Cerrar"
+                isSuccessButton
+                successButtonText="Crear"
+                onAccept={handleSubmit}
+              >
                 <div className="row mb-3">
                   <div className="col-6">
                     <AppInput
@@ -165,6 +162,7 @@ export default function CompanyEdit() {
                     />
                   </div>
                 </div>
+
                 <div className="row mb-3">
                   <div className="col-6">
                     <AppInput
@@ -177,24 +175,10 @@ export default function CompanyEdit() {
                     />
                   </div>
                 </div>
-                <button
-                  type="submit"
-                  className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center"
-                >
-                  <AppRemixIcons icon="ri-pencil-line" />
-                  Actualizar
-                </button>
-              </Form>
-            )}
-          </Formik>
-          {success && (
-            <Alert severity="success" className="mt-3">
-              Empresa editada
-            </Alert>
+              </AppModal>
+            </Form>
           )}
-        </>
-      ) : (
-        <div>Cargando</div>
+        </Formik>
       )}
     </>
   );

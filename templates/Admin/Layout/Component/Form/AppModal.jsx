@@ -46,7 +46,7 @@ export default function AppModal(props) {
                   />
                 </div>
                 <div className="modal-body">{children}</div>
-                <div className="modal-footer">
+                <div className="modal-footer mt-3">
                   {isCloseButton && (
                     <button
                       type="button"

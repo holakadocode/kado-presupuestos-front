@@ -1,27 +1,35 @@
 import axios from 'axios';
 import { useCallback, useState } from 'react';
 import styled from 'styled-components';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import ProjectDefaultRoute from '../../../../src/Routing/ProjectDefaultRoute';
 
- /**
-  * @return [type]
-  */
 export default function BudgetShowScreen() {
   const { clientID, budgetID } = useParams();
   const [budget, setBudget] = useState();
+  const navigate = useNavigate();
 
   const getData = useCallback(() => {
     axios
-      .post(`${ProjectDefaultRoute}/api/budget/get`, {
-        clientID,
-        budgetID,
-      })
+      .post(
+        `${ProjectDefaultRoute}/api/budget/get`,
+        { clientID, budgetID },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+          },
+        }
+      )
       .then((r) => {
-        console.log(r.data);
         setBudget(r.data);
       })
-      .catch((err) => console.log(err));
+      .catch((errors) => {
+        console.log(errors);
+        if (errors.response?.status === 401) {
+          localStorage.removeItem('authToken', null);
+          navigate('/');
+        }
+      });
   }, [budgetID]);
 
   useState(() => {

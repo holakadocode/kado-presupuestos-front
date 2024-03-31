@@ -2,20 +2,30 @@ import { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 import AppRemixIcons from '../../Layout/Component/Icon/AppRemixIcons';
 import ProjectDefaultRoute from '../../../../src/Routing/ProjectDefaultRoute';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
- /**
-  * @return [type]
-  */
 export default function BudgetHomeScreen() {
   const [budgets, setBudgets] = useState();
+  const navigate = useNavigate();
 
   const getBudgets = useCallback(() => {
     axios
-      .get(`${ProjectDefaultRoute}/api/budget/list`)
-      .then((r) => setBudgets(r.data))
-      .catch((e) => console.log('E', e));
-  }, []);
+      .get(`${ProjectDefaultRoute}/api/budget/list`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+        },
+      })
+      .then((r) => {
+        setBudgets(r.data);
+      })
+      .catch((errors) => {
+        console.log(errors);
+        if (errors.response?.status === 401) {
+          localStorage.removeItem('authToken', null);
+          navigate('/');
+        }
+      });
+  }, [localStorage]);
 
   useEffect(() => {
     getBudgets();
@@ -24,9 +34,19 @@ export default function BudgetHomeScreen() {
   const handleDeleteBudget = useCallback((budgetID) => {
     axios
       .delete(`${ProjectDefaultRoute}/api/budget/delete`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+        },
         data: { budgetID },
       })
-      .then(() => getBudgets());
+      .then(() => getBudgets())
+      .catch((errors) => {
+        console.log(errors);
+        if (errors.response?.status === 401) {
+          localStorage.removeItem('authToken', null);
+          navigate('/');
+        }
+      });
   }, []);
 
   return (
@@ -68,11 +88,6 @@ export default function BudgetHomeScreen() {
                         <div className="d-inline-flex justify-content-center align-items-center">
                           <Link
                             to={`/admin/budget/${budget.clientID}/show/${budget.id}`}
-                            // className={`nav-link ms-3 ${
-                            //   actualRoute.pathname === '/admin'
-                            //     ? 'linkInRoute'
-                            //     : ''
-                            // }`}
                           >
                             <button className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center">
                               <AppRemixIcons

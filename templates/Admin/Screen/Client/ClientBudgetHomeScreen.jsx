@@ -1,30 +1,37 @@
 import { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 import AppRemixIcons from '../../Layout/Component/Icon/AppRemixIcons';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import ProjectDefaultRoute from '../../../../src/Routing/ProjectDefaultRoute';
 
- /**
-  * @return [type]
-  */
 export default function ClientBudgetHomeScreen() {
-  const actualRoute = useLocation();
-
   const { clientID } = useParams();
+  const navigate = useNavigate();
   const [client, setClient] = useState();
   const [clientBudgets, setClientBudgets] = useState([]);
 
   const getClientBudgets = useCallback(() => {
     axios
-      .post(`${ProjectDefaultRoute}/api/client/get`, {
-        clientID,
-      })
+      .post(
+        `${ProjectDefaultRoute}/api/client/get`,
+        { clientID },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+          },
+        }
+      )
       .then((r) => {
-        console.log(r.data);
         setClient(r.data);
         setClientBudgets(r.data.budgets);
       })
-      .catch((e) => console.log('E', e));
+      .catch((errors) => {
+        console.log(errors);
+        if (errors.response?.status === 401) {
+          localStorage.removeItem('authToken', null);
+          navigate('/');
+        }
+      });
   }, [clientID]);
 
   useEffect(() => {
@@ -33,10 +40,23 @@ export default function ClientBudgetHomeScreen() {
 
   const handleDeleteBudget = useCallback((budgetID) => {
     axios
-      .delete(`${ProjectDefaultRoute}/api/budget/delete`, {
-        data: { budgetID },
-      })
-      .then(() => getClientBudgets());
+      .delete(
+        `${ProjectDefaultRoute}/api/budget/delete`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+          },
+          data: { budgetID },
+        }
+      )
+      .then(() => getClientBudgets())
+      .catch((errors) => {
+        console.log(errors);
+        if (errors.response?.status === 401) {
+          localStorage.removeItem('authToken', null);
+          navigate('/');
+        }
+      });
   }, []);
 
   return (
@@ -81,7 +101,7 @@ export default function ClientBudgetHomeScreen() {
                       <th>Título</th>
                       <th>IVA</th>
                       <th>Total</th>
-                      <th className='text-center'>Opciones</th>
+                      <th className="text-center">Opciones</th>
                     </tr>
                   </thead>
                   <tbody>

@@ -1,86 +1,88 @@
-import { useState } from "react";
-import { Box, Modal, Typography } from "@mui/material";
-import { Field, Form, Formik } from "formik";
-import AppRemixIcons from "../../Icon/AppRemixIcons";
+import { useCallback, useState } from 'react';
+import { Form, Formik } from 'formik';
+import * as Yup from 'yup';
+import AppRemixIcons from '../../Icon/AppRemixIcons';
+import axios from 'axios';
+import ProjectDefaultRoute from '../../../../../../src/Routing/ProjectDefaultRoute';
+import { useNavigate } from 'react-router';
+import AppModal from '../../Form/AppModal';
+import AppInput from '../../Form/AppInput';
 
- /**
-  * @return [type]
-  */
-export default function FolderAdd() {
+export default function FolderAdd(props) {
+  const { onSubmit } = props;
+  const navigate = useNavigate();
+  const [validationSchema] = useState(
+    Yup.object().shape({
+      nameFolder: Yup.string().required('Introduzca un nombre'),
+    })
+  );
+
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
 
-  const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 400,
-    bgcolor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    p: 4,
-  };
+  const handleAddFolder = useCallback((payload) => {
+    axios
+      .put(
+        `${ProjectDefaultRoute}/api/storage/add`,
+        { payload },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+          },
+        }
+      )
+      .then(() => onSubmit())
+      .finally(() => setOpen(false))
+      .catch((errors) => {
+        console.log(errors);
+        if (errors.response?.status === 401) {
+          localStorage.removeItem('authToken', null);
+          navigate('/');
+        }
+      });
+  }, []);
 
   return (
     <>
-      <div>
-        <button
-          className="btn btn-outline-secondary d-inline-flex align-items-center"
-          onClick={handleOpen}
-        >
-          <AppRemixIcons icon="ri-folder-add-line" className="me-2" />
-          Nueva Carpeta
-        </button>
-        <Modal
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box sx={style}>
-            <Typography id="modal-modal-title" variant="h6" component="h2">
-              Nueva Carpeta
-            </Typography>
-            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              <Formik
-                initialValues={{
-                  nombreCarpeta: "",
-                }}
-                onSubmit={(values, { resetForm }) => {
-                  handleClose();
-                  resetForm();
-                }}
-              >
-                <Form>
-                  <div className="input-group mb-3">
-                    <span className="input-group-text" id="basic-addon1">
-                      Nombre
-                    </span>
-                    <Field
-                      type="text"
-                      name="nombreCarpeta"
-                      placeholder="Nombre de la carpeta"
-                      className="form-control"
-                    />
-                  </div>
-                  <button type="submit" className="btn btn-primary">
-                    Crear
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-secondary ms-2"
-                    onClick={handleClose}
-                  >
-                    Cerrar
-                  </button>
-                </Form>
-              </Formik>
-            </Typography>
-          </Box>
-        </Modal>
-      </div>
+      <button
+        className="btn btn-outline-secondary d-inline-flex align-items-center"
+        onClick={() => setOpen(true)}
+      >
+        <AppRemixIcons icon="ri-folder-add-line" className="me-2" />
+        Nueva Carpeta
+      </button>
+
+      <Formik
+        initialValues={{
+          nameFolder: '',
+        }}
+        validationSchema={validationSchema}
+        validateOnChange={false}
+        validateOnBlur={false}
+        onSubmit={(v) => handleAddFolder(v)}
+      >
+        {({ setFieldValue, values, handleSubmit, errors }) => (
+          <Form onSubmit={handleSubmit}>
+            <AppModal
+              target={open}
+              onClose={() => setOpen(false)}
+              title="Nueva carpeta"
+              isCloseButton
+              closeButtonText="Cerrar"
+              isSuccessButton
+              successButtonText="Crear carpeta"
+              onAccept={handleSubmit}
+            >
+              <AppInput
+                title={'Nombre de carpeta'}
+                value={values.nameFolder}
+                helperText={errors.nameFolder}
+                onChange={(v) => setFieldValue('nameFolder', v)}
+                error={errors.nameFolder}
+              />
+            </AppModal>
+          </Form>
+        )}
+      </Formik>
     </>
   );
 }

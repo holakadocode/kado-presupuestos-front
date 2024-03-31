@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Form, Formik } from 'formik';
+import * as Yup from 'yup';
 import AppRemixIcons from '../../Layout/Component/Icon/AppRemixIcons';
 import AppModal from '../../Layout/Component/Form/AppModal';
 import AppInput from '../../Layout/Component/Form/AppInput';
@@ -9,10 +10,8 @@ import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
 import AppSelect from '../../Layout/Component/Form/AppSelect';
 import ProjectDefaultRoute from '../../../../src/Routing/ProjectDefaultRoute';
+import { Snackbar } from '@mui/material';
 
- /**
-  * @return [type]
-  */
 export default function BudgetUpdateScreen() {
   const { clientID, budgetID } = useParams();
   const navigate = useNavigate();
@@ -23,13 +22,24 @@ export default function BudgetUpdateScreen() {
   const [articlesSelector, setArticlesSelector] = useState();
   const [budget, setBudget] = useState();
   const [showArticlesModal, setShowArticlesModal] = useState();
+  const [showWarning, setShowWarning] = useState();
+  const [validationSchema] = useState(
+    Yup.object().shape({
+      client: Yup.string().required('Requerido'),
+    })
+  );
 
   const getData = useCallback(() => {
     axios
-      .post(`${ProjectDefaultRoute}/api/budget/update/get-data`, {
-        clientID,
-        budgetID,
-      })
+      .post(
+        `${ProjectDefaultRoute}/api/budget/update/get-data`,
+        { clientID, budgetID },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+          },
+        }
+      )
       .then((r) => {
         setOwnCompany(r.data.ownCompany);
         setClient(r.data.client);
@@ -38,7 +48,13 @@ export default function BudgetUpdateScreen() {
         setArticles(r.data.articles);
         setArticlesSelector(r.data.articlesSelector);
       })
-      .catch((err) => console.log(err));
+      .catch((errors) => {
+        console.log(errors);
+        if (errors.response?.status === 401) {
+          localStorage.removeItem('authToken', null);
+          navigate('/');
+        }
+      });
   }, [clientID, budgetID]);
 
   useState(() => {
@@ -47,21 +63,39 @@ export default function BudgetUpdateScreen() {
 
   const getSelectedClient = useCallback((selectedClientID) => {
     axios
-      .post(`${ProjectDefaultRoute}/api/budget/client/get`, {
-        clientID: selectedClientID,
-      })
+      .post(
+        `${ProjectDefaultRoute}/api/budget/client/get`,
+        { clientID: selectedClientID },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+          },
+        }
+      )
       .then((r) => {
         setClient(r.data);
       })
-      .catch((err) => console.log(err));
+      .catch((errors) => {
+        console.log(errors);
+        if (errors.response?.status === 401) {
+          localStorage.removeItem('authToken', null);
+          navigate('/');
+        }
+      });
   }, []);
 
   const handleSetSavedItem = useCallback(
     (articleID, values, index, setFieldValue) => {
       axios
-        .post(`${ProjectDefaultRoute}/api/budget/article/get`, {
-          articleID,
-        })
+        .post(
+          `${ProjectDefaultRoute}/api/budget/article/get`,
+          { articleID },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+            },
+          }
+        )
         .then((r) => {
           let tempValues = { ...values };
           tempValues.articles[index].code = r.data.code;
@@ -70,7 +104,13 @@ export default function BudgetUpdateScreen() {
           tempValues.articles[index].price = r.data.price;
           setFieldValue('articles', tempValues.articles);
         })
-        .catch((err) => console.log(err));
+        .catch((errors) => {
+          console.log(errors);
+          if (errors.response?.status === 401) {
+            localStorage.removeItem('authToken', null);
+            navigate('/');
+          }
+        });
     },
     []
   );
@@ -78,30 +118,51 @@ export default function BudgetUpdateScreen() {
   const handleAddClient = useCallback(
     (payload) => {
       axios
-        .post(`${ProjectDefaultRoute}/api/budget/update`, {
-          payload,
-          clientID,
-          budgetID,
-        })
+        .post(
+          `${ProjectDefaultRoute}/api/budget/update`,
+          { payload, clientID, budgetID },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+            },
+          }
+        )
         .then(() => navigate(`/admin/clients/${clientID}/budget/list`))
-        // .then(() => Navigate(`/admin/budget/${clientID}/show/${budgetID}`))
-        .catch((err) => console.log(err));
+        .catch((errors) => {
+          console.log(errors);
+          if (errors.response?.status === 401) {
+            localStorage.removeItem('authToken', null);
+            navigate('/');
+          }
+        });
     },
     [clientID, budgetID]
   );
 
   const handleAddNewArticle = useCallback((values, setFieldValue) => {
     let tempArticles = values.articles;
-    let add = [
-      ...tempArticles,
-      {
-        code: '',
-        article: '',
-        quantity: 1,
-        price: '',
-      },
-    ];
-    setFieldValue('articles', add);
+    let lastArticle = tempArticles[tempArticles.length - 1];
+
+    if (
+      lastArticle.article !== '' &&
+      lastArticle.quantity !== '' &&
+      lastArticle.price !== null
+    ) {
+      setShowWarning(undefined);
+      let add = [
+        ...tempArticles,
+        {
+          code: '',
+          article: '',
+          quantity: 1,
+          price: '',
+          total: '',
+        },
+      ];
+      setFieldValue('articles', add);
+    } else {
+      setShowWarning('Rellene los parametros de su ultimo articulo añadido');
+    }
   }, []);
 
   const handleDeleteArticle = useCallback((index, values, setFieldValue) => {
@@ -132,7 +193,7 @@ export default function BudgetUpdateScreen() {
             client: client.id,
             articles: articles,
           }}
-          // validationSchema={validationSchema}
+          validationSchema={validationSchema}
           validateOnChange={false}
           validateOnBlur={false}
           onSubmit={handleAddClient}
@@ -183,6 +244,8 @@ export default function BudgetUpdateScreen() {
                       </>
                     )}
                   </div>
+                  {errors.client &&
+                    setShowWarning('Faltan los datos del cliente')}
                 </div>
 
                 <div className="col-6">
@@ -378,10 +441,37 @@ export default function BudgetUpdateScreen() {
                 type="button"
                 className="btn btn-outline-secondary d-inline-flex align-items-center mt-4"
                 onClick={handleSubmit}
+                disabled={values.articles.some(
+                  (article) =>
+                    article.article.trim() === '' ||
+                    article.quantity <= 0 ||
+                    article.price <= 0
+                )}
+                title={
+                  values.articles.some(
+                    (article) =>
+                      article.article.trim() === '' ||
+                      article.quantity <= 0 ||
+                      article.price <= 0
+                  )
+                    ? 'Debe rellenar todos los campos de los articulos'
+                    : 'Finalizar'
+                }
               >
                 <AppRemixIcons icon="ri-upload-line" className="me-2" />
-                Actualizar presupuesto
+                Finalizar presupuesto
               </button>
+              <Snackbar
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'center',
+                }}
+                open={showWarning}
+                autoHideDuration={6000}
+                onClose={() => setShowWarning(undefined)}
+                message={showWarning}
+                key={('top', 'center')}
+              />
             </Form>
           )}
         </Formik>

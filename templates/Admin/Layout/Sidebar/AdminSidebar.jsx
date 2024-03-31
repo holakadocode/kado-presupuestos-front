@@ -2,9 +2,6 @@ import { Link, Outlet, useLocation } from 'react-router-dom';
 import AppRemixIcons from '../Component/Icon/AppRemixIcons';
 import styled from 'styled-components';
 
- /**
-  * @return [type]
-  */
 export default function AdminSidebar() {
   const actualRoute = useLocation();
 
