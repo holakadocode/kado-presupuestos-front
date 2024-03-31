@@ -1,7 +1,6 @@
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import AdminLoginScreen from '../../templates/AdminLoginScreen';
 import AdminSidebar from '../../templates/Admin/Layout/Sidebar/AdminSidebar';
-import AdminHomeScreen from '../../templates/Admin/Screen/AdminHomeScreen';
 import AdminStorage from '../../templates/Admin/Screen/Store/AdminStorage';
 import ProviderHomeScreen from '../../templates/Admin/Screen/Provider/ProviderHomeScreen';
 import ShitTest from '../../templates/Admin/Screen/test/ShitTest';
@@ -13,6 +12,7 @@ import BudgetShowScreen from '../../templates/Admin/Screen/Budget/BudgetShowScre
 import CompanyHomeScreen from '../../templates/Admin/Screen/Company/CompanyHomeScreen';
 import ClientBudgetHomeScreen from '../../templates/Admin/Screen/Client/ClientBudgetHomeScreen';
 import { useEffect, useState } from 'react';
+import AdminHomeScreen from '../../templates/Admin/Screen/Admin/AdminHomeScreen';
 
 export default function RoutingScreen() {
   const navigate = useNavigate();
