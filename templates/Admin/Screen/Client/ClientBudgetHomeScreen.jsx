@@ -37,7 +37,7 @@ export default function ClientBudgetHomeScreen() {
   const getExcelBudget = useCallback((budgetID) => {
     axios
       .post(
-        `${ProjectDefaultRoute}/api/xls/test`,
+        `${ProjectDefaultRoute}/api/xls/budgetXls`,
         { clientID, budgetID },
         {
           headers: {
