@@ -20,7 +20,7 @@ export default function ClientEdit(props) {
       surname: Yup.string().required('Requerido'),
       taxIdentification: Yup.string().required('Requerido'),
       tlf: Yup.number().required('Requerido'),
-      contactEmail: Yup.string().required('Requerido'),
+      contactEmail: Yup.string().email().required('Requerido'),
       address: Yup.string().required('Requerido'),
       cp: Yup.number().required('Requerido'),
       city: Yup.string().required('Requerido'),
@@ -60,6 +60,7 @@ export default function ClientEdit(props) {
     <>
       <button
         type="button"
+        title="Editar cliente"
         className="btn btn-outline-secondary btn-sm d-inline-flex align-items-center"
         onClick={() => setShowModal(true)}
       >
