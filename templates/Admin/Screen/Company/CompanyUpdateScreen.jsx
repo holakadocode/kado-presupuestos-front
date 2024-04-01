@@ -7,12 +7,10 @@ import ProjectDefaultRoute from '../../../../src/Routing/ProjectDefaultRoute';
 import AppRemixIcons from '../../Layout/Component/Icon/AppRemixIcons';
 import AppInput from '../../Layout/Component/Form/AppInput';
 import AppCard from '../../Layout/Component/Form/AppCard';
-import { Snackbar } from '@mui/material';
 
 export default function CompanyUpdateScreen() {
   const [company, setCompany] = useState(false);
   const navigate = useNavigate();
-  const [showWarning, setShowWarning] = useState();
   const [validationSchema] = useState(
     Yup.object().shape({
       name: Yup.string().required('Requerido'),
@@ -65,9 +63,10 @@ export default function CompanyUpdateScreen() {
           },
         }
       )
-      .then((r) =>
-        setShowWarning('Mi compañia fue actualizada correctamente')
-      )
+      .then((r) => {
+        localStorage.setItem('issetCompany', true);
+        window.location.reload();
+      })
       .catch((errors) => {
         console.log(errors);
         if (errors.response?.status === 401) {
@@ -186,17 +185,6 @@ export default function CompanyUpdateScreen() {
           </Form>
         )}
       </Formik>
-      <Snackbar
-        anchorOrigin={{
-          vertical: 'botton',
-          horizontal: 'center',
-        }}
-        open={showWarning}
-        autoHideDuration={6000}
-        onClose={() => setShowWarning(undefined)}
-        message={showWarning}
-        key={('top', 'center')}
-      />
     </AppCard>
   ) : (
     <div>Cargando</div>

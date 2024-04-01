@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import axios from 'axios';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import AdminLoginScreen from '../../templates/AdminLoginScreen';
 import AdminSidebar from '../../templates/Admin/Layout/Sidebar/AdminSidebar';
@@ -35,7 +36,7 @@ export default function RoutingScreen() {
       />
 
       <Route path="/admin" element={<AdminSidebar />}>
-        <Route path="/admin" element={<AdminHomeScreen />} />
+        <Route path="/admin" element={<CompanyUpdateScreen />} />
         <Route path="/admin/users" element={<AdminHomeScreen />} />
         <Route path="/admin/company" element={<CompanyUpdateScreen />} />
         <Route path="/admin/clients" element={<ClientHomeScreen />} />

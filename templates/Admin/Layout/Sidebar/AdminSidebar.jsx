@@ -1,9 +1,36 @@
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import AppRemixIcons from '../Component/Icon/AppRemixIcons';
 import styled from 'styled-components';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 export default function AdminSidebar() {
   const actualRoute = useLocation();
+  const [issueCompany, setIssueCompany] = useState();
+
+  useEffect(() => {
+    axios
+      .get('http://localhost/public/index.php/api/company/check_company', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+        },
+      })
+      .then((r) => {
+        if (r.data) {
+          console.log(r.data)
+          localStorage.setItem('issetCompany', true);
+        }else{
+          localStorage.removeItem('issetCompany');
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [localStorage.getItem('authToken')]);
+
+  useEffect(() => {
+    localStorage.getItem('issetCompany') && setIssueCompany(true);
+  }, []);
 
   return (
     <Sidebar>
@@ -42,82 +69,88 @@ export default function AdminSidebar() {
                   <span>Mi Compañia</span>
                 </Link>
               </li>
-              <li>
-                <Link
-                  to="/admin/users"
-                  className={`nav-link ms-3 ${
-                    actualRoute.pathname === '/admin/users' ? 'linkInRoute' : ''
-                  }`}
-                >
-                  <AppRemixIcons icon="ri-shield-user-line" />
-                  <span>Usuarios</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/admin/clients"
-                  className={`nav-link ms-3 ${
-                    actualRoute.pathname === '/admin/clients'
-                      ? 'linkInRoute'
-                      : ''
-                  }`}
-                >
-                  <AppRemixIcons icon="ri-user-line" />
-                  <span>Clientes</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/admin/provider"
-                  className={`nav-link ms-3 ${
-                    actualRoute.pathname === '/admin/provider'
-                      ? 'linkInRoute'
-                      : ''
-                  }`}
-                >
-                  <AppRemixIcons icon="ri-truck-line" />
-                  <span>Proveedores</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/admin/almacen"
-                  className={`nav-link ms-3 ${
-                    actualRoute.pathname === '/admin/almacen'
-                      ? 'linkInRoute'
-                      : ''
-                  }`}
-                >
-                  <AppRemixIcons icon="ri-box-1-line" />
-                  <span>Almacen</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/admin/shitTest"
-                  className={`nav-link ms-3 ${
-                    actualRoute.pathname === '/admin/shitTest'
-                      ? 'linkInRoute'
-                      : ''
-                  }`}
-                >
-                  <AppRemixIcons icon="ri-recycle-line" />
-                  <span>Pruebas de mierda</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/admin/budget"
-                  className={`nav-link ms-3 ${
-                    actualRoute.pathname === '/admin/budget'
-                      ? 'linkInRoute'
-                      : ''
-                  }`}
-                >
-                  <AppRemixIcons icon="ri-article-line" />
-                  <span>Presupuestos</span>
-                </Link>
-              </li>
+              {issueCompany && (
+                <>
+                  <li>
+                    <Link
+                      to="/admin/users"
+                      className={`nav-link ms-3 ${
+                        actualRoute.pathname === '/admin/users'
+                          ? 'linkInRoute'
+                          : ''
+                      }`}
+                    >
+                      <AppRemixIcons icon="ri-shield-user-line" />
+                      <span>Usuarios</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/admin/clients"
+                      className={`nav-link ms-3 ${
+                        actualRoute.pathname === '/admin/clients'
+                          ? 'linkInRoute'
+                          : ''
+                      }`}
+                    >
+                      <AppRemixIcons icon="ri-user-line" />
+                      <span>Clientes</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/admin/provider"
+                      className={`nav-link ms-3 ${
+                        actualRoute.pathname === '/admin/provider'
+                          ? 'linkInRoute'
+                          : ''
+                      }`}
+                    >
+                      <AppRemixIcons icon="ri-truck-line" />
+                      <span>Proveedores</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/admin/almacen"
+                      className={`nav-link ms-3 ${
+                        actualRoute.pathname === '/admin/almacen'
+                          ? 'linkInRoute'
+                          : ''
+                      }`}
+                    >
+                      <AppRemixIcons icon="ri-box-1-line" />
+                      <span>Almacen</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/admin/shitTest"
+                      className={`nav-link ms-3 ${
+                        actualRoute.pathname === '/admin/shitTest'
+                          ? 'linkInRoute'
+                          : ''
+                      }`}
+                    >
+                      <AppRemixIcons icon="ri-recycle-line" />
+                      <span>Pruebas de mierda</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/admin/budget"
+                      className={`nav-link ms-3 ${
+                        actualRoute.pathname === '/admin/budget'
+                          ? 'linkInRoute'
+                          : ''
+                      }`}
+                    >
+                      <AppRemixIcons icon="ri-article-line" />
+                      <span>Presupuestos</span>
+                    </Link>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
         </div>
