@@ -24,7 +24,12 @@ export default function BudgetAddScreen() {
   const [showWarning, setShowWarning] = useState();
   const [validationSchema] = useState(
     Yup.object().shape({
-      client: Yup.string().required('Requerido'),
+      client: Yup.mixed()
+        .test(
+          'is-not-empty-array',
+          'Faltan los datos del cliente',
+          (value) => !Array.isArray(value) || value.length > 0
+        )
     })
   );
 
@@ -252,8 +257,8 @@ export default function BudgetAddScreen() {
                       </>
                     )}
                   </div>
-                  {errors.client &&
-                    setShowWarning('Faltan los datos del cliente')}
+
+                  {errors.client && setShowWarning(errors.client)}
                 </div>
 
                 {/* Datos del cliente */}
@@ -427,7 +432,8 @@ export default function BudgetAddScreen() {
                       (sum, article) => sum + article.quantity * article.price,
                       0
                     ) * 0.21
-                  ).toFixed(2)} €
+                  ).toFixed(2)}{' '}
+                  €
                 </div>
                 <div>
                   {values.articles
@@ -435,7 +441,8 @@ export default function BudgetAddScreen() {
                       (sum, article) => sum + article.quantity * article.price,
                       0
                     )
-                    .toFixed(2)} €
+                    .toFixed(2)}{' '}
+                  €
                 </div>
                 <div>
                   {(
@@ -446,7 +453,8 @@ export default function BudgetAddScreen() {
                           parseFloat(article.price),
                       0
                     ) * 1.21
-                  ).toFixed(2)} €
+                  ).toFixed(2)}{' '}
+                  €
                 </div>
               </ResultTable>
 

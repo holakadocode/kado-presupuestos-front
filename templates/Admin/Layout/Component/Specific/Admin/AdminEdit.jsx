@@ -88,7 +88,6 @@ export default function UserEdit(props) {
             >
               <div className="row mb-3">
                 <div className="col-6">
-                  {console.log(admin)}
                   <AppInput
                     title="Email"
                     placeholder="email"
