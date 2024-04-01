@@ -19,11 +19,9 @@ export default function UserEdit(props) {
         .email('Debe ser un email valido')
         .required('Requerido'),
       roles: Yup.string(),
-      password: Yup.string().required('Requerido'),
       dateTime: Yup.date(),
       name: Yup.string().required('Requerido'),
       surname: Yup.string().required('Requerido'),
-      salt: Yup.number(),
     })
   );
   const handleAdminEdit = useCallback(
@@ -81,11 +79,11 @@ export default function UserEdit(props) {
             <AppModal
               target={showEditAdmin}
               onClose={() => setShowEditAdmin(undefined)}
-              title="Nuevo Usuario"
+              title="Actualizar Usuario"
               isCloseButton
               closeButtonText="Cerrar"
               isSuccessButton
-              successButtonText="Crear"
+              successButtonText="Actualizar"
               onAccept={handleSubmit}
             >
               <div className="row mb-3">
@@ -122,16 +120,6 @@ export default function UserEdit(props) {
                     helperText={errors.surname}
                   />
                 </div>
-                {/* <div className="col-6">
-                  <AppSelect
-                    title="Rol"
-                    placeholder="Rol"
-                    value={values.roles}
-                    onChange={(v) => setFieldValue('roles', v)}
-                    error={errors.roles}
-                    helperText={errors.roles}
-                  />
-                </div> */}
               </div>
 
               <div className="row mb-3">
@@ -145,29 +133,8 @@ export default function UserEdit(props) {
                     helperText={errors.password}
                   />
                 </div>
-                {/* <div className="col-6">
-                  <AppDatePicker
-                    title="Fecha"
-                    placeholder="Fecha"
-                    value={values.dateTime}
-                    onChange={(v) => setFieldValue('dateTime', v)}
-                    error={errors.dateTime}
-                    helperText={errors.dateTime}
-                  />
-                </div> */}
               </div>
-              <div className="row mb-3">
-                {/* <div className="col-6">
-                  <AppNumber
-                    title="Salt"
-                    placeholder="Salt"
-                    value={values.salt}
-                    onChange={(v) => setFieldValue('salt', v)}
-                    error={errors.salt}
-                    helperText={errors.salt}
-                  />
-                </div> */}
-              </div>
+              <div className="row mb-3"></div>
             </AppModal>
           </Form>
         )}
