@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import axios from 'axios';
 import { Form, Formik } from 'formik';
 import AppRemixIcons from '../../Icon/AppRemixIcons';
@@ -24,15 +23,14 @@ export default function ClientAdd(props) {
       address: Yup.string().required('Requerido'),
       cp: Yup.number().required('Requerido'),
       city: Yup.string().required('Requerido'),
-      // primaryKey: Yup.string().required('Requerido'),
     })
   );
 
-  const handleAddClient = useCallback((values, { resetForm }) => {
+  const handleAddClient = useCallback((payload, { resetForm }) => {
     axios
       .put(
         `${ProjectDefaultRoute}/api/client/add`,
-        { values },
+        { payload },
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('authToken')}`,

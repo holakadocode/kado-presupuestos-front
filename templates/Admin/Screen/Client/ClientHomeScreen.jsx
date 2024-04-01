@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from 'react';
 import ClientAdd from '../../Layout/Component/Specific/Client/ClientAdd';
 import axios from 'axios';
 import AppRemixIcons from '../../Layout/Component/Icon/AppRemixIcons';
-import AppModal from '../../Layout/Component/Form/AppModal';
 import ClientEdit from '../../Layout/Component/Specific/Client/ClientEdit';
 import ProjectDefaultRoute from '../../../../src/Routing/ProjectDefaultRoute';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -11,8 +10,6 @@ export default function ClientHomeScreen() {
   const [clients, setClients] = useState();
   const actualRoute = useLocation();
   const navigate = useNavigate();
-
-  // const [selectedClientID, setSelectedClientID] = useState();
 
   const getClients = useCallback(() => {
     axios

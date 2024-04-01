@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import axios from 'axios';
 import { Form, Formik } from 'formik';
 import AppRemixIcons from '../../Icon/AppRemixIcons';
@@ -24,7 +23,6 @@ export default function ClientEdit(props) {
       address: Yup.string().required('Requerido'),
       cp: Yup.number().required('Requerido'),
       city: Yup.string().required('Requerido'),
-      // primaryKey: Yup.string().required('Requerido'),
     })
   );
 
@@ -33,12 +31,11 @@ export default function ClientEdit(props) {
       axios
         .post(
           `${ProjectDefaultRoute}/api/client/edit`,
-          { payload },
+          { payload, clientID: client.id },
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem('authToken')}`,
             },
-            clientID: client.id,
           }
         )
         .then((r) => {
